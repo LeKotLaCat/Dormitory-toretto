@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: ['cdn.aona.co.th'], // Add the hostname here
+  },
 };
 
 export default nextConfig;
