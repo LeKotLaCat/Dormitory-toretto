@@ -202,7 +202,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="w-full hidden xl:flex justify-center items-center">
-              {/* <Image
+              <Image
                 width={150}
                 height={24}
                 className="w-[150px] z-10 translate-x-6 translate-y-6 drop-shadow-xl rounded-lg"
@@ -222,7 +222,7 @@ export default function HomePage() {
                 className="w-[200px] z-10 -translate-x-6 -translate-y-2 drop-shadow-xl rounded-lg"
                 src="https://cdn.aona.co.th/1htshc8ib/bloxcode.png"
                 alt="bloxcodeth"
-              /> */}
+              />
             </div>
           </div>
 
@@ -364,7 +364,7 @@ export default function HomePage() {
           ))}
           </div>
 
-          <h2 data-aos="zoom-in-left"  data-aos-anchor-placement="top-bottom" className="text-3xl text-primary font-semibold my-6 mt-16">ตึกเก่า</h2>
+          <h2 data-aos="zoom-in-left" data-aos-anchor-placement="top-bottom" className="text-3xl text-primary font-semibold my-6 mt-16">ตึกเก่า</h2>
           <div data-aos="fade-up" className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {oldDorms.map(dorm => (
               <DormCard key={dorm.id} dorm={dorm} />
