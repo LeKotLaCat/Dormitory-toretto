@@ -487,7 +487,7 @@ export default function HomePage() {
 
 
 
-    <section id="team" className="py-20 pt-24 lg:pt-40">
+    <section id="team" className="py-20 pt-24 lg:pt-40 mb-16">
         <div className="container mx-auto px-4  ">
           <div className="text-center mb-24 max-w-[1280px] mx-auto">
           <h1 data-aos="fade-up" className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-pink-500  text-transparent bg-clip-text animate-gradient">

@@ -259,3 +259,15 @@ export const getNewDorms = () => dorms.filter(dorm => dorm.building === 'new');
 export const getOldDorms = () => dorms.filter(dorm => dorm.building === 'old');
 
 //end of landing page
+
+//login and register
+
+export const VALIDATION_MESSAGES = {
+  PASSWORD_MISMATCH: 'รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน',
+  PASSWORD_LENGTH: 'รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร',
+  TERMS_REQUIRED: 'กรุณายอมรับข้อกำหนดการใช้บริการและความเป็นส่วนตัว',
+  INVALID_PHONE: 'กรุณากรอกหมายเลขโทรศัพท์ให้ถูกต้อง (เช่น 0812345678)',
+  GENERIC_ERROR: 'เกิดข้อผิดพลาดในการลงทะเบียน กรุณาลองใหม่อีกครั้ง'
+};
+
+//end of login and register

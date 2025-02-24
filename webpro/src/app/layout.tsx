@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { lineSeed } from './fonts'
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner"
 
 import AOSProvider from '../components/AOSProvider';
 
@@ -23,6 +24,23 @@ export default function RootLayout({
         <AOSProvider>
         {children}
         </AOSProvider>
+        <Toaster
+          theme="light"
+          richColors
+          className="font-line-seed w-[500px]"
+          toastOptions={{
+            style: {
+              fontSize: '10px',
+              fontFamily: 'LINE Seed Sans TH',
+              minWidth: 'fit-content'
+            },
+            classNames: {
+              toast: 'font-line-seed',
+              title: 'font-line-seed text-xs md:text-lg whitespace-nowrap overflow-hidden text-ellipsis',
+              description: 'font-line-seed text-sm',
+            },
+          }}
+        />
       </body>
     </html>
   );

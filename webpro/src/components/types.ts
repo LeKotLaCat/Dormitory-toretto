@@ -41,3 +41,25 @@ export type DormType = {
 };
 
 //end of landing page
+
+
+// register and login
+
+export interface RegisterFormData {
+  username: string;
+  email: string;
+  password: string;
+  confirmedPassword: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  address: string;
+  telephone: string;
+}
+
+export interface LoginData {
+  userIdentifier: string;
+  password: string;
+}
+
+// end of register and log-in
