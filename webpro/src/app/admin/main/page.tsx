@@ -27,7 +27,7 @@ const AdminMain = () => {
   const features = [
     { 
       id: 1, 
-      title: 'Student Management', 
+      title: 'แก้ไขผู้เช่า', 
       description: 'Register, view and manage student profiles', 
       icon: <Users className="h-8 w-8 text-blue-500" />,
       path: '/students',
@@ -35,7 +35,7 @@ const AdminMain = () => {
     },
     { 
       id: 2, 
-      title: 'Room Allocation', 
+      title: 'แก้ไขห้องพัก', 
       description: 'Assign and manage room allocations', 
       icon: <Home className="h-8 w-8 text-green-500" />,
       path: '/rooms',
@@ -43,7 +43,7 @@ const AdminMain = () => {
     },
     { 
       id: 3, 
-      title: 'Fee Management', 
+      title: 'บันทึกสาธารณูปโภค', 
       description: 'Track payments and manage billing', 
       icon: <DollarSign className="h-8 w-8 text-purple-500" />,
       path: '/fees',
@@ -51,7 +51,7 @@ const AdminMain = () => {
     },
     { 
       id: 4, 
-      title: 'Maintenance Requests', 
+      title: 'จัดการผู้ใช้', 
       description: 'Handle repair and maintenance issues', 
       icon: <Settings className="h-8 w-8 text-orange-500" />,
       path: '/maintenance',
@@ -59,27 +59,19 @@ const AdminMain = () => {
     },
     { 
       id: 5, 
-      title: 'Announcements', 
+      title: 'ผู้คิวขอเข้าดูหอพัก', 
       description: 'Post news and notifications', 
       icon: <Bell className="h-8 w-8 text-red-500" />,
-      path: '/announcements',
+      path: '/admin/queue',
       color: 'bg-red-50 hover:bg-red-100'
     },
     { 
       id: 6, 
-      title: 'Reports', 
+      title: 'ดูคิวแม่บ้าน', 
       description: 'Generate and view dormitory reports', 
       icon: <FileText className="h-8 w-8 text-indigo-500" />,
       path: '/reports',
       color: 'bg-indigo-50 hover:bg-indigo-100'
-    },
-    { 
-      id: 7, 
-      title: 'Event Calendar', 
-      description: 'Schedule and manage dormitory events', 
-      icon: <Calendar className="h-8 w-8 text-teal-500" />,
-      path: '/calendar',
-      color: 'bg-teal-50 hover:bg-teal-100'
     }
   ];
 
@@ -88,9 +80,9 @@ const AdminMain = () => {
       <div className="flex flex-1">
         <Sidebar />
         
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 p-6 pt-16 md:pt-6 overflow-auto">
           <div className="container mx-auto">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 items-center justify-between mb-6">
               <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
               <div className="flex space-x-4">
                 <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
@@ -104,7 +96,7 @@ const AdminMain = () => {
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-500">Total Students</p>
@@ -120,7 +112,7 @@ const AdminMain = () => {
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-500">Occupancy Rate</p>
@@ -136,7 +128,7 @@ const AdminMain = () => {
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-500">Pending Requests</p>
@@ -152,8 +144,8 @@ const AdminMain = () => {
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                <div className="flex items-center justify-between">
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center justify-between ">
                   <div>
                     <p className="text-sm font-medium text-gray-500">Maintenance Tickets</p>
                     <p className="text-2xl font-bold text-gray-800">{stats.maintenanceTickets}</p>
@@ -174,7 +166,7 @@ const AdminMain = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
               {features.map((feature) => (
                 <Link href={feature.path} key={feature.id}>
-                  <div className={`p-6 rounded-lg shadow-sm border border-gray-200 ${feature.color} transition duration-200 h-full`}>
+                  <div className={`p-6 rounded-lg shadow-sm border border-gray-200 ${feature.color} transition-all duration-200 hover:scale-105 h-full`}>
                     <div className="flex flex-col items-center text-center">
                       <div className="mb-4">
                         {feature.icon}

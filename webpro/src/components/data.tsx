@@ -271,3 +271,141 @@ export const VALIDATION_MESSAGES = {
 };
 
 //end of login and register
+
+
+
+export const movingIn = [
+  {
+    id: 1,
+    name: "Supakorn Wacharasindhu",
+    email: "supakorn@example.com",
+    phone: "062-345-6789",
+    preferredRoom: "Single Room",
+    preferredDate: new Date(2025, 2, 28, 14, 30),
+    requestedOn: new Date(2025, 2, 25, 9, 15),
+    status: "pending",
+    expanded: false,
+    additionalInfo: {
+      studentId: "65130500000",
+      movingDate: new Date(2025, 3, 15),
+      budgetRange: "฿5,000 - ฿8,000",
+      specialRequests: "Would prefer a room on the 3rd floor or higher with good natural light",
+      yearOfStudy: "2nd Year",
+      faculty: "Information Technology",
+    }
+  },
+  {
+    id: 2,
+    name: "Kittipat Jarurak",
+    email: "kittipat@example.com",
+    phone: "081-234-5678",
+    preferredRoom: "Double Room",
+    preferredDate: new Date(2025, 2, 27, 10, 0),
+    requestedOn: new Date(2025, 2, 24, 16, 45),
+    status: "pending",
+    expanded: false,
+    additionalInfo: {
+      studentId: "65130500001",
+      movingDate: new Date(2025, 3, 10),
+      budgetRange: "฿4,000 - ฿6,000",
+      specialRequests: "Looking for a quiet area of the dormitory",
+      yearOfStudy: "1st Year",
+      faculty: "Information Technology",
+    }
+  },
+  {
+    id: 3,
+    name: "Chananya Sirisoontorn",
+    email: "chananya@example.com",
+    phone: "099-876-5432",
+    preferredRoom: "Single Room",
+    preferredDate: new Date(2025, 2, 26, 13, 0),
+    requestedOn: new Date(2025, 2, 23, 11, 30),
+    status: "pending",
+    expanded: false,
+    additionalInfo: {
+      studentId: "65130500002",
+      movingDate: new Date(2025, 3, 5),
+      budgetRange: "฿6,000 - ฿9,000",
+      specialRequests: "Prefers a room with a good view",
+      yearOfStudy: "3rd Year",
+      faculty: "Computer Engineering",
+    }
+  },
+  {
+      id: 4,
+      name: "Chananya Sirisoontorn",
+      email: "chananya@example.com",
+      phone: "099-876-5432",
+      preferredRoom: "Single Room",
+      preferredDate: new Date(2025, 2, 26, 13, 0),
+      requestedOn: new Date(2025, 2, 23, 11, 30),
+      status: "pending",
+      expanded: false,
+      additionalInfo: {
+        studentId: "65130500002",
+        movingDate: new Date(2025, 3, 5),
+        budgetRange: "฿6,000 - ฿9,000",
+        specialRequests: "Prefers a room with a good view",
+        yearOfStudy: "3rd Year",
+        faculty: "Computer Engineering",
+      }
+    },
+    {
+      id: 5,
+      name: "Chananya Sirisoontorn",
+      email: "chananya@example.com",
+      phone: "099-876-5432",
+      preferredRoom: "Single Room",
+      preferredDate: new Date(2025, 2, 26, 13, 0),
+      requestedOn: new Date(2025, 2, 23, 11, 30),
+      status: "pending",
+      expanded: false,
+      additionalInfo: {
+        studentId: "65130500002",
+        movingDate: new Date(2025, 3, 5),
+        budgetRange: "฿6,000 - ฿9,000",
+        specialRequests: "Prefers a room with a good view",
+        yearOfStudy: "3rd Year",
+        faculty: "Computer Engineering",
+      }
+    },
+    {
+      id: 6,
+      name: "Chananya Sirisoontorn",
+      email: "chananya@example.com",
+      phone: "099-876-5432",
+      preferredRoom: "Single Room",
+      preferredDate: new Date(2025, 2, 26, 13, 0),
+      requestedOn: new Date(2025, 2, 23, 11, 30),
+      status: "pending",
+      expanded: false,
+      additionalInfo: {
+        studentId: "65130500002",
+        movingDate: new Date(2025, 3, 5),
+        budgetRange: "฿6,000 - ฿9,000",
+        specialRequests: "Prefers a room with a good view",
+        yearOfStudy: "3rd Year",
+        faculty: "Computer Engineering",
+      }
+    },
+    {
+      id: 7,
+      name: "Chananya Sirisoontorn",
+      email: "chananya@example.com",
+      phone: "099-876-5432",
+      preferredRoom: "Single Room",
+      preferredDate: new Date(2025, 2, 26, 13, 0),
+      requestedOn: new Date(2025, 2, 23, 11, 30),
+      status: "pending",
+      expanded: false,
+      additionalInfo: {
+        studentId: "65130500002",
+        movingDate: new Date(2025, 3, 5),
+        budgetRange: "฿6,000 - ฿9,000",
+        specialRequests: "Prefers a room with a good view",
+        yearOfStudy: "3rd Year",
+        faculty: "Computer Engineering",
+      }
+    },
+]
