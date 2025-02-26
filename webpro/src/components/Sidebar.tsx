@@ -52,9 +52,9 @@ const Sidebar = ({ className }: SidebarProps) => {
       href: "/admin/main"
     },
     {
-      title: "หน้าหลัก",
+      title: "แก้ไขผู้เช่า",
       icon: School,
-      href: "/faculty"
+      href: "/admin/tenant"
     },
     {
       title: "เลือกห้อง",
@@ -72,7 +72,7 @@ const Sidebar = ({ className }: SidebarProps) => {
     {
       title: "คิวแม่บ้าน",
       icon: Users2,
-      href: "/staff"
+      href: "/admin/cleaning"
     },
     {
       title: "คิวเข้าดูหอพัก",
@@ -82,7 +82,7 @@ const Sidebar = ({ className }: SidebarProps) => {
     {
       title: "บันทึกค่าสาธารณูปโภค",
       icon: BookOpen,
-      href: "/courses"
+      href: "/admin/utility"
     }
   ];
 

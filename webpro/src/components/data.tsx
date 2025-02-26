@@ -273,6 +273,7 @@ export const VALIDATION_MESSAGES = {
 //end of login and register
 
 
+export const ITEMS_PER_PAGE = 4;
 
 export const movingIn = [
   {
@@ -409,3 +410,155 @@ export const movingIn = [
       }
     },
 ]
+
+
+// tenant page
+
+export const TenantData = [
+  {
+    id: "U001",
+    name: "Supakorn Wacharasindhu",
+    email: "supakorn@example.com",
+    phone: "062-345-6789",
+    faculty: "Information Technology",
+    yearOfStudy: "2nd Year",
+    moveInDate: new Date(2024, 7, 15), // August 15, 2024
+    leaseEndDate: new Date(2025, 5, 30), // June 30, 2025
+    emergencyContact: "Sompong Wacharasindhu (Father) - 081-234-5678"
+  },
+  {
+    id: "U002",
+    name: "Kittipat Jarurak",
+    email: "kittipat@example.com",
+    phone: "081-234-5678",
+    faculty: "Information Technology",
+    yearOfStudy: "1st Year",
+    moveInDate: new Date(2024, 7, 10), // August 10, 2024
+    leaseEndDate: new Date(2025, 5, 30), // June 30, 2025
+    emergencyContact: "Pranee Jarurak (Mother) - 089-765-4321"
+  },
+  {
+    id: "U003",
+    name: "Chananya Sirisoontorn",
+    email: "chananya@example.com",
+    phone: "099-876-5432",
+    faculty: "Computer Engineering",
+    yearOfStudy: "3rd Year",
+    moveInDate: new Date(2023, 5, 5), // June 5, 2023
+    leaseEndDate: new Date(2025, 5, 30), // June 30, 2025
+    emergencyContact: "Wiroj Sirisoontorn (Father) - 062-987-6543"
+  },
+  {
+    id: "U004",
+    name: "Thanawat Jarusutthirak",
+    email: "thanawat@example.com",
+    phone: "099-765-4321",
+    faculty: "Information Technology",
+    yearOfStudy: "2nd Year",
+    moveInDate: new Date(2023, 7, 20), // August 20, 2023
+    leaseEndDate: new Date(2025, 5, 30), // June 30, 2025
+    emergencyContact: "Sakchai Jarusutthirak (Father) - 081-432-5678"
+  },
+  {
+    id: "U005",
+    name: "Pattharaphon Sopiwong",
+    email: "pattharaphon@example.com",
+    phone: "089-987-6543",
+    faculty: "Information Technology",
+    yearOfStudy: "1st Year",
+    moveInDate: new Date(2024, 6, 1), // July 1, 2024
+    leaseEndDate: new Date(2025, 5, 30), // June 30, 2025
+    emergencyContact: "Malee Sopiwong (Mother) - 086-234-5678"
+  }
+];
+
+export const initialRooms = [
+  { 
+    roomNumber: "1012", 
+    floor: 9, 
+    type: "Single", 
+    status: "occupied", 
+    tenantId: "U001",
+    monthlyRent: 7500
+  },
+  { 
+    roomNumber: "913", 
+    floor: 9, 
+    type: "Single", 
+    status: "occupied", 
+    tenantId: "U001",
+    monthlyRent: 7500
+  },
+  { 
+    roomNumber: "924", 
+    floor: 9, 
+    type: "Single", 
+    status: "occupied", 
+    tenantId: "U001",
+    monthlyRent: 7500
+  },
+  { 
+    roomNumber: "914", 
+    floor: 9, 
+    type: "Single", 
+    status: "occupied", 
+    tenantId: "U001",
+    monthlyRent: 7500
+  },
+  { 
+    roomNumber: "923", 
+    floor: 9, 
+    type: "Single", 
+    status: "occupied", 
+    tenantId: "U001",
+    monthlyRent: 7500
+  },
+  { 
+    roomNumber: "805", 
+    floor: 8, 
+    type: "Double", 
+    status: "occupied", 
+    tenantId: "U002",
+    monthlyRent: 6000
+  },
+  { 
+    roomNumber: "621", 
+    floor: 6, 
+    type: "Single", 
+    status: "occupied", 
+    tenantId: "U003",
+    monthlyRent: 7500
+  },
+  { 
+    roomNumber: "302", 
+    floor: 3, 
+    type: "Single Premium", 
+    status: "occupied", 
+    tenantId: "U004",
+    monthlyRent: 8500
+  },
+  { 
+    roomNumber: "415", 
+    floor: 4, 
+    type: "Double", 
+    status: "occupied", 
+    tenantId: "U005",
+    monthlyRent: 6000
+  },
+  { 
+    roomNumber: "710", 
+    floor: 7, 
+    type: "Single", 
+    status: "vacant", 
+    tenantId: null,
+    monthlyRent: 7500
+  },
+  { 
+    roomNumber: "508", 
+    floor: 5, 
+    type: "Single Premium", 
+    status: "vacant", 
+    tenantId: null,
+    monthlyRent: 8500
+  }
+];

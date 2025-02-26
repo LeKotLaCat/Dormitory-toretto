@@ -30,7 +30,7 @@ const AdminMain = () => {
       title: 'แก้ไขผู้เช่า', 
       description: 'Register, view and manage student profiles', 
       icon: <Users className="h-8 w-8 text-blue-500" />,
-      path: '/students',
+      path: '/admin/tenant',
       color: 'bg-blue-50 hover:bg-blue-100'
     },
     { 
@@ -43,7 +43,7 @@ const AdminMain = () => {
     },
     { 
       id: 3, 
-      title: 'บันทึกสาธารณูปโภค', 
+      title: 'บันทึกค่าสาธารณูปโภค', 
       description: 'Track payments and manage billing', 
       icon: <DollarSign className="h-8 w-8 text-purple-500" />,
       path: '/fees',
@@ -51,7 +51,7 @@ const AdminMain = () => {
     },
     { 
       id: 4, 
-      title: 'จัดการผู้ใช้', 
+      title: 'จัดการผู้ใช้งาน', 
       description: 'Handle repair and maintenance issues', 
       icon: <Settings className="h-8 w-8 text-orange-500" />,
       path: '/maintenance',
@@ -59,7 +59,7 @@ const AdminMain = () => {
     },
     { 
       id: 5, 
-      title: 'ผู้คิวขอเข้าดูหอพัก', 
+      title: 'คิวเข้าดูหอพัก', 
       description: 'Post news and notifications', 
       icon: <Bell className="h-8 w-8 text-red-500" />,
       path: '/admin/queue',
@@ -70,7 +70,7 @@ const AdminMain = () => {
       title: 'ดูคิวแม่บ้าน', 
       description: 'Generate and view dormitory reports', 
       icon: <FileText className="h-8 w-8 text-indigo-500" />,
-      path: '/reports',
+      path: '/admin/cleaning',
       color: 'bg-indigo-50 hover:bg-indigo-100'
     }
   ];

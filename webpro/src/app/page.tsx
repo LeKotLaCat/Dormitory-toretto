@@ -202,7 +202,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="w-full hidden xl:flex justify-center items-center">
-              <Image
+              {/* <Image
                 width={150}
                 height={24}
                 className="w-[150px] z-10 translate-x-6 translate-y-6 drop-shadow-xl rounded-lg"
@@ -222,7 +222,7 @@ export default function HomePage() {
                 className="w-[200px] z-10 -translate-x-6 -translate-y-2 drop-shadow-xl rounded-lg"
                 src="https://cdn.aona.co.th/1htshc8ib/bloxcode.png"
                 alt="bloxcodeth"
-              />
+              /> */}
             </div>
           </div>
 
