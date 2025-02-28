@@ -46,7 +46,7 @@ const AdminMain = () => {
       title: 'บันทึกค่าสาธารณูปโภค', 
       description: 'Track payments and manage billing', 
       icon: <DollarSign className="h-8 w-8 text-purple-500" />,
-      path: '/fees',
+      path: '/admin/utility ',
       color: 'bg-purple-50 hover:bg-purple-100'
     },
     { 
