@@ -38,7 +38,7 @@ const AdminMain = () => {
       title: 'แก้ไขห้องพัก', 
       description: 'Assign and manage room allocations', 
       icon: <Home className="h-8 w-8 text-green-500" />,
-      path: '/rooms',
+      path: '/admin/room',
       color: 'bg-green-50 hover:bg-green-100'
     },
     { 
@@ -54,7 +54,7 @@ const AdminMain = () => {
       title: 'จัดการผู้ใช้งาน', 
       description: 'Handle repair and maintenance issues', 
       icon: <Settings className="h-8 w-8 text-orange-500" />,
-      path: '/maintenance',
+      path: '/admin/user',
       color: 'bg-orange-50 hover:bg-orange-100'
     },
     { 
@@ -90,7 +90,7 @@ const AdminMain = () => {
                 </button>
                 <button className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition">
                   Settings
-                </button>
+                </button> 
               </div>
             </div>
 

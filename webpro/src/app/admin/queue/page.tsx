@@ -97,7 +97,7 @@ const AdminQueue = () => {
   }, [searchTerm, showCompleted]);
 
   // Ensure current page is valid when total pages changes
-  useEffect(() => {
+  useEffect(() => { 
     if (currentPage > totalPages && totalPages > 0) {
       setCurrentPage(totalPages);
     }
