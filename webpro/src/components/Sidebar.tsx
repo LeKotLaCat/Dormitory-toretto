@@ -57,17 +57,9 @@ const Sidebar = ({ className }: SidebarProps) => {
       href: "/admin/tenant"
     },
     {
-      title: "เลือกห้อง",
+      title: "แก้ไขห้องพัก",
       icon: Building2,
-      href: "/floors",
-      submenu: [
-        { title: "Mezzanine (M)", href: "/floors/m" },
-        { title: "2nd Floor", href: "/floors/2" },
-        { title: "3rd Floor", href: "/floors/3" },
-        { title: "4th Floor", href: "/floors/4" },
-        { title: "5th Floor", href: "/floors/5" },
-        { title: "6th Floor", href: "/floors/6" }
-      ]
+      href: "/admin/room",
     },
     {
       title: "คิวแม่บ้าน",
@@ -115,17 +107,13 @@ const Sidebar = ({ className }: SidebarProps) => {
                 variant={isActive(item.href) || openSubmenu === item.title ? "primary" : "ghost"}
                 className="w-full justify-start text-[18px] py-6 transition-all duration-200"
                 onClick={() => {
-                  if (item.submenu) {
-                    handleSubmenuToggle(item.title);
-                  } else {
                     handleNavigation(item.href);
-                  }
                 }}
               >
                 <item.icon className="mr-2 h-7 w-7 md:h-10 md:w-10" />
                 <span className="truncate">{item.title}</span>
               </Button>
-              {item.submenu && openSubmenu === item.title && (
+              {/* {item.submenu && openSubmenu === item.title && (
                 <div className="ml-4 mt-1 space-y-1 animate-fadeIn">
                   {item.submenu.map((subItem) => (
                     <Button
@@ -138,7 +126,7 @@ const Sidebar = ({ className }: SidebarProps) => {
                     </Button>
                   ))}
                 </div>
-              )}
+              )} */}
             </div>
           ))}
         </div>
