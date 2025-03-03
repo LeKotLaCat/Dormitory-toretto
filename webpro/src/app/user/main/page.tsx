@@ -5,8 +5,8 @@ import {
   Eye, 
   Users, 
   Home, 
-  FileText, 
-  Bell, 
+  PhoneCall, 
+  Users2,
   Settings, 
   Calendar, 
   DollarSign,
@@ -58,7 +58,7 @@ const UserMain = () => {
       id: 2, 
       title: 'ใช้บริการแม่บ้าน', 
       description: 'นัดหมายให้แม่บ้านเข้ามาทำความสะอาดห้อง', 
-      icon: <Home className="h-8 w-8 text-green-500" />,
+      icon: <PhoneCall className="h-8 w-8 text-green-500" />,
       path: '/user/service',
       color: 'bg-green-50 hover:bg-green-100'
     },
@@ -82,7 +82,7 @@ const UserMain = () => {
       id: 5, 
       title: 'บอร์ดสนทนา', 
       description: 'พูดคุยและแชร์ข้อมูลกับผู้เช่าคนอื่นๆ', 
-      icon: <Bell className="h-8 w-8 text-red-500" />,
+      icon: <Users2 className="h-8 w-8 text-red-500" />,
       path: '/user/chat',
       color: 'bg-red-50 hover:bg-red-100'
     },
@@ -190,7 +190,7 @@ const UserMain = () => {
                 </div>
               </div>
               <div>
-                <Link href="/user/utility">
+                <Link href="/user/bill">
                   <button className="inline-flex items-center px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 transition-colors">
                     <DollarSign className="w-4 h-4 mr-2" />
                     ชำระเงินตอนนี้

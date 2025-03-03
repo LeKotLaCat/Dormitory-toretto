@@ -8,7 +8,7 @@ import {
   Calendar, 
   Clock, 
   Wrench, 
-  SprayCan, 
+  PhoneCall, 
   ClipboardCheck, 
   Shield, 
   Lightbulb, 
@@ -17,6 +17,7 @@ import {
   Trash, 
   ChevronRight,
   Check,
+  Package,
   X 
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -74,7 +75,7 @@ const ServicePage = () => {
       id: 1,
       title: "ทำความสะอาดห้อง",
       description: "บริการทำความสะอาดทั่วไป ดูดฝุ่น ถูพื้น เช็ดกระจก จัดเตียง",
-      icon: <SprayCan className="h-8 w-8" />,
+      icon: <PhoneCall className="h-8 w-8" />,
       category: 'housekeeping',
       estimatedTime: "1-2 ชั่วโมง",
     },
@@ -91,7 +92,7 @@ const ServicePage = () => {
       id: 3,
       title: "ทำความสะอาดห้องน้ำ",
       description: "บริการทำความสะอาดห้องน้ำอย่างละเอียด ขัดพื้น ล้างสุขภัณฑ์",
-      icon: <SprayCan className="h-8 w-8" />,
+      icon: <PhoneCall className="h-8 w-8" />,
       category: 'housekeeping',
       estimatedTime: "1 ชั่วโมง",
     },
@@ -129,9 +130,9 @@ const ServicePage = () => {
     },
     {
       id: 8,
-      title: "เก็บขยะพิเศษ",
-      description: "บริการเก็บขยะขนาดใหญ่หรือขยะพิเศษที่ไม่สามารถทิ้งในที่ทิ้งขยะทั่วไป",
-      icon: <Trash className="h-8 w-8" />,
+      title: "ขนของเข้า",
+      description: "บริการขนของเข้าห้องพักแบบครบวงจร",
+      icon: <Package className="h-8 w-8" />,
       category: 'housekeeping',
       estimatedTime: "15-30 นาที",
     },
@@ -212,7 +213,7 @@ const ServicePage = () => {
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-xl flex items-center">
-                    <SprayCan className="w-5 h-5 mr-2 text-blue-500" />
+                    <PhoneCall className="w-5 h-5 mr-2 text-blue-500" />
                     บริการแม่บ้าน
                   </CardTitle>
                   <CardDescription>

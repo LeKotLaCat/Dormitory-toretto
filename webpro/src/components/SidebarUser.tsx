@@ -8,6 +8,8 @@ import Link from 'next/link';
 import {
   School,
   Home,
+  Clock,
+  CreditCard,
   Users2,
   BookOpen,
   Calendar,
@@ -18,7 +20,7 @@ import {
   Wifi,
   HelpCircle,
   Menu,
-  Bell,
+  PhoneCall,
   X
 } from "lucide-react";
 import { 
@@ -53,22 +55,22 @@ const SidebarUser = ({ className }: SidebarProps) => {
     },
     {
       title: "จ่ายค่าเช่า",
-      icon: School,
+      icon: CreditCard,
       href: "/user/bill"
     },
     {
       title: "ใช้บริการแม่บ้าน",
-      icon: School,
+      icon: PhoneCall,
       href: "/user/service"
     },
     {
       title: "ประวัติการทำธุรกรรม",
-      icon: Building2,
+      icon: Clock,
       href: "/user/transaction",
     },
     {
       title: "บอร์ดสนทนา",
-      icon: Bell,
+      icon: Users2,
       href: "/user/chat"
     },
   ];
