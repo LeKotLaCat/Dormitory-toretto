@@ -217,12 +217,12 @@ const BillPage = () => {
       // Update the transaction status
       const updatedTransactions = transactions.map(transaction => 
         transaction.id === selectedTransaction.id 
-          ? { 
+          ? ({ 
               ...transaction, 
               status: 'paid', 
-              paymentDate: new Date(),
+              paidDate: new Date(),
               receiptUrl: paymentFile ? URL.createObjectURL(paymentFile) : undefined
-            } 
+            } as Transaction)
           : transaction
       );
       
