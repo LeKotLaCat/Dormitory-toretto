@@ -84,14 +84,6 @@ const AdminMain = () => {
           <div className="container mx-auto">
             <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 items-center justify-between mb-6">
               <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
-              <div className="flex space-x-4">
-                <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-                  Generate Report
-                </button>
-                <button className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition">
-                  Settings
-                </button> 
-              </div>
             </div>
 
             {/* Stats Cards */}

@@ -22,7 +22,6 @@ export default function HomePage() {
   const router = useRouter();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const newDorms = getNewDorms();
-  const oldDorms = getOldDorms();
 
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.5 });
 
@@ -362,13 +361,6 @@ export default function HomePage() {
           {newDorms.map(dorm => (
             <DormCard key={dorm.id} dorm={dorm} />
           ))}
-          </div>
-
-          <h2 data-aos="zoom-in-left" data-aos-anchor-placement="top-bottom" className="text-3xl text-primary font-semibold my-6 mt-16">ตึกเก่า</h2>
-          <div data-aos="fade-up" className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {oldDorms.map(dorm => (
-              <DormCard key={dorm.id} dorm={dorm} />
-            ))}
           </div>
         </div>
       </section>

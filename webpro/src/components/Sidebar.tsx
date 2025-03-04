@@ -15,7 +15,7 @@ import {
   Layout,
   Building2,
   GraduationCap,
-  Wifi,
+  LogOut,
   HelpCircle,
   Menu,
   Bell,
@@ -104,7 +104,7 @@ const Sidebar = ({ className }: SidebarProps) => {
           {menuItems.map((item) => (
             <div key={item.title} className="transition-all duration-200">
               <Button
-                variant={isActive(item.href) || openSubmenu === item.title ? "primary" : "ghost"}
+                variant={isActive(item.href) ? "primary" : "ghost"}
                 className="w-full justify-start text-[18px] py-6 transition-all duration-200"
                 onClick={() => {
                     handleNavigation(item.href);
@@ -135,11 +135,11 @@ const Sidebar = ({ className }: SidebarProps) => {
         <div className="space-y-2">
           <Button 
             variant="ghost" 
-            className="w-full justify-start text-[18px] py-6 transition-colors duration-200"
-            onClick={() => handleNavigation('/settings')}
+            className="w-full justify-start text-[18px] py-6 transition-colors duration-200 hover:bg-red-500 hover:text-white"
+            onClick={() => handleNavigation('/')}
           >
-            <Settings className="mr-2 h-6 w-6 md:h-8 md:w-8" />
-            Settings
+            <LogOut className="mr-2 h-6 w-6 md:h-8 md:w-8" />
+            Log Out
           </Button>
           <Button 
             variant="ghost" 

@@ -94,21 +94,21 @@ const sampleRoomTypes: RoomType[] = [
   },
   {
     id: 4,
-    roomType: 'ปรับอากาศหญิงล้วน',
+    roomType: 'Type C',
     details: 'ห้องปรับอากาศสำหรับนักศึกษาหญิง 1 คน พร้อมห้องน้ำในตัว',
     imageSrc: 'https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg',
     price: 6800
   },
   {
     id: 5,
-    roomType: 'ไม่ปรับอากาศชายล้วน',
+    roomType: 'Type A',
     details: 'ห้องพัดลมสำหรับนักศึกษาชาย 2 คน พร้อมห้องน้ำรวม',
     imageSrc: 'https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg',
     price: 3800
   },
   {
     id: 6,
-    roomType: 'ไม่ปรับอากาศชาย-หญิง',
+    roomType: 'Type B',
     details: 'ห้องพัดลมสำหรับนักศึกษา 2 คน พร้อมห้องน้ำรวม',
     imageSrc: 'https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg',
     price: 3800
