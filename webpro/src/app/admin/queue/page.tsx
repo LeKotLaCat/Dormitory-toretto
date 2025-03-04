@@ -29,6 +29,23 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -49,6 +66,16 @@ import { formatDistanceToNow } from "date-fns";
 import { movingIn, ITEMS_PER_PAGE } from "@/components/data";
 import { Input } from "@/components/ui/input";
 
+type RoomType = string;
+interface RoomTypeMapping {
+  [key: RoomType]: string[];
+}
+const roomsByType: RoomTypeMapping  = {
+  "Type A": ["102", "706", "1012"],
+  "Type B": ["103", "805", "901"],
+  "Type C": ["104", "213", "510"],
+};
+
 const AdminQueue = () => {
   const [queueList, setQueueList] = useState(movingIn);
 
@@ -59,11 +86,15 @@ const AdminQueue = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showCompleted, setShowCompleted] = useState(false);
 
+  const [isRoomDialogOpen, setIsRoomDialogOpen] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState("");
+  const [availableRooms, setAvailableRooms] = useState<string[]>([]);
+
   const getFilteredAndSortedRequests = useCallback(() => {
     const filtered = queueList.filter((request) => {
       const matchesSearch =
         request.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        request.preferredRoom
+        request.Type
           .toLowerCase()
           .includes(searchTerm.toLowerCase()) ||
         request.preferredDate
@@ -161,13 +192,44 @@ const AdminQueue = () => {
   };
 
   const handleConfirmAccept = (id: number) => {
+    // Find the user's room type
+    const item = queueList.find(item => item.id === id);
+    if (item) {
+      setSelectedQueueItem(id);
+      
+      // Get available rooms for this type
+      const roomOptions = roomsByType[item.Type] || [];
+      setAvailableRooms(roomOptions);
+      
+      // Open the room selection dialog
+      setIsRoomDialogOpen(true);
+    }
+  };
+
+  const handleFinalConfirmation = () => {
+    if (!selectedRoom) {
+      // You might want to show an error message here
+      return;
+    }
+    
+    // Update the queue item with the selected room and mark as accepted
     setQueueList(
       queueList.map((item) =>
-        item.id === id ? { ...item, status: "accepted" } : item
+        item.id === selectedQueueItem 
+          ? { 
+              ...item, 
+              status: "accepted", 
+              assignedRoom: selectedRoom 
+            } 
+          : item
       )
     );
+    
+    // Close the dialog and reset selection
+    setIsRoomDialogOpen(false);
+    setSelectedRoom("");
+    
     // Here you would typically make an API call to update the database
-    //Done!
   };
 
   const handleRejectClick = (id: number) => {
@@ -207,7 +269,6 @@ const AdminQueue = () => {
                       className="pl-9 w-full md:w-64"
                     />
                   </div>
-                  <Button>Schedule Tour</Button>
                 </div>
               </div>
 
@@ -311,7 +372,7 @@ const AdminQueue = () => {
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
                         <div className="flex items-center gap-2">
                           <Home size={16} className="text-gray-500" />
-                          <span className="text-sm">{item.preferredRoom}</span>
+                          <span className="text-sm">{item.Type}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <CalendarIcon size={16} className="text-gray-500" />
@@ -539,6 +600,55 @@ const AdminQueue = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <Dialog open={isRoomDialogOpen} onOpenChange={setIsRoomDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Assign Room</DialogTitle>
+            <DialogDescription>
+              Select an available room that matches the requested type.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="py-4">
+            <Select
+              value={selectedRoom}
+              onValueChange={setSelectedRoom}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a room" />
+              </SelectTrigger>
+              <SelectContent>
+                {availableRooms.length > 0 ? (
+                  availableRooms.map((room) => (
+                    <SelectItem key={room} value={room}>
+                      {room}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem value="none" disabled>
+                    No rooms available for this type
+                  </SelectItem>
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsRoomDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleFinalConfirmation}
+              disabled={!selectedRoom}
+              className="transition-all duration-300 ease-in-out transform hover:scale-105"
+            >
+              <CheckIcon className="mr-2 h-4 w-4" />
+              Confirm Assignment
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
