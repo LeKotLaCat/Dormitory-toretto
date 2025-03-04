@@ -26,7 +26,9 @@ import {
   X,
   Scissors,
   Wrench,
-  ShowerHead
+  ShowerHead,
+  Printer,
+  CheckCircle,
 } from "lucide-react";
 import { 
   Dialog,
@@ -35,6 +37,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -44,7 +47,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { format } from 'date-fns';
-
+import Image from "next/image";
 import { initialRooms } from '@/components/data';
 
 interface AdditionalFee {
@@ -63,6 +66,7 @@ interface AdditionalFee {
     status: 'paid' | 'unpaid';
     dueDate: Date;
     paidDate?: Date;
+    imageFile?: string;
   }
   
   interface NewUtility {
@@ -74,26 +78,27 @@ interface AdditionalFee {
     status: 'paid' | 'unpaid';
     dueDate: Date;
   }
-  
 
 const UtilityPage = () => {
   // Sample utility data
   const initialUtilityData: UtilityRecord[] = [
     { id: 1, roomNumber: "101", month: "Feb 2025", electric: 750, water: 250, additionalFees: [
       { type: "housewife", amount: 400, description: "Weekly cleaning service" }
-    ], status: "unpaid", dueDate: new Date(2025, 2, 15) },
-    { id: 2, roomNumber: "102", month: "Feb 2025", electric: 820, water: 320, additionalFees: [], status: "paid", paidDate: new Date(2025, 2, 10), dueDate: new Date(2025, 2, 15) },
+    ], status: "unpaid", dueDate: new Date(2025, 2, 15), imageFile: 'https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg'},
+    { id: 2, roomNumber: "102", month: "Feb 2025", electric: 820, water: 320, additionalFees: [], status: "paid", paidDate: new Date(2025, 2, 10), dueDate: new Date(2025, 2, 15)
+      ,imageFile: 'https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg'
+     },
     { id: 3, roomNumber: "201", month: "Feb 2025", electric: 680, water: 190, additionalFees: [
       { type: "fixing", amount: 350, description: "Sink repair" }
-    ], status: "unpaid", dueDate: new Date(2025, 2, 15) },
+    ], status: "unpaid", dueDate: new Date(2025, 2, 15), imageFile: 'https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg' },
     { id: 4, roomNumber: "202", month: "Feb 2025", electric: 920, water: 280, additionalFees: [
       { type: "housewife", amount: 400, description: "Weekly cleaning service" },
       { type: "fixing", amount: 600, description: "Air conditioner maintenance" }
-    ], status: "paid", paidDate: new Date(2025, 2, 8), dueDate: new Date(2025, 2, 15) },
-    { id: 5, roomNumber: "101", month: "Jan 2025", electric: 720, water: 230, additionalFees: [], status: "paid", paidDate: new Date(2025, 1, 14), dueDate: new Date(2025, 1, 15) },
+    ], status: "paid", paidDate: new Date(2025, 2, 8), dueDate: new Date(2025, 2, 15), imageFile: 'https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg' },
+    { id: 5, roomNumber: "101", month: "Jan 2025", electric: 720, water: 230, additionalFees: [], status: "paid", paidDate: new Date(2025, 1, 14), dueDate: new Date(2025, 1, 15), imageFile: 'https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg' },
     { id: 6, roomNumber: "102", month: "Jan 2025", electric: 790, water: 310, additionalFees: [
       { type: "fixing", amount: 500, description: "Door lock replacement" }
-    ], status: "paid", paidDate: new Date(2025, 1, 12), dueDate: new Date(2025, 1, 15) },
+    ], status: "paid", paidDate: new Date(2025, 1, 12), dueDate: new Date(2025, 1, 15), imageFile: 'https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg' },
   ];
 
   const [rooms] = useState(initialRooms);
@@ -119,6 +124,33 @@ const UtilityPage = () => {
     description: ""
   });
 
+
+  const [previewItem, setPreviewItem] = useState<number | null>(null);
+  const [isReceiptDialogOpen, setIsReceiptDialogOpen] = useState(false);
+
+  const handleConfirmPayment = (id: number) => {
+    // Find the utility item
+    const item = utilityData.find(item => item.id === id);
+    
+    if (!item) return;
+  
+    // Update the utility data
+    setUtilityData(utilityData.map(item => 
+      item.id === id 
+        ? { ...item, status: "paid", paidDate: new Date() } 
+        : item
+    ));
+  
+    // Close any open dialogs
+    setIsReceiptDialogOpen(false);
+    
+    // Optional: Show a success notification
+    // You can add a toast notification here if you have a toast component
+    
+    // Reset the preview item
+    setPreviewItem(null);
+  };
+
   // Get unique months from utility data
   const months = [...new Set(utilityData.map(item => item.month))].sort((a, b) => {
     const [aMonth, aYear] = a.split(' ');
@@ -139,15 +171,6 @@ const UtilityPage = () => {
 
     return matchesSearch && matchesMonth && matchesStatus;
   });
-
-  // Handle payment confirmation
-  const handleConfirmPayment = (id: number) => {
-    setUtilityData(utilityData.map(item => 
-      item.id === id 
-        ? { ...item, status: "paid", paidDate: new Date() } 
-        : item
-    ));
-  };
 
   // Handle adding new fee to the utility record
   const handleAddFee = () => {
@@ -228,6 +251,8 @@ const UtilityPage = () => {
     });
   };
 
+  
+
   // Get stats for current month
   const currentMonth = new Date().toLocaleString('default', { month: 'short' }) + " " + new Date().getFullYear();
   const currentMonthData = utilityData.filter(item => item.month === currentMonth);
@@ -235,7 +260,7 @@ const UtilityPage = () => {
   const totalElectric = currentMonthData.reduce((sum, item) => sum + item.electric, 0);
   const totalWater = currentMonthData.reduce((sum, item) => sum + item.water, 0);
   const totalAdditional = currentMonthData.reduce((sum, item) => 
-    sum + item.additionalFees.reduce((feeSum, fee) => feeSum + fee.amount, 0), 0);
+  sum + item.additionalFees.reduce((feeSum, fee) => feeSum + fee.amount, 0), 0);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col overflow-auto">
@@ -458,15 +483,29 @@ const UtilityPage = () => {
                                   <Button 
                                     size="sm" 
                                     variant="outline"
-                                    className="text-green-600 hover:text-green-800 hover:bg-green-50 border-green-200"
-                                    onClick={() => handleConfirmPayment(item.id)}
+                                    className="text-blue-600 hover:text-blue-800 hover:bg-blue-50 border-blue-200"
+                                    onClick={() => {
+                                      setPreviewItem(item.id);
+                                      setIsReceiptDialogOpen(true);
+                                    }}
                                   >
-                                    <Check className="h-4 w-4 mr-1" />
-                                    Confirm Payment
+                                    <Printer className="h-4 w-4 mr-1" />
+                                    Preview Receipt
                                   </Button>
                                 )}
                                 {item.status === "paid" && (
-                                  <span className="text-sm text-gray-500 italic">No action needed</span>
+                                  <Button 
+                                    size="sm" 
+                                    variant="outline"
+                                    className="text-green-600 hover:text-green-800 hover:bg-green-50 border-green-200"
+                                    onClick={() => {
+                                      setPreviewItem(item.id);
+                                      setIsReceiptDialogOpen(true);
+                                    }}
+                                  >
+                                    <Printer className="h-4 w-4 mr-1" />
+                                    View Receipt
+                                  </Button>
                                 )}
                               </td>
                             </tr>
@@ -728,6 +767,60 @@ const UtilityPage = () => {
               <Plus className="h-4 w-4 mr-2" />
               Add Utility Record
             </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isReceiptDialogOpen} onOpenChange={setIsReceiptDialogOpen}>
+        <DialogContent className="sm:max-w-[550px]">
+          <DialogHeader>
+            <DialogTitle>
+              {previewItem && utilityData.find(item => item.id === previewItem)?.status === "paid" 
+                ? "Payment Receipt" 
+                : "Receipt Preview"}
+            </DialogTitle>
+            <DialogDescription>
+              {previewItem && utilityData.find(item => item.id === previewItem)?.status === "paid"
+                ? "Your confirmed payment receipt"
+                : "Confirm payment after reviewing"}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex justify-center p-4">
+            <div className="relative w-full h-[500px] border rounded-md overflow-hidden shadow-md">
+              {previewItem && (
+                <Image
+                  src={utilityData.find(item => item.id === previewItem)?.imageFile || "https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/ogimage.png"}
+                  alt="Receipt"
+                  fill
+                  className="object-contain"
+                />
+              )}
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsReceiptDialogOpen(false)}
+            >
+              Close
+            </Button>
+            
+            {previewItem && utilityData.find(item => item.id === previewItem)?.status === "unpaid" && (
+              <Button
+                onClick={() => {
+                  if (previewItem) {
+                    handleConfirmPayment(previewItem);
+                    setIsReceiptDialogOpen(false);
+                  }
+                }}
+                className="bg-green-600 hover:bg-green-700"
+              >
+                <CheckCircle className="h-4 w-4 mr-2" />
+                Confirm Payment
+              </Button>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>
