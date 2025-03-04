@@ -287,12 +287,9 @@ export const movingIn = [
     status: "pending",
     expanded: false,
     additionalInfo: {
-      studentId: "65130500000",
+      UID: "65130500000",
       movingDate: new Date(2025, 3, 15),
-      budgetRange: "฿5,000 - ฿8,000",
       specialRequests: "Would prefer a room on the 3rd floor or higher with good natural light",
-      yearOfStudy: "2nd Year",
-      faculty: "Information Technology",
     }
   },
   {
@@ -306,12 +303,9 @@ export const movingIn = [
     status: "pending",
     expanded: false,
     additionalInfo: {
-      studentId: "65130500001",
+      UID: "65130500001",
       movingDate: new Date(2025, 3, 10),
-      budgetRange: "฿4,000 - ฿6,000",
       specialRequests: "Looking for a quiet area of the dormitory",
-      yearOfStudy: "1st Year",
-      faculty: "Information Technology",
     }
   },
   {
@@ -325,12 +319,9 @@ export const movingIn = [
     status: "pending",
     expanded: false,
     additionalInfo: {
-      studentId: "65130500002",
+      UID: "65130500002",
       movingDate: new Date(2025, 3, 5),
-      budgetRange: "฿6,000 - ฿9,000",
       specialRequests: "Prefers a room with a good view",
-      yearOfStudy: "3rd Year",
-      faculty: "Computer Engineering",
     }
   },
   {
@@ -344,12 +335,9 @@ export const movingIn = [
       status: "pending",
       expanded: false,
       additionalInfo: {
-        studentId: "65130500002",
+        UID: "65130500002",
         movingDate: new Date(2025, 3, 5),
-        budgetRange: "฿6,000 - ฿9,000",
         specialRequests: "Prefers a room with a good view",
-        yearOfStudy: "3rd Year",
-        faculty: "Computer Engineering",
       }
     },
     {
@@ -363,12 +351,9 @@ export const movingIn = [
       status: "pending",
       expanded: false,
       additionalInfo: {
-        studentId: "65130500002",
+        UID: "65130500002",
         movingDate: new Date(2025, 3, 5),
-        budgetRange: "฿6,000 - ฿9,000",
         specialRequests: "Prefers a room with a good view",
-        yearOfStudy: "3rd Year",
-        faculty: "Computer Engineering",
       }
     },
     {
@@ -382,12 +367,9 @@ export const movingIn = [
       status: "pending",
       expanded: false,
       additionalInfo: {
-        studentId: "65130500002",
+        UID: "65130500002",
         movingDate: new Date(2025, 3, 5),
-        budgetRange: "฿6,000 - ฿9,000",
         specialRequests: "Prefers a room with a good view",
-        yearOfStudy: "3rd Year",
-        faculty: "Computer Engineering",
       }
     },
     {
@@ -401,12 +383,9 @@ export const movingIn = [
       status: "pending",
       expanded: false,
       additionalInfo: {
-        studentId: "65130500002",
+        UID: "65130500002",
         movingDate: new Date(2025, 3, 5),
-        budgetRange: "฿6,000 - ฿9,000",
         specialRequests: "Prefers a room with a good view",
-        yearOfStudy: "3rd Year",
-        faculty: "Computer Engineering",
       }
     },
 ]
