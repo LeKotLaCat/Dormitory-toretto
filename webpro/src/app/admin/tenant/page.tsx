@@ -174,7 +174,7 @@ const TenantsPage = () => {
           <div className="p-6 pt-16 md:pt-6">
             <div className="container mx-auto">
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
-                <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-0">Tenant Management</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-0">แก้ไขข้อมูลผู้เช่า</h1>
                 <div className="flex gap-3">
                   <div className="relative w-full md:w-64">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
@@ -191,14 +191,14 @@ const TenantsPage = () => {
 
               {filteredRooms.length === 0 ? (
                 <div className="bg-white rounded-md p-8 text-center">
-                  <p className="text-gray-500">No rooms match your search</p>
+                  <p className="text-gray-500">ไม่มีห้องที่ตรงการค้นหา</p>
                 </div>
               ) : (
                 sortedFloors// Sort floors in descending order
                 .map(floor => (
                   <div key={floor} className="mb-12">
                     <h2 className="text-lg md:text-xl font-semibold text-gray-800 mb-3 flex items-center">
-                      Floor {floor}
+                      ชั้น {floor}
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {roomsByFloor[floor].map((room) => (
@@ -213,7 +213,7 @@ const TenantsPage = () => {
                             <div className="flex justify-between items-start">
                               <div className="flex items-center gap-2">
                                 <Home className="h-5 w-5 text-primary" />
-                                <CardTitle>Room {room.roomNumber}</CardTitle>
+                                <CardTitle>ห้อง {room.roomNumber}</CardTitle>
                               </div>
                               <Badge 
                                 variant="outline" 
@@ -230,7 +230,7 @@ const TenantsPage = () => {
                           <CardContent>
                             <div className="space-y-2">
                               <div className="text-sm text-gray-500">
-                                {room.type} • ฿{room.monthlyRent.toLocaleString()} / month
+                                {room.type} • ฿{room.monthlyRent.toLocaleString()} / เดือน
                               </div>
                               {room.tenantId ? (
                                 <div className="flex items-center gap-2 mt-2">
@@ -242,7 +242,7 @@ const TenantsPage = () => {
                               ) : (
                                 <div className="flex items-center gap-2 mt-2 text-gray-500 italic">
                                   <User className="h-4 w-4 text-gray-400" />
-                                  <span>No tenant assigned</span>
+                                  <span>ไม่มีผู้เช่า</span>
                                 </div>
                               )}
                             </div>
@@ -431,19 +431,12 @@ const TenantsPage = () => {
                   <Button 
                     variant="outline" 
                     onClick={handleDeleteTenant}
-                    className="w-full sm:w-auto sm:mr-auto text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                    className="w-full sm:w-auto text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
                   >
                     <Trash2 className="h-4 w-4 mr-2" />
                     Remove Tenant
                   </Button>
                 )}
-                <Button 
-                  variant="outline"
-                  onClick={() => setIsUserDialogOpen(false)} 
-                  className="w-full sm:w-auto"
-                >
-                  Close
-                </Button>
                 <Button
                   onClick={handleEditTenant}
                   className="w-full sm:w-auto"

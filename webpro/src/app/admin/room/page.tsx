@@ -113,6 +113,14 @@ const sampleRooms: RoomType[] = [
 const RoomManagementPage = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [rooms, setRooms] = useState<RoomType[]>(sampleRooms);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [newRoomData, setNewRoomData] = useState<Partial<RoomType>>({
+    roomNumber: "",
+    roomType: roomTypeOptions[0],
+    occupied: false,
+    details: "",
+    imageSrc: ""
+  });
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
   const [editFormData, setEditFormData] = useState<RoomType | null>(null);
@@ -142,6 +150,38 @@ const RoomManagementPage = () => {
         [name]: value
       });
     }
+  };
+
+  const handleNewRoomInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setNewRoomData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleNewRoomImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setImageFile(file);
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+    }
+  };
+
+  const handleAddRoomSubmit = () => {
+    if (!newRoomData.roomNumber || !newRoomData.roomType || !newRoomData.details) return;
+    const newRoom: RoomType = {
+      id: rooms.length + 1,
+      roomNumber: newRoomData.roomNumber,
+      roomType: newRoomData.roomType,
+      occupied: false,
+      details: newRoomData.details,
+      imageSrc: imagePreview || "https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg"
+    };
+
+    setRooms([...rooms, newRoom]);
+    setIsAddDialogOpen(false);
+    setNewRoomData({ roomNumber: "", roomType: roomTypeOptions[0], occupied: false, details: "", imageSrc: "" });
+    setImageFile(null);
+    setImagePreview(null);
   };
 
   // Handle image upload
@@ -191,15 +231,21 @@ const RoomManagementPage = () => {
             <div className="container mx-auto">
               <div className='flex flex-col md:flex-row md:items-center justify-between mb-6'>
                 <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-0">จัดการห้องพัก</h1>
-                <div className='relative w-full md:w-64'>
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
-                  <Input
-                    type="text"
-                    placeholder='ค้นหาห้องพัก...'
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className='pl-9 w-full'
-                  />
+                <div className="flex space-x-4">
+                  <div className='relative w-full md:w-64'>
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+                    <Input
+                      type="text"
+                      placeholder='ค้นหาห้องพัก...'
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className='pl-9 w-full'
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    onClick={() => setIsAddDialogOpen(true)}
+                  >เพิ่มห้องพัก</Button>
                 </div>
               </div>
               
@@ -410,6 +456,129 @@ const RoomManagementPage = () => {
           </DialogContent>
         </Dialog>
       )}
+
+
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>เพิ่มห้องพัก</DialogTitle>
+              <DialogDescription>
+                เพิ่มข้อมูลห้องพักและอัพโหลดรูปภาพห้องพัก
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="roomNumber" className="text-right">
+                  เลขห้อง
+                </Label>
+                <Input
+                  id="roomNumber"
+                  name="roomNumber"
+                  value={newRoomData.roomNumber}
+                  onChange={handleNewRoomInputChange}
+                  className="col-span-3"
+                />
+              </div>
+              
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="roomType" className="text-right">
+                  ประเภทห้อง
+                </Label>
+                <select
+                  id="roomType"
+                  name="roomType"
+                  value={newRoomData.roomType}
+                  onChange={handleNewRoomInputChange}
+                  className="col-span-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {roomTypeOptions.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              <div className="grid grid-cols-4 items-start gap-4">
+                <Label htmlFor="details" className="text-right pt-2">
+                  รายละเอียด
+                </Label>
+                <Textarea
+                  id="details"
+                  name="details"
+                  value={newRoomData.details}
+                  onChange={handleNewRoomInputChange}
+                  className="col-span-3 min-h-[100px]"
+                  placeholder="รายละเอียดห้องพัก"
+                />
+              </div>
+              
+              <div className="grid grid-cols-4 items-start gap-4">
+                <Label htmlFor="roomImage" className="text-right pt-2">
+                  รูปภาพห้องพัก
+                </Label>
+                <div className="col-span-3 space-y-3">
+                  {imagePreview && (
+                    <div className="relative w-full h-48 rounded-md overflow-hidden border border-gray-200">
+                      <Image
+                        src={imagePreview}
+                        alt="Room preview"
+                        className="object-cover"
+                        fill
+                      />
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <Input
+                      id="roomImage"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleNewRoomImageChange}
+                      className="hidden"
+                    />
+                    <Label
+                      htmlFor="roomImage"
+                      className="flex cursor-pointer items-center gap-2 rounded-md bg-primary/10 px-4 py-2 text-primary hover:bg-primary/20 transition-colors"
+                    >
+                      <ImagePlus className="h-4 w-4" />
+                      เลือกรูปภาพ
+                    </Label>
+                    {imageFile && (
+                      <span className="text-sm text-gray-500 truncate max-w-[180px]">
+                        {imageFile.name}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <DialogFooter className="sm:justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  setIsAddDialogOpen(false);
+                  if (imagePreview && imagePreview !== newRoomData.imageSrc) {
+                    URL.revokeObjectURL(imagePreview);
+                  }
+                }}
+              >
+                <X className="mr-2 h-4 w-4" />
+                ยกเลิก
+              </Button>
+              <Button
+                type="button"
+                onClick={handleAddRoomSubmit}
+                className="bg-green-600 hover:bg-green-700"
+              >
+                <Check className="mr-2 h-4 w-4" />
+                เพิ่มห้องพัก
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
     </div>
   );
 };
