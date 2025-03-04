@@ -180,6 +180,9 @@ const RoomManagementPage = () => {
     setRooms([...rooms, newRoom]);
     setIsAddDialogOpen(false);
     setNewRoomData({ roomNumber: "", roomType: roomTypeOptions[0], occupied: false, details: "", imageSrc: "" });
+    if (imagePreview && imagePreview !== newRoom.imageSrc) {
+      URL.revokeObjectURL(imagePreview);
+    }
     setImageFile(null);
     setImagePreview(null);
   };
@@ -348,31 +351,6 @@ const RoomManagementPage = () => {
                       {type}
                     </option>
                   ))}
-                </select>
-              </div>
-              
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="occupied" className="text-right">
-                  สถานะห้อง
-                </Label>
-                <select
-                  id="occupied"
-                  name="occupied"
-                  value={editFormData.occupied.toString()}
-                  onChange={(e) => {
-                    handleInputChange({
-                      ...e,
-                      target: {
-                        ...e.target,
-                        name: 'occupied',
-                        value: e.target.value === 'true'
-                      }
-                    } as any)
-                  }}
-                  className="col-span-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  <option value="false">ว่าง</option>
-                  <option value="true">ไม่ว่าง</option>
                 </select>
               </div>
               
