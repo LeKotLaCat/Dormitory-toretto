@@ -337,41 +337,9 @@ const AdminQueue = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4   animate-fadeIn">
                               <div className="transition duration-300 ease-in-out transform hover:bg-gray-50 p-2 rounded">
                                 <h4 className="text-sm font-medium text-gray-500 mb-1">
-                                  Student ID
-                                </h4>
-                                <p className="text-sm">
-                                  {item.additionalInfo.studentId}
-                                </p>
-                              </div>
-                              <div className="transition duration-300 ease-in-out transform hover:bg-gray-50 p-2 rounded">
-                                <h4 className="text-sm font-medium text-gray-500 mb-1">
                                   Email
                                 </h4>
                                 <p className="text-sm">{item.email}</p>
-                              </div>
-                              <div className="transition duration-300 ease-in-out transform hover:bg-gray-50 p-2 rounded">
-                                <h4 className="text-sm font-medium text-gray-500 mb-1">
-                                  Faculty
-                                </h4>
-                                <p className="text-sm">
-                                  {item.additionalInfo.faculty}
-                                </p>
-                              </div>
-                              <div className="transition duration-300 ease-in-out transform hover:bg-gray-50 p-2 rounded">
-                                <h4 className="text-sm font-medium text-gray-500 mb-1">
-                                  Year of Study
-                                </h4>
-                                <p className="text-sm">
-                                  {item.additionalInfo.yearOfStudy}
-                                </p>
-                              </div>
-                              <div className="transition duration-300 ease-in-out transform hover:bg-gray-50 p-2 rounded">
-                                <h4 className="text-sm font-medium text-gray-500 mb-1">
-                                  Budget Range
-                                </h4>
-                                <p className="text-sm">
-                                  {item.additionalInfo.budgetRange}
-                                </p>
                               </div>
                               <div className="transition duration-300 ease-in-out transform hover:bg-gray-50 p-2 rounded">
                                 <h4 className="text-sm font-medium text-gray-500 mb-1">
