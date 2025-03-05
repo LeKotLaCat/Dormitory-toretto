@@ -26,16 +26,13 @@ const EditProfilePage = () => {
   
   // Mock user profile data - this would come from your API/database in a real application
   const [profile, setProfile] = useState({
-    name: "ณฐกร หอมพันนา",
-    UID: "66070055",
+    FirstName: "ณฐกร",
+    lastName: "หอมพันนา",
     roomNumber: "401",
     roomType: "Type A",
     email: "66070055@kmitl.ac.th",
     phone: "062-345-6789",
     address: "123/45 ถนนฉลองกรุง แขวงลาดกระบัง เขตลาดกระบัง กรุงเทพฯ 10520",
-    checkInDate: "15 พฤษภาคม 2025",
-    bio: "นักศึกษาชั้นปีที่ 2 คณะเทคโนโลยีสารสนเทศ สจล.",
-    emergencyContact: "นายธนวัฒน์ (พ่อ): 081-234-5678",
     profileImage: "/profile/namon.jpg"
   });
   
@@ -104,17 +101,17 @@ const EditProfilePage = () => {
         <SidebarUser />
         
         <main className="flex-1 p-6 pt-16 md:pt-6 overflow-auto pb-16">
-          <div className="container mx-auto max-w-3xl">
-            <div className="flex items-center mb-6">
               <Button 
-                variant="ghost" 
+                variant="outline" 
                 size="sm" 
                 onClick={handleCancel}
-                className="mr-2"
+                className="mr-4 text-sm"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 ย้อนกลับ
               </Button>
+          <div className="container mx-auto max-w-3xl">
+            <div className="flex items-center mb-6">
               <h1 className="text-2xl font-bold text-gray-800">แก้ไขโปรไฟล์</h1>
             </div>
             
@@ -130,7 +127,7 @@ const EditProfilePage = () => {
                     <div className="relative w-32 h-32 overflow-hidden rounded-full border-4 border-primary/20 mb-4">
                       <Image 
                         src={imagePreview} 
-                        alt={profile.name}
+                        alt={profile.FirstName}
                         fill
                         className="object-cover"
                       />
@@ -157,7 +154,7 @@ const EditProfilePage = () => {
                   {/* Personal Information */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">ชื่อ-นามสกุล</label>
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">ชื่อ</label>
                       <div className="relative">
                         <div className="absolute left-3 top-3 text-gray-400">
                           <User className="h-4 w-4" />
@@ -165,27 +162,27 @@ const EditProfilePage = () => {
                         <Input 
                           id="name"
                           name="name"
-                          value={profile.name}
+                          value={profile.FirstName}
                           onChange={handleInputChange}
                           className="pl-10"
-                          placeholder="ชื่อ-นามสกุล"
+                          placeholder="ชื่อ"
                         />
                       </div>
                     </div>
                     
                     <div>
-                      <label htmlFor="studentId" className="block text-sm font-medium text-gray-700 mb-1">UID</label>
+                      <label htmlFor="studentId" className="block text-sm font-medium text-gray-700 mb-1">นามสกุล</label>
                       <div className="relative">
                         <div className="absolute left-3 top-3 text-gray-400">
                           <User className="h-4 w-4" />
                         </div>
                         <Input 
-                          id="UID"
-                          name="UID"
-                          value={profile.UID}
-                          disabled
-                          className="pl-10 bg-gray-50"
-                          placeholder="UID"
+                          id="lastName"
+                          name="lastName"
+                          value={profile.lastName}
+                          onChange={handleInputChange}
+                          className="pl-10"
+                          placeholder="นามสกุล"
                         />
                       </div>
                     </div>
@@ -272,35 +269,6 @@ const EditProfilePage = () => {
                           disabled
                           className="pl-10 bg-gray-50"
                           placeholder="ประเภทห้อง"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="md:col-span-2">
-                      <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-1">ข้อมูลเพิ่มเติม</label>
-                      <Textarea 
-                        id="bio"
-                        name="bio"
-                        value={profile.bio}
-                        onChange={handleInputChange}
-                        className="min-h-[100px]"
-                        placeholder="ข้อมูลเพิ่มเติมเกี่ยวกับตัวคุณ"
-                      />
-                    </div>
-                    
-                    <div className="md:col-span-2">
-                      <label htmlFor="emergencyContact" className="block text-sm font-medium text-gray-700 mb-1">ผู้ติดต่อฉุกเฉิน</label>
-                      <div className="relative">
-                        <div className="absolute left-3 top-3 text-gray-400">
-                          <Phone className="h-4 w-4" />
-                        </div>
-                        <Input 
-                          id="emergencyContact"
-                          name="emergencyContact"
-                          value={profile.emergencyContact}
-                          onChange={handleInputChange}
-                          className="pl-10"
-                          placeholder="ชื่อและเบอร์โทรผู้ติดต่อฉุกเฉิน"
                         />
                       </div>
                     </div>
