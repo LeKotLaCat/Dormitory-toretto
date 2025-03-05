@@ -55,6 +55,22 @@ const ChatPage = () => {
     { id: 4, content: "ขอประชาสัมพันธ์ว่าคืนนี้จะมีการทำความสะอาดระบบท่อน้ำ อาจมีน้ำไหลช้าบ้างในช่วงเวลา 22.00-24.00 น.", timestamp: new Date(2025, 2, 28, 16, 20) },
     { id: 5, content: "น้ำประปาบนชั้น 5 ไม่ไหลเลยตอนนี้ มีใครเจอปัญหาเหมือนกันไหม?", timestamp: new Date(2025, 3, 1, 8, 10) },
     { id: 6, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 7, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 8, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 9, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 10, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 11, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 12, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 13, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 14, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 15, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 16, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 17, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 18, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 19, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 20, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 21, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 22, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
   ]);
 
   const [newMessage, setNewMessage] = useState("");
@@ -66,7 +82,7 @@ const ChatPage = () => {
   }, [messages]);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   };
 
   const handleSubmitMessage = (e: React.FormEvent) => {
@@ -156,7 +172,7 @@ const ChatPage = () => {
                 </div>
               </div>
               
-              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[calc(100vh-250px)]">
                 {messages.map((message) => (
                   <div key={message.id} className="bg-gray-50 rounded-lg p-4 shadow-sm">
                     <div className="flex justify-between items-start">
