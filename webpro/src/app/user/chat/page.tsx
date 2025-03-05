@@ -70,7 +70,7 @@ const ChatPage = () => {
     { id: 19, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
     { id: 20, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
     { id: 21, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
-    { id: 22, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ ทางหอบอกว่าจะมาแก้ให้ในช่วงสาย", timestamp: new Date(2025, 3, 1, 8, 25) },
+    { id: 22, content: "ชั้น 5 ก็เจอเหมือนกันค่ะ", timestamp: new Date(2025, 2, 1, 8, 25) },
   ]);
 
   const [newMessage, setNewMessage] = useState("");
