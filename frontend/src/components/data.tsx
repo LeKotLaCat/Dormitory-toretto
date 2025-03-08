@@ -453,7 +453,7 @@ export const TenantData = [
 
 export const initialRooms = [
   { 
-    roomNumber: "1012", 
+    roomNumber: "101", 
     floor: 9, 
     type: "Single", 
     status: "occupied", 
@@ -541,3 +541,4 @@ export const initialRooms = [
     monthlyRent: 8500
   }
 ];
+export const jwtsecret = "manop888"

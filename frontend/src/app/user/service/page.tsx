@@ -1,25 +1,25 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import SidebarUser from '@/components/SidebarUser';
-import Footer from '@/components/Footer';
-import { 
-  Calendar, 
-  Clock, 
-  Wrench, 
-  PhoneCall, 
-  ClipboardCheck, 
-  Shield, 
-  Lightbulb, 
-  Snowflake, 
-  WashingMachine, 
-  Trash, 
+import React, { useState } from "react";
+import Image from "next/image";
+import SidebarUser from "@/components/SidebarUser";
+import Footer from "@/components/Footer";
+import {
+  Calendar,
+  Clock,
+  Wrench,
+  PhoneCall,
+  ClipboardCheck,
+  Shield,
+  Lightbulb,
+  Snowflake,
+  WashingMachine,
+  Trash,
   ChevronRight,
   Check,
   Package,
-  X 
-} from 'lucide-react';
+  X,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -58,14 +58,20 @@ type Service = {
   title: string;
   description: string;
   icon: React.ReactNode;
-  category: 'housekeeping' | 'maintenance';
+  category: "housekeeping" | "maintenance";
   estimatedTime: string;
   priceRange?: string;
 };
 
 // Available time slots
 const timeSlots = [
-  "09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00"
+  "09:00",
+  "10:00",
+  "11:00",
+  "13:00",
+  "14:00",
+  "15:00",
+  "16:00",
 ];
 
 const ServicePage = () => {
@@ -76,7 +82,7 @@ const ServicePage = () => {
       title: "ทำความสะอาดห้อง",
       description: "บริการทำความสะอาดทั่วไป ดูดฝุ่น ถูพื้น เช็ดกระจก จัดเตียง",
       icon: <PhoneCall className="h-8 w-8" />,
-      category: 'housekeeping',
+      category: "housekeeping",
       estimatedTime: "1-2 ชั่วโมง",
     },
     {
@@ -84,16 +90,16 @@ const ServicePage = () => {
       title: "ซักผ้า/รีดผ้า",
       description: "บริการซักและรีดผ้า สำหรับเสื้อผ้าไม่เกิน 5 กิโลกรัม",
       icon: <WashingMachine className="h-8 w-8" />,
-      category: 'housekeeping',
+      category: "housekeeping",
       estimatedTime: "3-4 ชั่วโมง",
-      priceRange: "฿150-300"
+      priceRange: "฿150-300",
     },
     {
       id: 3,
       title: "ทำความสะอาดห้องน้ำ",
       description: "บริการทำความสะอาดห้องน้ำอย่างละเอียด ขัดพื้น ล้างสุขภัณฑ์",
       icon: <PhoneCall className="h-8 w-8" />,
-      category: 'housekeeping',
+      category: "housekeeping",
       estimatedTime: "1 ชั่วโมง",
     },
     {
@@ -101,23 +107,25 @@ const ServicePage = () => {
       title: "ซ่อมอุปกรณ์ไฟฟ้า",
       description: "แก้ไขปัญหาไฟฟ้า ปลั๊ก สวิตช์ หลอดไฟ และอุปกรณ์ไฟฟ้าทั่วไป",
       icon: <Lightbulb className="h-8 w-8" />,
-      category: 'maintenance',
+      category: "maintenance",
       estimatedTime: "30-60 นาที",
     },
     {
       id: 5,
       title: "ซ่อมเครื่องปรับอากาศ",
-      description: "ตรวจเช็คและซ่อมแซมเครื่องปรับอากาศที่มีปัญหาทั้งระบบทำความเย็นและระบายน้ำ",
+      description:
+        "ตรวจเช็คและซ่อมแซมเครื่องปรับอากาศที่มีปัญหาทั้งระบบทำความเย็นและระบายน้ำ",
       icon: <Snowflake className="h-8 w-8" />,
-      category: 'maintenance',
+      category: "maintenance",
       estimatedTime: "1-2 ชั่วโมง",
     },
     {
       id: 6,
       title: "ซ่อมอุปกรณ์ประปา",
-      description: "แก้ไขปัญหาน้ำรั่ว ท่อตัน ก๊อกน้ำ ชักโครก และอุปกรณ์ประปาทั่วไป",
+      description:
+        "แก้ไขปัญหาน้ำรั่ว ท่อตัน ก๊อกน้ำ ชักโครก และอุปกรณ์ประปาทั่วไป",
       icon: <Wrench className="h-8 w-8" />,
-      category: 'maintenance',
+      category: "maintenance",
       estimatedTime: "30-60 นาที",
     },
     {
@@ -125,7 +133,7 @@ const ServicePage = () => {
       title: "กำจัดแมลง",
       description: "บริการฉีดสเปรย์กำจัดแมลงและสัตว์ที่เป็นพาหะนำโรค",
       icon: <Shield className="h-8 w-8" />,
-      category: 'maintenance',
+      category: "maintenance",
       estimatedTime: "30-45 นาที",
     },
     {
@@ -133,7 +141,7 @@ const ServicePage = () => {
       title: "ขนของเข้า",
       description: "บริการขนของเข้าห้องพักแบบครบวงจร",
       icon: <Package className="h-8 w-8" />,
-      category: 'housekeeping',
+      category: "housekeeping",
       estimatedTime: "15-30 นาที",
     },
   ];
@@ -164,6 +172,26 @@ const ServicePage = () => {
 
   // Handle booking confirmation
   const handleConfirmBooking = () => {
+    const reservedatetime = `${selectedDate} ${selectedTime}`
+    console.log(`${selectedDate} ${selectedTime}`,reservedatetime)
+    fetch("http://localhost:3000/tasks?byuserid=1", {
+      method:"POST",
+      credentials:"include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        taskname: selectedService?.title,
+        tasktype: selectedService?.category,
+        taskdate: reservedatetime,
+        description: note,
+        taskprice: 10,
+        priceset: false,
+      }),
+
+    }).catch((ex)=> {
+      console.error(ex)
+    });
     setIsConfirmationOpen(false);
     setBookingConfirmed(true);
     // Here you would typically make an API call to save the booking
@@ -173,21 +201,21 @@ const ServicePage = () => {
   const generateAvailableDates = () => {
     const dates = [];
     const today = new Date();
-    
+
     for (let i = 1; i <= 7; i++) {
       const date = new Date();
       date.setDate(today.getDate() + i);
-      const dateString = date.toISOString().split('T')[0];
-      const readableDate = date.toLocaleDateString('th-TH', { 
-        weekday: 'long', 
-        day: 'numeric', 
-        month: 'long',
-        year: 'numeric'
+      const dateString = date.toISOString().split("T")[0];
+      const readableDate = date.toLocaleDateString("th-TH", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
       });
-      
+
       dates.push({ value: dateString, label: readableDate });
     }
-    
+
     return dates;
   };
 
@@ -197,7 +225,7 @@ const ServicePage = () => {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <div className="flex flex-1">
         <SidebarUser />
-        
+
         <main className="flex-1 p-6 pt-16 md:pt-6 overflow-auto">
           <div className="container mx-auto">
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
@@ -206,7 +234,7 @@ const ServicePage = () => {
                 บริการหอพัก
               </h1>
             </div>
-            
+
             {/* Service Categories */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {/* Housekeeping Services */}
@@ -222,8 +250,8 @@ const ServicePage = () => {
                 </CardHeader>
                 <CardContent className="grid gap-4">
                   {services
-                    .filter(service => service.category === 'housekeeping')
-                    .map(service => (
+                    .filter((service) => service.category === "housekeeping")
+                    .map((service) => (
                       <Button
                         key={service.id}
                         variant="outline"
@@ -234,13 +262,19 @@ const ServicePage = () => {
                           <div className="bg-blue-100 p-2 rounded-md mr-3">
                             {service.icon}
                           </div>
-                          <span className="font-medium flex-1">{service.title}</span>
+                          <span className="font-medium flex-1">
+                            {service.title}
+                          </span>
                           <ChevronRight className="w-5 h-5 text-gray-400" />
                         </div>
-                        <p className="text-sm text-gray-500 mb-1">{service.description}</p>
+                        <p className="text-sm text-gray-500 mb-1">
+                          {service.description}
+                        </p>
                         <div className="flex items-center text-xs text-gray-500 mt-1">
                           <Clock className="w-3 h-3 mr-1" />
-                          <span>ระยะเวลาโดยประมาณ: {service.estimatedTime}</span>
+                          <span>
+                            ระยะเวลาโดยประมาณ: {service.estimatedTime}
+                          </span>
                           {service.priceRange && (
                             <>
                               <span className="mx-2">•</span>
@@ -252,7 +286,7 @@ const ServicePage = () => {
                     ))}
                 </CardContent>
               </Card>
-              
+
               {/* Maintenance Services */}
               <Card>
                 <CardHeader className="pb-3">
@@ -266,8 +300,8 @@ const ServicePage = () => {
                 </CardHeader>
                 <CardContent className="grid gap-4">
                   {services
-                    .filter(service => service.category === 'maintenance')
-                    .map(service => (
+                    .filter((service) => service.category === "maintenance")
+                    .map((service) => (
                       <Button
                         key={service.id}
                         variant="outline"
@@ -278,13 +312,19 @@ const ServicePage = () => {
                           <div className="bg-orange-100 p-2 rounded-md mr-3">
                             {service.icon}
                           </div>
-                          <span className="font-medium flex-1">{service.title}</span>
+                          <span className="font-medium flex-1">
+                            {service.title}
+                          </span>
                           <ChevronRight className="w-5 h-5 text-gray-400" />
                         </div>
-                        <p className="text-sm text-gray-500 mb-1">{service.description}</p>
+                        <p className="text-sm text-gray-500 mb-1">
+                          {service.description}
+                        </p>
                         <div className="flex items-center text-xs text-gray-500 mt-1">
                           <Clock className="w-3 h-3 mr-1" />
-                          <span>ระยะเวลาโดยประมาณ: {service.estimatedTime}</span>
+                          <span>
+                            ระยะเวลาโดยประมาณ: {service.estimatedTime}
+                          </span>
                           {service.priceRange && (
                             <>
                               <span className="mx-2">•</span>
@@ -297,7 +337,7 @@ const ServicePage = () => {
                 </CardContent>
               </Card>
             </div>
-            
+
             {/* Booking Confirmation Message */}
             {bookingConfirmed && (
               <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start">
@@ -307,7 +347,15 @@ const ServicePage = () => {
                 <div>
                   <h3 className="font-medium text-green-800">การจองสำเร็จ!</h3>
                   <p className="text-green-700">
-                    คุณได้จองบริการ "{selectedService?.title}" สำหรับวันที่ {selectedDate && new Date(selectedDate).toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' })} เวลา {selectedTime} น. โดยจะมีเจ้าหน้าที่มาให้บริการตามเวลาที่นัดหมาย
+                    คุณได้จองบริการ "{selectedService?.title}" สำหรับวันที่{" "}
+                    {selectedDate &&
+                      new Date(selectedDate).toLocaleDateString("th-TH", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}{" "}
+                    เวลา {selectedTime} น.
+                    โดยจะมีเจ้าหน้าที่มาให้บริการตามเวลาที่นัดหมาย
                   </p>
                 </div>
               </div>
@@ -317,7 +365,7 @@ const ServicePage = () => {
       </div>
 
       <Footer />
-      
+
       {/* Service Booking Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-md">
@@ -327,7 +375,7 @@ const ServicePage = () => {
               เลือกวันและเวลาที่ต้องการรับบริการ
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="booking-date" className="text-right">
@@ -339,7 +387,9 @@ const ServicePage = () => {
                 onChange={(e) => setSelectedDate(e.target.value)}
                 className="col-span-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <option value="" disabled>เลือกวันที่</option>
+                <option value="" disabled>
+                  เลือกวันที่
+                </option>
                 {availableDates.map((date) => (
                   <option key={date.value} value={date.value}>
                     {date.label}
@@ -347,7 +397,7 @@ const ServicePage = () => {
                 ))}
               </select>
             </div>
-            
+
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="booking-time" className="text-right">
                 เวลา
@@ -359,7 +409,9 @@ const ServicePage = () => {
                 className="col-span-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 disabled={!selectedDate}
               >
-                <option value="" disabled>เลือกเวลา</option>
+                <option value="" disabled>
+                  เลือกเวลา
+                </option>
                 {timeSlots.map((time) => (
                   <option key={time} value={time}>
                     {time} น.
@@ -367,7 +419,7 @@ const ServicePage = () => {
                 ))}
               </select>
             </div>
-            
+
             <div className="grid grid-cols-4 items-start gap-4">
               <Label htmlFor="booking-note" className="text-right pt-2">
                 หมายเหตุ
@@ -381,12 +433,9 @@ const ServicePage = () => {
               />
             </div>
           </div>
-          
+
           <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setIsDialogOpen(false)}
-            >
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
               ยกเลิก
             </Button>
             <Button
@@ -399,14 +448,24 @@ const ServicePage = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      
+
       {/* Confirmation Dialog */}
-      <AlertDialog open={isConfirmationOpen} onOpenChange={setIsConfirmationOpen}>
+      <AlertDialog
+        open={isConfirmationOpen}
+        onOpenChange={setIsConfirmationOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>ยืนยันการจองบริการ</AlertDialogTitle>
             <AlertDialogDescription>
-              คุณต้องการจองบริการ "{selectedService?.title}" ในวันที่ {selectedDate && new Date(selectedDate).toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' })} เวลา {selectedTime} น. ใช่หรือไม่?
+              คุณต้องการจองบริการ "{selectedService?.title}" ในวันที่{" "}
+              {selectedDate &&
+                new Date(selectedDate).toLocaleDateString("th-TH", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}{" "}
+              เวลา {selectedTime} น. ใช่หรือไม่?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

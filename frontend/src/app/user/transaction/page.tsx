@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Calendar,
   Download,
@@ -39,6 +39,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Badge } from '@/components/ui/badge';
+import { useRouter } from 'next/navigation';
 
 // Transaction type definition
 type Transaction = {
@@ -58,6 +59,7 @@ type Transaction = {
 };
 
 const TransactionPage = () => {
+  const router = useRouter()
   // Sample transaction data
   const [transactions, setTransactions] = useState<Transaction[]>([
     {
@@ -134,6 +136,51 @@ const TransactionPage = () => {
       },
     },
   ]);
+  useEffect(()=> {
+    fetch("http://localhost:3000/bills/paid",{method:"GET",credentials: "include"}).then((val) => {
+      if (val.status == 403) return router.push("/login");
+      return val.json();
+    })
+    .then((data) => {
+      const transformedBills = data.map((billData: any) => {
+        // Format dates
+        const paidDate = new Date(billData.DueDate); // Convert DueDate into paidDate
+        const forMonth = paidDate.toLocaleString("th-TH", {
+          month: "long",
+          year: "numeric",
+        }); // Format month (e.g. "ตุลาคม 2024")
+
+        // Calculate the total amount (assuming roomprice + waterprice + electricprice + taskprice)
+        const totalAmount =
+          parseFloat(billData.roomprice) +
+          parseFloat(billData.waterprice) +
+          parseFloat(billData.electricprice) +
+          parseFloat(billData.taskprice);
+
+        // Map bill status (assuming 0 means 'paid' and other statuses map to 'unpaid')
+        const status = billData.billStatus === 0 ? "pending" : "paid";
+
+        // Breakdown object
+        const breakdown = {
+          rent: parseFloat(billData.roomprice),
+          water: parseFloat(billData.waterprice),
+          electricity: parseFloat(billData.electricprice),
+        };
+        // Construct final response
+        return {
+          id: billData.BillID, // Use BillID as the ID
+          paidDate, // Use the formatted date
+          forMonth, // The month formatted in Thai
+          totalAmount: totalAmount.toFixed(2), // Total amount rounded to 2 decimal places
+          status,
+          paymentDate: paidDate, // Use the same paidDate for paymentDate (or modify if needed)
+          receiptUrl: billData.billStatus !== 0 && `data:image/jpeg;base64,${billData.transactionimg}`, // Example URL for the receipt
+          breakdown,
+        };
+      });
+      setTransactions(transformedBills)
+    })
+  },[])
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);

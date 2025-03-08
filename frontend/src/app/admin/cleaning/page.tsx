@@ -39,8 +39,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
+import { DollarSign } from "lucide-react";
 // Sample cleaning request data
+
+interface Task {
+  taskid: number;
+  roomid: number | string;
+  roomName: string
+  taskname: string;
+  taskdate: string;
+  description: string;
+  taskstatus: number;
+}
+
 const initialCleaningRequests = [
   {
     id: 1,
@@ -147,15 +158,51 @@ const initialCleaningRequests = [
 const ITEMS_PER_PAGE = 5;
 
 const CleaningQueuePage = () => {
+  const router = useRouter();
   const [cleaningRequests, setCleaningRequests] = useState(
     initialCleaningRequests
   );
+  useEffect(() => {
+    fetch("http://localhost:3000/tasks", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.status == 401) {
+          return router.push("/login");
+        } else {
+          return res.json();
+        }
+      })
+      .then((data: Task[] | {message: string}) => {
+        console.log(data)
+        if ("message" in data) return
+        const transformedTasks = data.map((task) => ({
+          id: task.taskid,
+          roomNumber: String(task.roomName),
+          service: task.taskname,
+          time: new Date(task.taskdate),
+          requestedBy: `ห้อง ${task.roomName}`,
+          status: task.taskstatus === 0 ? "pending" : "completed",
+          notes: task.description,
+        }));
+        setCleaningRequests(transformedTasks);
+      })
+      .catch((error) => {
+        if (error.name !== "AbortError") {
+          console.error("Fetch error:", error);
+        }
+      });
+  }, []);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRequest, setSelectedRequest] = useState<number | null>(null);
   const [showCompleted, setShowCompleted] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [price, setPrice] = useState(0.00)
   const getFilteredAndSortedRequests = useCallback(() => {
     const filtered = cleaningRequests.filter((request) => {
       const matchesSearch =
@@ -183,7 +230,9 @@ const CleaningQueuePage = () => {
 
   const sortedRequests = getFilteredAndSortedRequests();
   const totalPages = Math.ceil(sortedRequests.length / ITEMS_PER_PAGE);
-
+  useEffect(()=> {
+    if (!isDialogOpen) setPrice(0)
+  },[isDialogOpen])
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, showCompleted]);
@@ -214,7 +263,23 @@ const CleaningQueuePage = () => {
     goToPage(currentPage - 1);
   };
 
-  const handleConfirmCleaning = (id: number) => {
+  const handleConfirmCleaning = async (id: number) => {
+    fetch(`http://localhost:3000/tasks/${id}/setDone`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        price
+      }),
+      credentials: "include",
+    })
+      .then((value) => {
+        if (value.status == 401) return router.push("/login");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
     setCleaningRequests(
       cleaningRequests.map((request) =>
         request.id === id
@@ -582,7 +647,21 @@ const CleaningQueuePage = () => {
                       </p>
                     </div>
                   </div>
-
+                  <div>
+                    <p>ราคา</p>
+                    <div className="relative">
+                    <DollarSign className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+                  <Input
+                      type="number"
+                      placeholder="Enter Price"
+                      value={price}
+                      onChange={(e) => setPrice(Number.parseFloat(e.target.value))}
+                      className="pl-9 w-full md:w-64"
+                      step={0.01}
+                    />
+                    </div>
+                    
+                  </div>
                   <DialogFooter className="pt-3">
                     <Button
                       variant="outline"
