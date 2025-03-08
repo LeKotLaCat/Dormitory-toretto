@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
 import { jwtsecret } from "./components/data";
 
 export const config = {
@@ -14,7 +13,7 @@ const tokencheck = async (token: string | undefined) => {
   if (!token) return null;
   try {
     const { payload } = await jwtVerify(token, jwtSecrett);
-    return payload as { role: string };
+    return payload as { role: string,room:string };
   } catch (error) {
     console.error("JWT Verification Error:", error);
     return null;
@@ -30,13 +29,21 @@ export async function middleware(request: NextRequest) {
   }
 
   if (request.nextUrl.pathname.includes("/admin")) {
-    if (!decoded || decoded.role !== "admin") {
+    if (!decoded) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }else if (decoded.role !== "admin") {
       return NextResponse.redirect(new URL("/user/main", request.url));
+
     }
   }
   if (request.nextUrl.pathname.includes("/user")) {
-    if (!decoded || decoded.role !== "user") {
+    if (!decoded) {
       return NextResponse.redirect(new URL("/login", request.url));
+    }else if (!decoded.room && !request.nextUrl.pathname.includes("/user/queue")){
+      return NextResponse.redirect(new URL("/user/queue", request.url));
+    }else if (decoded.role !== "user") {
+      return NextResponse.redirect(new URL("/admin/main", request.url));
+
     }
   }
 

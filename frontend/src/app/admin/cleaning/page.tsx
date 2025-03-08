@@ -163,6 +163,7 @@ const CleaningQueuePage = () => {
     initialCleaningRequests
   );
   useEffect(() => {
+    setCleaningRequests([]);
     fetch("http://localhost:3000/tasks", {
       method: "GET",
       headers: {
