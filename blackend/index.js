@@ -425,7 +425,7 @@ app.put("/rooms/:roomId", verifyToken, (req, res, next) => {
     "UPDATE room SET roomName = ?, description = ?, roomTypeId = ?, floor = ?, roomImg = ? WHERE id = ?";
   db.run(
     sql,
-    [roomName, floor, roomTypeId, description, roomImg, roomId],
+    [roomName, description, roomTypeId, floor, roomImg, roomId],
     function (error) {
       if (error) {
         return next(error);
