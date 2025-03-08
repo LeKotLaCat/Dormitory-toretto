@@ -234,10 +234,10 @@ app.post('/rooms', verifyToken, (req, res, next) => {
     }
 
     const { roomName, description, roomTypeId, floor, userId, roomImg } = req.body;
-    if (!roomName || typeof roomName !== 'string' || roomName.length < 3 || roomName.length > 255) {
+    if (!roomName || typeof(roomName) !== 'string' || roomName.length < 3) {
         return res.status(400).json({ message: 'ข้อมูล ชื่อห้อง ไม่ถูกต้อง' });
     }
-    if (!description || typeof description !== 'string' || description.length < 3 || description.length > 255) {
+    if (!description || typeof(description) !== 'string' || description.length < 3) {
         return res.status(400).json({ message: 'ข้อมูล คำอธิบาย ไม่ถูกต้อง' });
     }
     if (!roomTypeId) {
@@ -246,9 +246,18 @@ app.post('/rooms', verifyToken, (req, res, next) => {
     if (!floor) {
         return res.status(400).json({ message: 'ข้อมูล ชั้น ไม่ถูกต้อง' });
     }
-    if (userId !== undefined && userId !== null && (typeof userId !== 'string' || userId.length > 255)) {
+    if (userId !== undefined && userId !== null && (typeof userId !== 'string')) {
         return res.status(400).json({ message: 'ข้อมูล รหัสประจำตัวของผู้ใช้ ไม่ถูกต้อง' });
     }
+    db.all(`SELECT id FROM room WHERE roomName = ?`, [roomName], function (error, result){
+        if (error) {
+            return next(error);
+        }
+        if (result) {
+            return res.status(409).json({ message : 'ชื่อห้องนี้มีในระบบแล้ว'});
+        }
+    });
+
     const sql = `INSERT INTO room (roomName, description, roomTypeId, floor, renterID, roomImg) VALUES (?, ?, ?, ?, ?, ?)`;
     db.run(sql, [roomName, description, roomTypeId, floor, null, roomImg], function (error) {
         if (error) {
@@ -292,43 +301,45 @@ app.put('/rooms/:roomId', verifyToken, (req, res, next) => {
     }
 
     const { roomName, description, roomTypeId, floor, userId, roomImg } = req.body;
-    if (roomName !== undefined && (typeof roomName !== 'string' || roomName.length < 3 || roomName.length > 255)) {
-        return res.status(400).json({ message: 'ไม่พบ roomName' });
-    }
-    if (description !== undefined && (typeof description !== 'string' || description.length < 3 || description.length > 255)) {
-        return res.status(400).json({ message: 'ไม่พบ description' });
-    }
-    if (roomTypeId !== undefined && (typeof roomTypeId !== 'string' || roomTypeId.length <= 0)) {
-        return res.status(400).json({ message: 'ไม่พบ roomTypeId' });
-    }
-    if (floor !== undefined && (typeof floor !== 'string' || floor.length <= 0)) {
-        return res.status(400).json({ message: 'ไม่พบ floor' });
-    }
-    if (userId !== undefined && userId !== null && (typeof userId !== 'string' || userId.length > 255)) {
-        return res.status(400).json({ message: 'ไม่พบ userId' });
-    }
-
     const updates = [];
     const params = [];
 
     if (roomName !== undefined) {
+        if (typeof(roomName) !== 'string' || roomName.length < 3) {
+            return res.status(400).json({ message: 'ไม่พบ roomName' });
+        }
         updates.push('roomName = ?');
         params.push(roomName);
     }
+
     if (description !== undefined) {
+        if (typeof(description) !== 'string' || description.length < 3) {
+            return res.status(400).json({ message: 'ไม่พบ description' });
+        }
         updates.push('description = ?');
         params.push(description);
     }
+
     if (roomTypeId !== undefined) {
+        if (typeof(roomTypeId) !== 'string' || roomTypeId.length <= 0) {
+            return res.status(400).json({ message: 'ไม่พบ roomTypeId' });
+        }
         updates.push('roomTypeId = ?');
         params.push(roomTypeId);
     }
+
     if (floor !== undefined) {
+        if (typeof(floor) !== 'string' || floor.length <= 0) {
+            return res.status(400).json({ message: 'ไม่พบ floor' });
+        }
         updates.push('floor = ?');
         params.push(floor);
     }
 
     if (userId !== undefined) {
+        if (typeof(userId) !== 'string' || userId.length > 255) {
+            return res.status(400).json({ message: 'ไม่พบ userId' });
+        }
         updates.push('renterID = ?');
         params.push(userId);
     }
@@ -339,23 +350,22 @@ app.put('/rooms/:roomId', verifyToken, (req, res, next) => {
     }
 
     if (updates.length === 0) {
-        return res.status(400);
+        return res.status(400).json({ message: 'ไม่มีข้อมูลที่ต้องอัปเดต' });
     }
-
-    const sql = `UPDATE room SET ${updates.join(', ')} WHERE id = ?`;
-    params.push(roomId);
-
-
-    db.run(sql, params, function (error) {
+    db.all(`SELECT id, roomName FROM room WHERE roomName = ?`, [roomName], function (error, result){
         if (error) {
             return next(error);
         }
-
-        if (this.changes === 0) {
-            return res.status(404).json({ message: 'ไม่พบห้อง' });
+        if (result && result[0].roomName !== roomName) {
+            return res.status(404).json({ message : 'ชื่อห้องนี้มีในระบบแล้ว'});
         }
-
-        res.status(200).json({ message: 'อัปเดตห้องสำเร็จ' });
+        const sql = `UPDATE room SET ${updates.join(', ')} WHERE id = ?`;
+        db.run(sql, [roomId], function (error) {
+            if (error) {
+                return next(error);
+            }
+            res.status(200).json({ message: 'อัปเดตห้องสำเร็จ' });
+        });
     });
 });
 app.put('/rooms/:roomId/clear', verifyToken, (req, res, next) => {
@@ -501,8 +511,6 @@ app.post('/chat', verifyToken, (req, res, next) => {
         return res.status(400).json({ message: 'กรุณากรอกข้อความ' });
     }
 
-    const timestamp = new Date(); // Removed
-
     db.run(
         "INSERT INTO chatDataBase (message, timestamp) VALUES (?, datetime('now', '+7 hours'))",
         [message],
@@ -511,7 +519,7 @@ app.post('/chat', verifyToken, (req, res, next) => {
                 return next(error);
             }
 
-            db.get( // Use db.get()
+            db.get(
                 'SELECT * FROM chatDataBase WHERE id = ?',
                 [this.lastID],
                 (error, insertedChat) => {
@@ -562,8 +570,8 @@ app.post('/queue/:roomTypeId', verifyToken, (req, res, next) => {
                 if (queueCount + unavailableCount >= vacantCount) {
                     res.status(409).json({ message: "ไม่สามารถจองคิวได้" });
                 } else {
-                    const insertQueue = `INSERT INTO Queue (userId, roomTypeId, queueDate, description, bookingDate, bookingTime) VALUES (?, ?, ?, ?, ?, ?);`
-                    db.run(insertQueue, [userId, roomTypeId, queueDate, description, bookingDate, bookingTime], function (error) { // Use function()
+                    const insertQueue = `INSERT INTO Queue (userId, roomTypeId, queueDate, description, bookingDate, bookingTime) VALUES (?, ?, ?, ?, ?, ?);`;
+                    db.run(insertQueue, [userId, roomTypeId, queueDate, description, bookingDate, bookingTime], function (error) {
                         if (error) {
                             return next(error);
                         }
@@ -577,6 +585,9 @@ app.post('/queue/:roomTypeId', verifyToken, (req, res, next) => {
 
 });
 app.delete('/queue/del/:queueId', verifyToken, (req, res, next) => {
+    if (!req.user) {
+        return res.status(401).json({ message: "กรุณา login" });
+    }
     const { queueId } = req.params;
 
     const deleteQuery = 'DELETE FROM Queue WHERE id = ?';
@@ -623,6 +634,9 @@ app.get('/queue', verifyToken, (req, res, next) => {
 });
 
 app.get('/queue/vacant/:type', verifyToken, (req, res, next) => {
+    if (!req.user) {
+        return res.status(401).json({ message: "กรุณา login" });
+    }
     const { type } = req.params;
 
     const selectQuery = `
@@ -637,19 +651,22 @@ app.get('/queue/vacant/:type', verifyToken, (req, res, next) => {
 });
 
 app.get('/queue/check/:type', verifyToken, (req, res, next) => {
+    if (!req.user) {
+        return res.status(401).json({ message: "กรุณา login" });
+    }
     const { type } = req.params;
 
-    db.get('SELECT COUNT(id) as vacantCount FROM room WHERE roomTypeId = ?', [type], (err, vacantResult) => { //db.get
+    db.get('SELECT COUNT(id) as vacantCount FROM room WHERE roomTypeId = ?', [type], (err, vacantResult) => {
         if (err) {
             return next(err);
         }
 
-        db.get('SELECT COUNT(id) as unavailableCount FROM room WHERE roomTypeId = ? AND renterID IS NOT NULL', [type], (err, unavailableResult) => { //db.get
+        db.get('SELECT COUNT(id) as unavailableCount FROM room WHERE roomTypeId = ? AND renterID IS NOT NULL', [type], (err, unavailableResult) => {
             if (err) {
                 return next(err);
             }
 
-            db.get('SELECT COUNT(id) as queueCount FROM Queue WHERE roomTypeId = ?', [type], (err, queueResult) => {  //db.get
+            db.get('SELECT COUNT(id) as queueCount FROM Queue WHERE roomTypeId = ?', [type], (err, queueResult) => {
                 if (err) {
                     return next(err);
                 }

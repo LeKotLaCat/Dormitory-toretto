@@ -1,4 +1,4 @@
-// File: E:\kmitl\year 2\webpro\final-Project\jeck\frontend\src\app\admin\queue\page.tsx
+// File: /Users/realfaxtt/IT_KMITL/Year2_2/webpro/project/Webpro888/frontend/src/app/admin/queue/page.tsx
 import * as entry from '../../../../../src/app/admin/queue/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
