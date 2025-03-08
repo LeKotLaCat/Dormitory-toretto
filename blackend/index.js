@@ -391,74 +391,47 @@ app.put("/rooms/:roomId", verifyToken, (req, res, next) => {
 
   const { roomName, description, roomTypeId, floor, userId, roomImg } =
     req.body;
-  const updates = [];
-  const params = [];
-
+  console.log(roomImg);
   if (roomName !== undefined) {
     if (typeof roomName !== "string" || roomName.length < 3) {
       return res.status(400).json({ message: "ไม่พบ roomName" });
     }
-    updates.push("roomName = ?");
-    params.push(roomName);
   }
 
   if (description !== undefined) {
     if (typeof description !== "string" || description.length < 3) {
       return res.status(400).json({ message: "ไม่พบ description" });
     }
-    updates.push("description = ?");
-    params.push(description);
   }
 
   if (roomTypeId !== undefined) {
     if (typeof roomTypeId !== "string" || roomTypeId.length <= 0) {
       return res.status(400).json({ message: "ไม่พบ roomTypeId" });
     }
-    updates.push("roomTypeId = ?");
-    params.push(roomTypeId);
   }
 
   if (floor !== undefined) {
     if (typeof floor !== "string" || floor.length <= 0) {
       return res.status(400).json({ message: "ไม่พบ floor" });
     }
-    updates.push("floor = ?");
-    params.push(floor);
   }
-
-  if (userId !== undefined) {
-    if (typeof userId !== "string" || userId.length > 255) {
-      return res.status(400).json({ message: "ไม่พบ userId" });
-    }
-    updates.push("renterID = ?");
-    params.push(userId);
-  }
-
   if (roomImg !== undefined) {
-    updates.push("roomImg = ?");
-    params.push(roomImg);
+    if (typeof roomImg !== "string") {
+      return res.status(400).json({ message: "ไม่พบ รูปภาพ" });
+    }
   }
 
-  if (updates.length === 0) {
-    return res.status(400).json({ message: "ไม่มีข้อมูลที่ต้องอัปเดต" });
-  }
-  db.all(
-    `SELECT id, roomName FROM room WHERE roomName = ?`,
-    [roomName],
-    function (error, result) {
+  const sql =
+    "UPDATE room SET roomName = ?, description = ?, roomTypeId = ?, floor = ?, roomImg = ? WHERE id = ?";
+  db.run(
+    sql,
+    [roomName, floor, roomTypeId, description, roomImg, roomId],
+    function (error) {
       if (error) {
         return next(error);
       }
-      if (result && result[0].roomName !== roomName) {
-        return res.status(404).json({ message: "ชื่อห้องนี้มีในระบบแล้ว" });
-      }
-      const sql = `UPDATE room SET ${updates.join(", ")} WHERE id = ?`;
-      db.run(sql, [roomId], function (error) {
-        if (error) {
-          return next(error);
-        }
-        res.status(200).json({ message: "อัปเดตห้องสำเร็จ" });
-      });
+      console.log("complete");
+      res.status(200).json({ message: "อัปเดตห้องสำเร็จ" });
     }
   );
 });
