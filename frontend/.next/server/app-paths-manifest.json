@@ -1,11 +1,12 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js",
   "/login/page": "app/login/page.js",
-  "/admin/cleaning/page": "app/admin/cleaning/page.js",
-  "/admin/utility/page": "app/admin/utility/page.js",
-  "/admin/queue/page": "app/admin/queue/page.js",
-  "/admin/main/page": "app/admin/main/page.js",
+  "/user/queue/page": "app/user/queue/page.js",
   "/admin/room/page": "app/admin/room/page.js",
+  "/admin/cleaning/page": "app/admin/cleaning/page.js",
+  "/admin/main/page": "app/admin/main/page.js",
+  "/admin/queue/page": "app/admin/queue/page.js",
   "/admin/tenant/page": "app/admin/tenant/page.js"
 }

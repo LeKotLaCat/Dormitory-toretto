@@ -10,7 +10,7 @@ module.exports = {
     //   queueLimit: 0
     // },
     jwt: {
-      secret: process.env.JWT_SECRET || 'manop888',
+      secret: process.env.JWT_SECRET || 'sec9rity',
       expiresIn: '10h'
     },
     promptpayqr: "0825328896"    

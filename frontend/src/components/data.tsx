@@ -541,4 +541,4 @@ export const initialRooms = [
     monthlyRent: 8500
   }
 ];
-export const jwtsecret = "manop888"
+export const jwtsecret = 'sec9rity'

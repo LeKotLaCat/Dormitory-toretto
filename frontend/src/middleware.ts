@@ -1,52 +1,65 @@
 import { NextRequest, NextResponse } from "next/server";
+import { jwtVerify } from "jose";
 import { jwtsecret } from "./components/data";
 
 export const config = {
-  runtime: "nodejs", // Force Node.js runtime
+  matcher: ["/user/:path*", "/admin/:path*", "/login"],
 };
 
-import { jwtVerify } from "jose";
+const SECRET_KEY = new TextEncoder().encode(jwtsecret);
 
-const jwtSecrett = new TextEncoder().encode(jwtsecret);
-
-const tokencheck = async (token: string | undefined) => {
-  if (!token) return null;
+async function verifyToken(token: string) {
   try {
-    const { payload } = await jwtVerify(token, jwtSecrett);
-    return payload as { role: string,room:string };
+    const { payload } = await jwtVerify(token, SECRET_KEY);
+    return payload;
   } catch (error) {
-    console.error("JWT Verification Error:", error);
     return null;
   }
-};
+}
 
 export async function middleware(request: NextRequest) {
-  const token = request.cookies.get("token")?.value;
-  const decoded = await tokencheck(token);
+  const jwt = request.cookies.get("token")?.value;
+  const url = request.nextUrl.clone();
+  const path = request.nextUrl.pathname;
 
-  if (request.nextUrl.pathname.includes("/login") && decoded?.role === "admin") {
-    return NextResponse.redirect(new URL("/admin/main", request.url));
+  const isProtectedPath = path.startsWith("/user") || path.startsWith("/admin");
+
+  if (!jwt && isProtectedPath) {
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
   }
 
-  if (request.nextUrl.pathname.includes("/admin")) {
-    if (!decoded) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }else if (decoded.role !== "admin") {
-      return NextResponse.redirect(new URL("/user/main", request.url));
+  if (jwt) {
+    const extractedJWTData = await verifyToken(jwt);
 
+    if (!extractedJWTData) {
+      // Invalid JWT, clear token from cookies in response
+      const response = NextResponse.redirect(new URL("/login", request.url));
+      response.cookies.delete("token");
+      return response;
     }
-  }
-  if (request.nextUrl.pathname.includes("/user")) {
-    if (!decoded) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }else if (!decoded.room && !request.nextUrl.pathname.includes("/user/queue")){
-      return NextResponse.redirect(new URL("/user/queue", request.url));
-    }else if (decoded.role !== "user") {
-      return NextResponse.redirect(new URL("/admin/main", request.url));
 
+    const userRole = (extractedJWTData as any)?.role;
+    const userRoom = (extractedJWTData as any)?.room;
+
+    // Redirect authenticated users away from login page
+    if (path === "/login") {
+      url.pathname = userRole === "admin" ? "/admin/main" : "/user/main";
+      return NextResponse.redirect(url);
+    }
+
+    // Protect admin pages
+    if (path.startsWith("/admin") && userRole !== "admin") {
+      url.pathname = "/user/main"; // Redirect unauthorized access
+      return NextResponse.redirect(url);
+    }
+    
+    // Protect user pages
+    if (path.startsWith("/user") && userRole !== "user") {
+      url.pathname = "/admin/main"; // Redirect unauthorized access
+      return NextResponse.redirect(url);
     }
   }
 
   return NextResponse.next();
 }
-

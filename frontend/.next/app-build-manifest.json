@@ -21,35 +21,40 @@
       "static/chunks/main-app.js",
       "static/chunks/app/user/queue/page.js"
     ],
+    "/user/main/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/user/main/page.js"
+    ],
     "/admin/main/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/admin/main/page.js"
+    ],
+    "/admin/room/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/admin/room/page.js"
     ],
     "/admin/cleaning/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/admin/cleaning/page.js"
     ],
-    "/admin/tenant/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/admin/tenant/page.js"
-    ],
-    "/admin/utility/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/admin/utility/page.js"
-    ],
     "/admin/queue/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/admin/queue/page.js"
     ],
-    "/admin/room/page": [
+    "/admin/tenant/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/admin/room/page.js"
+      "static/chunks/app/admin/tenant/page.js"
+    ],
+    "/_not-found/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }
