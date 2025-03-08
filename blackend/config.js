@@ -12,5 +12,6 @@ module.exports = {
     jwt: {
       secret: process.env.JWT_SECRET || 'manop888',
       expiresIn: '10h'
-    }    
+    },
+    promptpayqr: "0825328896"    
   };
