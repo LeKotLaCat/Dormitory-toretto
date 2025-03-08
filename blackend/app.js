@@ -1,4 +1,3 @@
-// server.js
 require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
@@ -90,7 +89,7 @@ app.post('/auth/login', (req, res, next) => {
             return next(error);
         }
 
-        if (!user) { // Use !user instead of results.length === 0
+        if (!user) {
             return res.status(401).json({ message: 'ไม่พบ username หรือ email' });
         }
 
