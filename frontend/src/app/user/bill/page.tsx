@@ -7,15 +7,12 @@ import {
   Search,
   ChevronLeft,
   ChevronRight,
-  Clock,
   Receipt,
   FileText,
   Eye,
-  Filter,
   CreditCard,
   Upload,
   Check,
-  QrCode,
 } from "lucide-react";
 import Image from "next/image";
 import SidebarUser from "@/components/SidebarUser";
@@ -45,7 +42,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-// Transaction type definition
+
 type Transaction = {
   id: number;
   paidDate: Date;
@@ -64,7 +61,7 @@ type Transaction = {
   };
 };
 
-// Payment Step type
+
 type PaymentStep = "details" | "payment" | "confirmation";
 interface QrPayment {
   base64url: string;
@@ -72,7 +69,6 @@ interface QrPayment {
 }
 const BillPage = () => {
   const router = useRouter();
-  // Sample transaction data
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   useEffect(() => {
     fetch("http://localhost:3000/bills", {
@@ -85,30 +81,25 @@ const BillPage = () => {
       })
       .then((data) => {
         const transformedBills = data.map((billData: any) => {
-          // Format dates
-          const paidDate = new Date(billData.DueDate); // Convert DueDate into paidDate
+          const paidDate = new Date(billData.DueDate);
           const forMonth = new Date(billData.billMonth).toLocaleString("th-TH", {
             month: "long",
             year: "numeric",
-          }); // Format month (e.g. "ตุลาคม 2024")
+          }); 
 
-          // Calculate the total amount (assuming roomprice + waterprice + electricprice + taskprice)
           const totalAmount =
             parseFloat(billData.roomprice) +
             parseFloat(billData.waterprice) +
             parseFloat(billData.electricprice) +
             parseFloat(billData.taskprice);
 
-          // Map bill status (assuming 0 means 'paid' and other statuses map to 'unpaid')
           const status = billData.billStatus === 0 ? "pending" : "paid";
 
-          // Breakdown object
           const breakdown = {
             rent: parseFloat(billData.roomprice),
             water: parseFloat(billData.waterprice),
             electricity: parseFloat(billData.electricprice),
           };
-          // Construct final response
           return {
             id: billData.BillID, // Use BillID as the ID
             paidDate, // Use the formatted date

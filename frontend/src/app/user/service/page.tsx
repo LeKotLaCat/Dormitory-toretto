@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import SidebarUser from "@/components/SidebarUser";
 import Footer from "@/components/Footer";
 import {
-  Calendar,
   Clock,
   Wrench,
   PhoneCall,
@@ -13,14 +12,11 @@ import {
   Lightbulb,
   Snowflake,
   WashingMachine,
-  Trash,
   ChevronRight,
   Check,
   Package,
-  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Card,
@@ -51,7 +47,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-// Service type definition
+
 type Service = {
   id: number;
   title: string;
@@ -62,7 +58,7 @@ type Service = {
   priceRange?: string;
 };
 
-// Available time slots
+
 const timeSlots = [
   "09:00",
   "10:00",
@@ -74,7 +70,6 @@ const timeSlots = [
 ];
 
 const ServicePage = () => {
-  // List of available services
   const services: Service[] = [
     {
       id: 1,
@@ -179,7 +174,6 @@ const ServicePage = () => {
   // Handle booking confirmation
   const handleConfirmBooking = () => {
     const reservedatetime = `${selectedDate} ${selectedTime}`
-    console.log(`${selectedDate} ${selectedTime}`,reservedatetime)
     fetch("http://localhost:3000/tasks?byuserid=1", {
       method:"POST",
       credentials:"include",

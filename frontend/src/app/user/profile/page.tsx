@@ -116,7 +116,6 @@ const EditProfilePage = () => {
         credentials: "include",
         body: JSON.stringify(payload),
       });
-      console.log("pppp\n"+ payload);
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to update profile");

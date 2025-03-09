@@ -2,16 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  Eye,
   Users,
   Home,
   FileText,
   Bell,
   Settings,
-  Calendar,
   DollarSign,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
 import Footer from "@/components/Footer";

@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
 import Footer from "@/components/Footer";
 import { motion, AnimatePresence } from "framer-motion";
@@ -51,19 +49,14 @@ import { Badge } from "@/components/ui/badge";
 import {
   CalendarIcon,
   CheckIcon,
-  ChevronDownIcon,
-  Clock,
   Home,
   Phone,
-  User,
-  Mail,
   X,
   ChevronLeft,
   ChevronRight,
   Search,
 } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
-import { movingIn, ITEMS_PER_PAGE } from "@/components/data";
+import { ITEMS_PER_PAGE } from "@/components/data";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 

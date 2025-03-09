@@ -3,18 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import { 
   Calendar,
-  Download,
   Search,
   ChevronLeft,
   ChevronRight,
-  Clock,
   Receipt,
   FileText,
   Eye,
-  Filter,
-  CreditCard
 } from 'lucide-react';
-import Image from 'next/image';
 import SidebarUser from '@/components/SidebarUser';
 import Footer from '@/components/Footer';
 import { format } from 'date-fns';
@@ -38,10 +33,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Badge } from '@/components/ui/badge';
 import { useRouter } from 'next/navigation';
 
-// Transaction type definition
 type Transaction = {
   id: number;
   paidDate: Date;
