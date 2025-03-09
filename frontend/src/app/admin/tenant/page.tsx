@@ -626,7 +626,7 @@ const TenantsPage = () => {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogTitle>ลบผู้เช่า</AlertDialogTitle>
             <AlertDialogDescription>
               คุณแน่ใจหรือไม่ว่าต้องการลบผู้เช่ารายนี้ออกจากห้อง{" "}
               {selectedRoomId &&

@@ -145,7 +145,7 @@ const TransactionPage = () => {
       const transformedBills = data.map((billData: any) => {
         // Format dates
         const paidDate = new Date(billData.DueDate); // Convert DueDate into paidDate
-        const forMonth = paidDate.toLocaleString("th-TH", {
+        const forMonth = new Date(billData.billMonth).toLocaleString("th-TH", {
           month: "long",
           year: "numeric",
         }); // Format month (e.g. "ตุลาคม 2024")

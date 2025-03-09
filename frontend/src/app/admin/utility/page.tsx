@@ -988,7 +988,7 @@ const UtilityPage = () => {
                   className="text-blue-600 hover:text-blue-800"
                 >
                   <Plus className="h-4 w-4 mr-1" />
-                  Add Fee
+                  เพิ่มค่าบริการ
                 </Button>
               </div>
 
@@ -1012,7 +1012,7 @@ const UtilityPage = () => {
                             {fee.type === "laundry" && (
                               <Scissors className="h-3 w-3 mr-1 inline" />
                             )}
-                            {fee.type}
+                            {feetypetranslate(fee.type)}
                           </Badge>
                           <span className="font-medium">
                             ฿{fee.amount.toLocaleString()}
@@ -1110,7 +1110,7 @@ const UtilityPage = () => {
                       ยกเลิก
                     </Button>
                     <Button type="button" size="sm" onClick={handleAddFee}>
-                      เพื่มค่าบริการ
+                      เพิ่มค่าบริการ
                     </Button>
                   </div>
                 </div>
