@@ -32,6 +32,7 @@ import {
   SheetDescription
 } from "@/components/ui/sheet";
 import { toast } from 'sonner';
+
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
@@ -102,9 +103,8 @@ const SidebarUser = ({ className }: SidebarProps) => {
       });
 
       if (response.ok) {
-        toast.success("ออกจากระบบสำเร็จ");
-        router.push('/'); // Redirect to home or login page
-
+        // Redirect to the home page (or wherever you want after successful logout)
+        window.location.href = "/"; // Use window.location.href for a full reload
       } else {
         // Handle errors, e.g., show a notification
         const errorData = await response.json();

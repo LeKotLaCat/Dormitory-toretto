@@ -20,6 +20,7 @@ import {
 import {
   Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
 } from "@/components/ui/card";
+import { toast } from 'sonner';
 
 type RoomType = {
   id: number;
@@ -59,6 +60,7 @@ const RoomManagementPage = () => {
   const [addRoomError, setAddRoomError] = useState<string | null>(null);
   const [editRoomError, setEditRoomError] = useState<string | null>(null);
   const [originalRoomImg, setOriginalRoomImg] = useState<string | null>(null);
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
 
 
   const router = useRouter();
@@ -363,7 +365,7 @@ const RoomManagementPage = () => {
             const mappedRooms: RoomType[] = refetchData.rooms.map((room: any) => ({
             id: room.id,
             roomName: room.roomName,
-            roomTypeId: parseInt(room.roomTypeId),
+            roomTypeId: room.roomTypeId,
             floor: room.floor,
             occupied: room.renterID !== null,
             description: room.description,
@@ -385,6 +387,64 @@ const RoomManagementPage = () => {
 
     }
   };
+  const handleDeleteRoom = async () => {
+    if (!editFormData) return;
+
+    try {
+      const response = await fetch(`http://localhost:3000/rooms/${editFormData.id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setEditRoomError(`Failed to delete room: ${errorData.message}`);
+        throw new Error(`Failed to delete room: ${response.status} - ${errorData.message}`);
+      }
+      const refetchResponse = await fetch('http://localhost:3000/rooms/', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!refetchResponse.ok) {
+        throw new Error(`Failed to refetch rooms: ${refetchResponse.status}`);
+      }
+
+      const refetchData = await refetchResponse.json();
+            const mappedRooms: RoomType[] = refetchData.rooms.map((room: any) => ({
+            id: room.id,
+            roomName: room.roomName,
+            roomTypeId: room.roomTypeId,
+            floor: room.floor,
+            occupied: room.renterID != null,
+            description: room.description,
+            roomImg: room.roomImg,
+            renterID: room.renterID,
+            }));
+      setRooms(mappedRooms);
+
+      setIsEditDialogOpen(false);
+      if (imagePreview) {
+        URL.revokeObjectURL(imagePreview);
+      }
+      setImageFile(null);
+      setImagePreview(null);
+      setEditFormData(null);
+      setDeleteConfirmation(false);
+
+    } catch (error) { 
+      toast.error("ไม่สามารถลบห้องได้ เนื่องจากมีผู้เช่าอยู่");
+      setDeleteConfirmation(false)
+      setEditRoomError("Failed to delete room. Check console for details.");
+    }
+  };
+
 
 
 
@@ -611,9 +671,39 @@ const RoomManagementPage = () => {
                 <Check className="mr-2 h-4 w-4" />
                 บันทึกข้อมูล
               </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={() => setDeleteConfirmation(true)}
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                ลบห้องพัก
+              </Button>
+              </DialogFooter>
+             {/* Delete Confirmation Dialog */}
+            {deleteConfirmation && (
+              <Dialog open={deleteConfirmation} onOpenChange={setDeleteConfirmation}>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>ยืนยันการลบห้องพัก</DialogTitle>
+                    <DialogDescription>
+                      คุณแน่ใจหรือไม่ว่าต้องการลบห้องพักนี้? การดำเนินการนี้ไม่สามารถย้อนกลับได้
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setDeleteConfirmation(false)}>
+                      ยกเลิก
+                    </Button>
+                    <Button variant="destructive" onClick={handleDeleteRoom}>
+                      ยืนยันการลบ
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            )}
+                </DialogContent>
+              </Dialog>
       )}
 
 
@@ -747,7 +837,8 @@ const RoomManagementPage = () => {
             <Button
               type="button"
               onClick={handleAddRoomSubmit}
-              className="bg-green-600 hover:bg-green-700"
+  className="bg-red-600 hover:bg-red-700 text-white"
+              
             >
               <Check className="mr-2 h-4 w-4" />
               เพิ่มห้องพัก

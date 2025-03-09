@@ -5,7 +5,7 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 kill $(lsof -ti :3000) 2>/dev/null
 kill $(lsof -ti :8000) 2>/dev/null
 
-osascript -e "tell application \"Terminal\" to do script \"cd $SCRIPT_DIR/blackend && npm install && node app.js\""
+osascript -e "tell application \"Terminal\" to do script \"cd $SCRIPT_DIR/blackend && npm install && node index.js\""
 
 osascript -e "tell application \"Terminal\" to do script \"cd $SCRIPT_DIR/frontend && npm install && npm run dev\""
 

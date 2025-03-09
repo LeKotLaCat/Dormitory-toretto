@@ -356,9 +356,7 @@ app.post("/rooms", verifyToken, (req, res, next) => {
 });
 app.delete("/rooms/:roomId", verifyToken, (req, res, next) => {
   if (req.user.role !== "admin") {
-    return res
-      .status(403)
-      .json({ message: "เฉพาะผู้ดูแลระบบที่ใช้คำสั่งนี้ได้" });
+    return res.status(403).json({ message: "เฉพาะผู้ดูแลระบบที่ใช้คำสั่งนี้ได้" });
   }
 
   const { roomId } = req.params;
@@ -366,16 +364,29 @@ app.delete("/rooms/:roomId", verifyToken, (req, res, next) => {
     return res.status(400).json({ message: "โปรดกรอก รหัสห้อง" });
   }
 
-  db.run(`DELETE FROM room WHERE id = ?`, [roomId], function (error) {
+  db.get(`SELECT renterID FROM room WHERE id = ?`, [roomId], (error, row) => {
     if (error) {
       return next(error);
     }
 
-    if (this.changes === 0) {
+    if (!row) {
       return res.status(404).json({ message: "ไม่พบห้องในระบบ" });
     }
 
-    res.status(200).json({ message: "ลบห้อง สำเร็จ" });
+    if (row.renterID !== null) {
+      return res.status(400).json({ message: "ไม่สามารถลบห้องได้ เนื่องจากมีผู้เช่าอยู่" });
+    }
+
+    db.run(`DELETE FROM room WHERE id = ?`, [roomId], function (error) {
+      if (error) {
+        return next(error);
+      }
+
+      if (this.changes === 0) {
+        return res.status(404).json({ message: "ไม่พบห้องในระบบ" });
+      }
+      res.status(200).json({ message: "ลบห้อง สำเร็จ" });
+    });
   });
 });
 app.put("/rooms/:roomId", verifyToken, (req, res, next) => {
