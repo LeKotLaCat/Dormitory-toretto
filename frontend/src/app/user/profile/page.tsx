@@ -170,12 +170,18 @@ const EditProfilePage = () => {
                   {/* Profile Image */}
                   <div className="flex flex-col items-center mb-6">
                     <div className="relative w-32 h-32 overflow-hidden rounded-full border-4 border-primary/20 mb-4">
+                    {imagePreview ? (
                       <Image
                         src={imagePreview}
-                        alt={profile.firstname}
+                        alt={profile.firstname || "Profile image"}
                         fill
                         className="object-cover"
                       />
+                    ) : (
+                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                        <span className="text-gray-400">No image</span>
+                      </div>
+                    )}
                     </div>
 
                     <div className="flex items-center">

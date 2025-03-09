@@ -95,6 +95,11 @@ const ChatPage = () => {
     }, 2500);
   }, []);
 
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   };
