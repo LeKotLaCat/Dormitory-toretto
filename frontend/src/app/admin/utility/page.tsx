@@ -735,7 +735,7 @@ const UtilityPage = () => {
                                               {fee.type === "laundry" && (
                                                 <Scissors className="h-3 w-3 mr-1 inline" />
                                               )}
-                                              {fee.type} ฿
+                                              {feetypetranslate(fee.type)} ฿
                                               {fee.amount.toLocaleString()}
                                             </Badge>
                                           )
