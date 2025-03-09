@@ -9,7 +9,7 @@ import { Globe, Phone, CalendarCheck, CreditCard, Wrench, Lightbulb, SprayCan, R
 import { motion } from 'framer-motion';
 
 import { teamMembers, faqs, reviews, HowTo } from '@/components/data';
-import { getNewDorms, getOldDorms } from '@/components/data';
+import { getNewDorms } from '@/components/data';
 
 import { TestimonialCard } from '@/components/landing/testimonial';
 import { TeamMember } from '@/components/landing/team';

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import SidebarUser from "@/components/SidebarUser";
 import Footer from "@/components/Footer";
 import {

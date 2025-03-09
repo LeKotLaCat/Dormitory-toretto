@@ -8,18 +8,25 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import type { DormType } from '../types';
+import Image from 'next/image';
 
 interface DormCardProps {
   dorm: DormType;
 }
 
 export const DormCard: React.FC<DormCardProps> = ({ dorm }) => {
-  const { title, description, price, features, amenities } = dorm;
+  const { title, description, image, price, features, amenities } = dorm;
   
   return (
     <div className="bg-white border rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105">
       <div className="h-56 bg-gray-200 flex items-center justify-center">
-        <Home size={128} color="#9CA3AF" />
+        <Image
+          src={image}
+          width={300}
+          height={300}
+          alt="Dormitory illustration"
+          className="w-full h-56 object-cover"
+        />
       </div>
       <div className="p-6">
         <h3 className="text-xl font-semibold mb-2">{title}</h3>

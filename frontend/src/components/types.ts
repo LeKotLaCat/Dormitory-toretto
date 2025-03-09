@@ -33,6 +33,7 @@ export interface Team {
 export type DormType = {
   id: string;
   title: string;
+  image: string;
   description: string;
   price: number;
   building: 'new' | 'old';
