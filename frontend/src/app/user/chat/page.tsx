@@ -7,27 +7,14 @@ import {
   Clock,
   AlertTriangle,
   Info,
-  X,
-  ChevronDown,
   DownloadCloudIcon
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
 import SidebarUser from '@/components/SidebarUser';
 import Footer from '@/components/Footer';
 import { formatDistanceToNow } from 'date-fns';
 import { th } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
 import {
   AlertDialog,
   AlertDialogAction,

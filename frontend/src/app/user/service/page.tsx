@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import SidebarUser from "@/components/SidebarUser";
 import Footer from "@/components/Footer";
 import {
-  Calendar,
   Clock,
   Wrench,
   PhoneCall,
@@ -13,7 +12,6 @@ import {
   Lightbulb,
   Snowflake,
   WashingMachine,
-  Trash,
   ChevronRight,
   Check,
   Package,
@@ -21,7 +19,6 @@ import {
   Shirt, Bath, Bug, Wifi, Fan, Plug, Bed, Table, DoorOpen, Refrigerator, ShowerHead, Toilet,Brush
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Card,
@@ -52,7 +49,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-// Service type definition
+
 type Service = {
   id: number;
   title: string;
@@ -63,7 +60,7 @@ type Service = {
   priceRange?: string;
 };
 
-// Available time slots
+
 const timeSlots = [
   "09:00",
   "10:00",
@@ -75,7 +72,6 @@ const timeSlots = [
 ];
 
 const ServicePage = () => {
-  // List of available services
   const services: Service[] = [
     { id: 1, title: "ทำความสะอาดห้อง", description: "บริการทำความสะอาดห้องพักสำหรับนักศึกษา", icon: <Brush size={20} />, category: "housekeeping", estimatedTime: "1-2 ชั่วโมง", priceRange: "150 - 300 บาท" },
     { id: 2, title: "ซักผ้าน้ำหนัก 7 กิโลกรัม", description: "บริการซักผ้าสำหรับนักศึกษา", icon: <Shirt size={20} />, category: "housekeeping", estimatedTime: "30-60 นาที", priceRange: "30 - 50 บาท" },
@@ -132,7 +128,6 @@ const ServicePage = () => {
   // Handle booking confirmation
   const handleConfirmBooking = () => {
     const reservedatetime = `${selectedDate} ${selectedTime}`
-    console.log(`${selectedDate} ${selectedTime}`,reservedatetime)
     fetch("http://localhost:3000/tasks?byuserid=1", {
       method:"POST",
       credentials:"include",

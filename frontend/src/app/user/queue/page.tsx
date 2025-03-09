@@ -12,21 +12,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Search,
-  Home,
-  User,
-  Edit,
-  Trash2,
-  Phone,
-  Mail,
-  Key,
   CalendarRange,
   AlertTriangle,
-  Info,
-  UserPlus,
-  X,
-  Check,
-  BedDouble,
-  ImagePlus,
   CalendarIcon,
   Clock,
 } from "lucide-react";

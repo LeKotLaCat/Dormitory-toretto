@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { lineSeed } from './fonts'
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner"
@@ -9,7 +8,13 @@ import AOSProvider from '../components/AOSProvider';
 export const metadata: Metadata = {
   title: "หอพักนักศึกษา",
   description: "ระบบจัดการหอพักนักศึกษาแบบ end-to-end",
+  icons: {
+    icon: '/italy.svg',
+  },
 };
+
+
+
 
 export default function RootLayout({
   children,

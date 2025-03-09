@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
 import Footer from "@/components/Footer";
 import {
@@ -48,7 +48,6 @@ import {
 } from "@/components/ui/select";
 import { format } from "date-fns";
 import Image from "next/image";
-import { initialRooms } from "@/components/data";
 import { toast } from "sonner";
 
 interface AdditionalFee {
@@ -93,15 +92,8 @@ interface Room {
 }
 
 const UtilityPage = () => {
-  // Sample utility data
   const initialUtilityData: UtilityRecord[] = [];
   const [rooms, setRoom] = useState<Room[]>();
-  // const [rooms, setRoom] = useState(
-  //   initialRooms.map((room, index) => ({
-  //     id: index + 1,
-  //     ...room,
-  //   }))
-  // );
   const [feenotfromfetch, setFeenotfromfetch] = useState([] as AdditionalFee[]);
   const [utilityData, setUtilityData] = useState<UtilityRecord[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -155,7 +147,6 @@ const UtilityPage = () => {
               roomprice = 13400;
               break;
           }
-          // 8400 12000 13400
           return {
             id: item.id,
             roomNumber: item.roomName,
@@ -206,12 +197,11 @@ const UtilityPage = () => {
   useEffect(() => {
     if (RoomLoading) return
     if (newUtility.roomNumber) {
-      // Find the selected room from the rooms state
       const selectedRoom = rooms!.find(
         (room) => room.roomNumber === newUtility.roomNumber
       );
 
-      // Update the roomFee in newUtility state with the selected room's monthly rent
+
       if (selectedRoom) {
         setNewUtility({
           ...newUtility,
@@ -219,7 +209,6 @@ const UtilityPage = () => {
         });
       }
 
-      // The rest of the existing code for handling month changes and fees
       if (newUtility.month && newUtility.month !== oldmonth) {
         oldmonth = newUtility.month;
 
@@ -248,15 +237,14 @@ const UtilityPage = () => {
               setNewUtility((prevUtility) => ({
                 ...prevUtility,
                 additionalFees: [
-                  ...newFees, // New fees first
-                  ...feenotfromfetch, // Then add old fees after
+                  ...newFees,
+                  ...feenotfromfetch,
                 ],
               }));
             } else {
-              // If no new data, just show the old fees (feenotfromfetch)
               setNewUtility((prevUtility) => ({
                 ...prevUtility,
-                additionalFees: [...feenotfromfetch], // Only old fees
+                additionalFees: [...feenotfromfetch],
               }));
             }
           });
@@ -266,7 +254,6 @@ const UtilityPage = () => {
   }, [RoomLoading,newUtility.roomNumber, newUtility.month, rooms]);
 
   const handleConfirmPayment = (id: number) => {
-    // Find the utility item
     const item = utilityData.find((item) => item.id === id);
     fetch(`http://localhost:3000/bills/${id}/confirmPayment`, {
       method: "PUT",
@@ -276,7 +263,6 @@ const UtilityPage = () => {
     });
     if (!item) return;
 
-    // Update the utility data
     setUtilityData(
       utilityData.map((item) =>
         item.id === id
@@ -285,17 +271,11 @@ const UtilityPage = () => {
       )
     );
 
-    // Close any open dialogs
     setIsReceiptDialogOpen(false);
 
-    // Optional: Show a success notification
-    // You can add a toast notification here if you have a toast component
-
-    // Reset the preview item
     setPreviewItem(null);
   };
 
-  // Get unique months from utility data
   const months = [...new Set(utilityData.map((item) => item.month))].sort(
     (a, b) => {
       const [aMonth, aYear] = a.split(" ");
@@ -307,17 +287,13 @@ const UtilityPage = () => {
     }
   );
 
-  // Filter utility data
   const filteredData = utilityData.filter((item) => {
-    // Filter by search term
     const matchesSearch = item.roomNumber
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
 
-    // Filter by month
     const matchesMonth = filterMonth === "all" || item.month === filterMonth;
 
-    // Filter by status
     const matchesStatus =
       filterStatus === "all" || item.status === filterStatus;
 
@@ -342,7 +318,6 @@ const UtilityPage = () => {
       ],
     });
 
-    // Reset fee form
     setNewFee({
       type: "housewife",
       amount: 0,
@@ -351,7 +326,7 @@ const UtilityPage = () => {
     setShowAddFee(false);
   };
 
-  // Handle removing fee from the utility record
+
   const handleRemoveFee = (index: number) => {
     const updatedFees = [...newUtility.additionalFees];
     updatedFees.splice(index, 1);
@@ -360,7 +335,6 @@ const UtilityPage = () => {
       additionalFees: updatedFees,
     });
   };
-  // "housewife" | "fixing" | "laundry" | "internet" | "other";
   function feetypetranslate(feeType: any) {
     switch (feeType) {
       case "housewife":
@@ -375,9 +349,7 @@ const UtilityPage = () => {
         return "อื่นๆ";
     }
   }
-  // Handle adding new utility record
   const handleAddUtility = () => {
-    // Validate input data
     if (
       !newUtility.roomNumber ||
       newUtility.electric < 0 ||
@@ -387,13 +359,11 @@ const UtilityPage = () => {
       return;
     }
 
-    // Check if room exists
     if (!rooms!.find((room) => room.roomNumber === newUtility.roomNumber)) {
       toast.error("ไม่มีห้องหมายเลขนี้");
       return;
     }
 
-    // Check for duplicates
     const duplicate = utilityData.find(
       (item) =>
         item.roomNumber === newUtility.roomNumber &&
@@ -465,7 +435,6 @@ const UtilityPage = () => {
     });
   };
 
-  // Get stats for current month
   const currentMonth =
     new Date().toLocaleString("default", { month: "short" }) +
     " " +
@@ -505,11 +474,9 @@ const UtilityPage = () => {
       'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
     ];
     
-    // Get month and day
     const monthIndex = date.getMonth();
     const day = date.getDate();
     
-    // Return formatted date in Thai style
     return `${day} ${thaiMonths[monthIndex]}`;
   };
 
@@ -519,12 +486,10 @@ const UtilityPage = () => {
       'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
     ];
     
-    // Get month, day, and year
     const monthIndex = date.getMonth();
     const day = date.getDate();
-    const year = date.getFullYear() + 543; // Convert to Buddhist Era (BE)
+    const year = date.getFullYear() + 543;
     
-    // Return formatted date in Thai style with Buddhist year
     return `${day} ${thaiMonths[monthIndex]} ${year}`;
   };
 

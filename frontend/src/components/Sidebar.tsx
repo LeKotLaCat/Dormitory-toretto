@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { usePathname, useRouter } from 'next/navigation';
-import Link from 'next/link';
 import {
   DollarSign,
   Home,
@@ -14,7 +13,6 @@ import {
   HelpCircle,
   Menu,
   Bell,
-  X
 } from "lucide-react";
 import {
   Sheet,

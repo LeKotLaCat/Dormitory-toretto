@@ -4,24 +4,15 @@ import React, { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { usePathname, useRouter } from 'next/navigation';
-import Link from 'next/link';
 import {
-  School,
   Home,
   Clock,
   CreditCard,
   Users2,
-  BookOpen,
-  Calendar,
-  Settings,
-  Layout,
-  Building2,
-  GraduationCap,
   LogOut,
   HelpCircle,
   Menu,
   PhoneCall,
-  X
 } from "lucide-react";
 import {
   Sheet,
@@ -103,10 +94,8 @@ const SidebarUser = ({ className }: SidebarProps) => {
       });
 
       if (response.ok) {
-        // Redirect to the home page (or wherever you want after successful logout)
-        window.location.href = "/"; // Use window.location.href for a full reload
+        window.location.href = "/";
       } else {
-        // Handle errors, e.g., show a notification
         const errorData = await response.json();
         console.error('Logout failed:', errorData);
         toast.error(`เข้าสู่ระบบไม่สำเร็จเนื่องจาก: ${errorData.message || 'ไม่ทราบสาเหตุ'}`);
@@ -148,7 +137,7 @@ const SidebarUser = ({ className }: SidebarProps) => {
           <Button
             variant="ghost"
             className="w-full justify-start text-[18px] py-6 transition-colors duration-200 hover:bg-red-500 hover:text-white"
-            onClick={handleLogout} // Use the handleLogout function
+            onClick={handleLogout}
           >
             <LogOut className="mr-2 h-6 w-6 md:h-8 md:w-8" />
             ออกจากระบบ

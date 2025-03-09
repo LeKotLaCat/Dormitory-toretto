@@ -131,7 +131,6 @@ const UserMain = () => {
         }
 
         const data = await response.json();
-        console.log("Fetched user data:", data);
 
         setUserProfile(prevProfile => ({
             ...prevProfile,
