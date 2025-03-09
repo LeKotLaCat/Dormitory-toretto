@@ -99,6 +99,7 @@ const BillPage = () => {
             rent: parseFloat(billData.roomprice),
             water: parseFloat(billData.waterprice),
             electricity: parseFloat(billData.electricprice),
+            other: parseFloat(billData.taskprice),
           };
           return {
             id: billData.BillID, // Use BillID as the ID
@@ -555,7 +556,7 @@ const BillPage = () => {
                                             {selectedTransaction.breakdown
                                               .other && (
                                               <div className="flex justify-between items-center">
-                                                <span>อื่นๆ</span>
+                                                <span>ค่าอื่นๆ</span>
                                                 <span>
                                                   {formatCurrency(
                                                     selectedTransaction
