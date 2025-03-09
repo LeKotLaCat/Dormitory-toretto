@@ -106,8 +106,8 @@ const Sidebar = ({ className }: SidebarProps) => {
       });
 
       if (response.ok) {
-        router.push('/'); // Redirect to home or login page
         toast.success("ออกจากระบบสำเร็จ");
+        router.push('/'); // Redirect to home or login page
 
       } else {
         // Handle errors, e.g., show a notification

@@ -179,7 +179,6 @@ const CleaningQueuePage = () => {
         }
       })
       .then((data: Task[] | {message: string}) => {
-        console.log(data)
         if ("message" in data) return
         const transformedTasks = data.map((task) => ({
           id: task.taskid,

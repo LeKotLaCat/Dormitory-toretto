@@ -31,7 +31,7 @@ import {
   SheetTitle,
   SheetDescription
 } from "@/components/ui/sheet";
-
+import { toast } from 'sonner';
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
@@ -96,23 +96,25 @@ const SidebarUser = ({ className }: SidebarProps) => {
       const response = await fetch('http://localhost:3000/auth/logout', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json', // Set the content type
+          'Content-Type': 'application/json',
         },
-        // You might need to send a body, even if it's empty, depending on your server setup.
-        body: JSON.stringify({}),
+        credentials: 'include',
       });
 
       if (response.ok) {
-        // Redirect to the home page (or wherever you want after successful logout)
-        window.location.href = "/"; // Use window.location.href for a full reload
+        toast.success("ออกจากระบบสำเร็จ");
+        router.push('/'); // Redirect to home or login page
+
       } else {
-        // Handle errors, e.g., display an error message.
-        console.error('Logout failed:', response.status, response.statusText);
-        // Optionally show an error to the user.
+        // Handle errors, e.g., show a notification
+        const errorData = await response.json();
+        console.error('Logout failed:', errorData);
+        toast.error(`Logout failed: ${errorData.message || 'Unknown error'}`);
+
       }
     } catch (error) {
-      console.error('Logout error:', error);
-      // Optionally show an error to the user.
+      console.error('Logout failed:', error);
+      toast.error('Logout failed:  Network error');
     }
   };
 

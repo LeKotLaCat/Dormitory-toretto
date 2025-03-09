@@ -204,7 +204,8 @@ const UtilityPage = () => {
         return jso.json();
       })
       .then((da: any) => {
-        console.log(da);
+        setRoom([])
+        if (da.length == 0) return
         const nda = da["rooms"].map((item: any) => {
           let roomprice = 0;
           switch (item.roomTypeId) {
@@ -240,7 +241,7 @@ const UtilityPage = () => {
         return js.json();
       })
       .then((data) => {
-        if (!data) return;
+        if (data.length == 0) return;
         const newdata = data.map((s: any) => {
           console.log(s);
           return {
