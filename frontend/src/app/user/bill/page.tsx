@@ -107,7 +107,7 @@ const BillPage = () => {
             forMonth, // The month formatted in Thai
             totalAmount: totalAmount.toFixed(2), // Total amount rounded to 2 decimal places
             status,
-            paymentDate: new Date(billData.paidDate), // Use the same paidDate for paymentDate (or modify if needed)
+            paymentDate:billData.paidDate ? new Date(billData.paidDate) : null, // Use the same paidDate for paymentDate (or modify if needed)
             receiptUrl:
               billData.billStatus !== 0 &&
               billData.transactionimg, // Example URL for the receipt
@@ -195,6 +195,7 @@ const BillPage = () => {
   // Handle payment confirmation
   const handleConfirmPayment = () => {
     if (selectedTransaction) {
+      console.log(selectedTransaction)
       if (paymentFile) {
         const formdata = new FormData();
         formdata.append(
@@ -210,41 +211,42 @@ const BillPage = () => {
             if (!val.ok) {
               console.error("Not okay");
             }
+            console.log(new Date())
+            const updatedTransactions = transactions.map((transaction) =>
+              transaction.id === selectedTransaction.id
+                ? ({
+                    ...transaction,
+                    status: "paid",
+                    paidDate: new Date(),
+                    receiptUrl: paymentFile
+                      ? URL.createObjectURL(paymentFile)
+                      : undefined,
+                  } as Transaction)
+                : transaction
+            );
+      
+            setTransactions(updatedTransactions);
+            toast.success("การชำระเงินสำเร็จ", {
+              description: `ชำระเงินค่าเช่าเดือน ${selectedTransaction.forMonth} เรียบร้อยแล้ว`,
+            });
+      
+            // Reset payment state
+            setPaymentFile(null);
+            setPaymentStep("confirmation");
+      
+            // Update the selected transaction for the UI
+            const updatedTransaction = updatedTransactions.find(
+              (t) => t.id === selectedTransaction.id
+            );
+            if (updatedTransaction) {
+              setSelectedTransaction(updatedTransaction);
+            }
           })
           .catch((ex) => {
             console.error(ex);
           });
       }
       // Update the transaction status
-      const updatedTransactions = transactions.map((transaction) =>
-        transaction.id === selectedTransaction.id
-          ? ({
-              ...transaction,
-              status: "paid",
-              paidDate: new Date(),
-              receiptUrl: paymentFile
-                ? URL.createObjectURL(paymentFile)
-                : undefined,
-            } as Transaction)
-          : transaction
-      );
-
-      setTransactions(updatedTransactions);
-      toast.success("การชำระเงินสำเร็จ", {
-        description: `ชำระเงินค่าเช่าเดือน ${selectedTransaction.forMonth} เรียบร้อยแล้ว`,
-      });
-
-      // Reset payment state
-      setPaymentFile(null);
-      setPaymentStep("confirmation");
-
-      // Update the selected transaction for the UI
-      const updatedTransaction = updatedTransactions.find(
-        (t) => t.id === selectedTransaction.id
-      );
-      if (updatedTransaction) {
-        setSelectedTransaction(updatedTransaction);
-      }
     }
   };
 
