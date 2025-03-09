@@ -201,27 +201,27 @@ export default function HomePage() {
               </div>
             </div>
             <div className="w-full hidden xl:flex justify-center items-center">
-              {/* <Image
+              <Image
                 width={150}
                 height={24}
-                className="w-[150px] z-10 translate-x-6 translate-y-6 drop-shadow-xl rounded-lg"
-                src="https://cdn.aona.co.th/1htshc8ib/ezdn.png"
+                className="w-[200px] z-10 translate-x-28 translate-y-20 drop-shadow-xl rounded-lg"
+                src="/admin2.png"
                 alt="ezdn"
               />
               <Image
                 width={300}
                 height={24}
                 className="w-[300px] z-0 drop-shadow-xl rounded-lg"
-                src="https://cdn.aona.co.th/1htsgj8io/image 9.jpg"
-                alt="ophtus_store"
+                src="/admin.png"
+                alt="Admin Page"
               />
               <Image
                 width={200}
                 height={24}
-                className="w-[200px] z-10 -translate-x-6 -translate-y-2 drop-shadow-xl rounded-lg"
-                src="https://cdn.aona.co.th/1htshc8ib/bloxcode.png"
+                className="w-[220px] z-10 -translate-x-20 -translate-y-16 drop-shadow-xl rounded-lg"
+                src="/admin1.png"
                 alt="bloxcodeth"
-              /> */}
+              />
             </div>
           </div>
 
