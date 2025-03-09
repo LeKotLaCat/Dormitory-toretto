@@ -84,8 +84,6 @@ const TenantsPage = () => {
     const [users, setUsers] = useState<BasicUser[]>([]);
     const [currentTenants, setCurrentTenants] = useState<Record<string, BasicUser>>({});
 
-    const BASE_URL = "http://localhost:3000";
-
     const fetchData = async (url: string, options: RequestInit = {}) => {
         const response = await fetch(url, {
             ...options,
@@ -102,7 +100,7 @@ const TenantsPage = () => {
 
     const fetchRooms = async () => {
         try {
-            const data = await fetchData(`${BASE_URL}/rooms`);
+            const data = await fetchData(`http://localhost:3000/rooms`);
             if (Array.isArray(data.rooms)) {
                 setRooms(data.rooms);
             } else {
@@ -117,7 +115,7 @@ const TenantsPage = () => {
 
     const fetchUsers = async () => {
         try {
-            const data = await fetchData(`${BASE_URL}/auth/users`);
+            const data = await fetchData(`http://localhost:3000/auth/users`);
             if (Array.isArray(data)) {
                 const basicUsers = data.map(user => ({
                     id: user.id,
@@ -141,7 +139,7 @@ const TenantsPage = () => {
 
     const fetchUserById = async (userId: string) => {
         try {
-            const data = await fetchData(`${BASE_URL}/auth/id/${userId}`, {
+            const data = await fetchData(`http://localhost:3000/auth/id/${userId}`, {
                 method: 'GET', credentials: 'include',
             });
             data.id = userId;
@@ -224,11 +222,11 @@ const TenantsPage = () => {
             let url, method, body;
 
             if (!inputTenantId || inputTenantId === "unassigned") {
-                url = `${BASE_URL}/rooms/${room.id}/clear`;
+                url = `http://localhost:3000/rooms/${room.id}/clear`;
                 method = 'PUT';
                 body = undefined;
             } else {
-                url = `${BASE_URL}/rooms/${room.id}/assign`;
+                url = `http://localhost:3000/rooms/${room.id}/assign`;
                 method = 'PUT';
                 body = JSON.stringify({ userId: inputTenantId });
             }
@@ -282,7 +280,7 @@ const TenantsPage = () => {
         if (!room) return;
 
         try {
-            await fetchData(`${BASE_URL}/rooms/${room.id}/clear`, {
+            await fetchData(`http://localhost:3000/rooms/${room.id}/clear`, {
                 method: 'PUT',
             });
 
