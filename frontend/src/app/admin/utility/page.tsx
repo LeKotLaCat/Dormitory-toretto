@@ -435,7 +435,6 @@ const UtilityPage = () => {
     });
   };
 
-  // Get stats for current month
   const currentMonth =
     new Date().toLocaleString("default", { month: "short" }) +
     " " +
@@ -475,11 +474,9 @@ const UtilityPage = () => {
       'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
     ];
     
-    // Get month and day
     const monthIndex = date.getMonth();
     const day = date.getDate();
     
-    // Return formatted date in Thai style
     return `${day} ${thaiMonths[monthIndex]}`;
   };
 
@@ -489,12 +486,10 @@ const UtilityPage = () => {
       'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
     ];
     
-    // Get month, day, and year
     const monthIndex = date.getMonth();
     const day = date.getDate();
-    const year = date.getFullYear() + 543; // Convert to Buddhist Era (BE)
+    const year = date.getFullYear() + 543;
     
-    // Return formatted date in Thai style with Buddhist year
     return `${day} ${thaiMonths[monthIndex]} ${year}`;
   };
 
