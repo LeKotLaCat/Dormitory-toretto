@@ -802,7 +802,7 @@ app.get("/queue/vacant/:type", verifyToken, (req, res, next) => {
   const { type } = req.params;
 
   const selectQuery = `
-    SELECT id FROM room WHERE roomTypeId = ? AND renterID IS NULL;
+    SELECT id, roomName FROM room WHERE roomTypeId = ? AND renterID IS NULL;
 `;
   db.all(selectQuery, [type], (error, vacantroom) => {
     if (error) {

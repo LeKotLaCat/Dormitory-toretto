@@ -507,7 +507,7 @@ const TenantsPage = () => {
                         -- ไม่มีผู้เช่า (ว่าง) --
                       </SelectItem>
                       {users.map((user) => (
-                        <SelectItem key={user.id} value={user.id}>
+                        <SelectItem key={user.id} value={user.id.toString()}>
                           {user.firstname} {user.lastname} ({user.id})
                         </SelectItem>
                       ))}

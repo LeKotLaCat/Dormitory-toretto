@@ -96,6 +96,7 @@ const roomsByType: RoomTypeMapping = {
 
 interface VacantRoom {
   id: string;
+  roomName: string;
 }
 
 const AdminQueue = () => {
@@ -108,7 +109,7 @@ const AdminQueue = () => {
 
   const [isRoomDialogOpen, setIsRoomDialogOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState("");
-  const [availableRooms, setAvailableRooms] = useState<string[]>([]);
+  const [availableRooms, setAvailableRooms] = useState<VacantRoom[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -265,7 +266,7 @@ const AdminQueue = () => {
       }
 
       const data: VacantRoom[] = await response.json();
-      setAvailableRooms(data.map((room) => room.id));
+      setAvailableRooms(data);
     } catch (error) {
       console.error("Error fetching available rooms:", error);
       setAvailableRooms([]);
@@ -711,8 +712,8 @@ const AdminQueue = () => {
               <SelectContent>
                 {availableRooms.length > 0 ? (
                   availableRooms.map((room) => (
-                    <SelectItem key={room} value={room}>
-                      {room}
+                    <SelectItem key={room.id} value={room.id}>
+                      {room.roomName}
                     </SelectItem>
                   ))
                 ) : (
