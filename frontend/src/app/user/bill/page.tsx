@@ -341,13 +341,62 @@ const BillPage = () => {
     }
   };
 
+
+  const handleDownloadReceipt = async (transaction: Transaction) => {
+    if (!transaction || !transaction.receiptUrl) {
+      toast.error("ไม่พบไฟล์สลิป", {
+        description: "ไม่สามารถดาวน์โหลดสลิปได้ เนื่องจากไม่พบไฟล์"
+      });
+      return;
+    }
+  
+    try {
+      const receiptUrl = transaction.receiptUrl;
+      const filename = `receipt-${transaction.forMonth.replace(/\s+/g, '-')}.jpg`;
+  
+      if (receiptUrl.startsWith('/') || receiptUrl.startsWith('blob:')) {
+        const a = document.createElement('a');
+        a.href = receiptUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        
+        toast.success("ดาวน์โหลดสลิปสำเร็จ");
+        return;
+      }
+      
+      try {
+        const response = await fetch(receiptUrl);
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        toast.success("ดาวน์โหลดสลิปสำเร็จ");
+      } catch (error) {
+        window.open(receiptUrl, '_blank');
+        toast.success("สลิปถูกเปิดในแท็บใหม่");
+      }
+    } catch (error) {
+      console.error("Error downloading receipt:", error);
+      toast.error("ไม่สามารถดาวน์โหลดสลิปได้", {
+        description: "กรุณาลองใหม่อีกครั้ง"
+      });
+    }
+  };
+
   // Reset dialog state when closed
   const handleDialogClose = () => {
     if (!isDialogOpen) {
-      setTimeout(() => {
-        setPaymentStep("details");
+        // setPaymentStep("details");
         setPaymentFile(null);
-      }, 200);
     }
   };
 
@@ -660,7 +709,7 @@ const BillPage = () => {
                                         <div className="text-center">
                                           <div className="mx-auto w-48 h-48 bg-white p-2 border rounded-md mb-3 flex items-center justify-center">
                                             <Image
-                                              src={qr?.base64url ? qr.base64url : "/api/200/200"}
+                                              src={qr?.base64url ? qr.base64url : "/no-image.png"}
                                               width={200}
                                               height={200}
                                               alt="PromptPay QR Code"
@@ -831,14 +880,15 @@ const BillPage = () => {
                                               />
                                             </div>
                                             <div className="flex justify-end mt-3">
-                                              <Button
-                                                variant="outline"
-                                                size="sm"
-                                                className="text-primary"
-                                              >
-                                                <Download className="h-4 w-4 mr-1" />
-                                                ดาวน์โหลดสลิป
-                                              </Button>
+                                            <Button
+                                              variant="outline"
+                                              size="sm"
+                                              className="text-primary"
+                                              onClick={() => handleDownloadReceipt(selectedTransaction)}
+                                            >
+                                              <Download className="h-4 w-4 mr-1" />
+                                              ดาวน์โหลดสลิป
+                                            </Button>
                                             </div>
                                           </div>
                                         )}
@@ -846,7 +896,10 @@ const BillPage = () => {
 
                                       <DialogFooter>
                                         <Button
-                                          onClick={() => setIsDialogOpen(false)}
+                                          onClick={() => {
+                                            setIsDialogOpen(false);
+                                            setPaymentStep("details");
+                                          }}
                                         >
                                           ปิด
                                         </Button>

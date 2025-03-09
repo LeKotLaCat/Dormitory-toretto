@@ -108,7 +108,7 @@ export default function HomePage() {
           variants={containerVariants}
         >
           <motion.button
-            className="bg-purple-500 text-white px-6 py-2 rounded-md hover:bg-primary"
+            className="bg-primary text-white px-6 py-2 rounded-md hover:bg-purple-500"
             onClick={() => router.push('/login')}
             variants={buttonVariants}
             whileHover="hover"

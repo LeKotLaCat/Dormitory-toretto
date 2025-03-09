@@ -6,15 +6,10 @@ import { Button } from "@/components/ui/button";
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
-  School,
+  DollarSign,
   Home,
-  Users2,
-  BookOpen,
-  Calendar,
-  Settings,
-  Layout,
-  Building2,
-  GraduationCap,
+  Users,
+  FileText,
   LogOut,
   HelpCircle,
   Menu,
@@ -55,17 +50,17 @@ const Sidebar = ({ className }: SidebarProps) => {
     },
     {
       title: "แก้ไขผู้เช่า",
-      icon: School,
+      icon: Users,
       href: "/admin/tenant"
     },
     {
       title: "แก้ไขห้องพัก",
-      icon: Building2,
+      icon: Home,
       href: "/admin/room",
     },
     {
       title: "คิวแม่บ้าน",
-      icon: Users2,
+      icon: FileText,
       href: "/admin/cleaning"
     },
     {
@@ -75,7 +70,7 @@ const Sidebar = ({ className }: SidebarProps) => {
     },
     {
       title: "บันทึกค่าสาธารณูปโภค",
-      icon: BookOpen,
+      icon: DollarSign,
       href: "/admin/utility"
     }
   ];

@@ -83,6 +83,7 @@ const ServicePage = () => {
       icon: <PhoneCall className="h-8 w-8" />,
       category: "housekeeping",
       estimatedTime: "1-2 ชั่วโมง",
+      priceRange: "฿300",
     },
     {
       id: 2,
@@ -91,7 +92,7 @@ const ServicePage = () => {
       icon: <WashingMachine className="h-8 w-8" />,
       category: "housekeeping",
       estimatedTime: "3-4 ชั่วโมง",
-      priceRange: "฿150-300",
+      priceRange: "50-150",
     },
     {
       id: 3,
@@ -100,6 +101,7 @@ const ServicePage = () => {
       icon: <PhoneCall className="h-8 w-8" />,
       category: "housekeeping",
       estimatedTime: "1 ชั่วโมง",
+      priceRange: "฿200",
     },
     {
       id: 4,
@@ -108,6 +110,7 @@ const ServicePage = () => {
       icon: <Lightbulb className="h-8 w-8" />,
       category: "maintenance",
       estimatedTime: "30-60 นาที",
+      priceRange: "฿50",
     },
     {
       id: 5,
@@ -117,6 +120,7 @@ const ServicePage = () => {
       icon: <Snowflake className="h-8 w-8" />,
       category: "maintenance",
       estimatedTime: "1-2 ชั่วโมง",
+      priceRange: "฿50-100",
     },
     {
       id: 6,
@@ -126,6 +130,7 @@ const ServicePage = () => {
       icon: <Wrench className="h-8 w-8" />,
       category: "maintenance",
       estimatedTime: "30-60 นาที",
+      priceRange: "฿50-200",
     },
     {
       id: 7,
@@ -134,6 +139,7 @@ const ServicePage = () => {
       icon: <Shield className="h-8 w-8" />,
       category: "maintenance",
       estimatedTime: "30-45 นาที",
+      priceRange: "฿250",
     },
     {
       id: 8,
@@ -142,6 +148,7 @@ const ServicePage = () => {
       icon: <Package className="h-8 w-8" />,
       category: "housekeeping",
       estimatedTime: "15-30 นาที",
+      priceRange: "฿100-300",
     },
   ];
 
@@ -337,7 +344,6 @@ const ServicePage = () => {
               </Card>
             </div>
 
-            {/* Booking Confirmation Message */}
             {bookingConfirmed && (
               <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start">
                 <div className="bg-green-100 p-2 rounded-full mr-3 flex-shrink-0">
@@ -365,7 +371,6 @@ const ServicePage = () => {
 
       <Footer />
 
-      {/* Service Booking Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
@@ -448,7 +453,6 @@ const ServicePage = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Confirmation Dialog */}
       <AlertDialog
         open={isConfirmationOpen}
         onOpenChange={setIsConfirmationOpen}
