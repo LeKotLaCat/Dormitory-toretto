@@ -35,6 +35,34 @@ const UserMain = () => {
     pendingRequests: 12,
     maintenanceTickets: 8
   });
+
+  interface BillData {
+    BillID: string;
+    DueDate: string;
+    roomprice: string;
+    waterprice: string;
+    electricprice: string;
+    taskprice: string;
+    billStatus: number;
+    paidDate: string | null;
+    transactionimg?: string;
+  }
+
+  // Define interface for transformed bill
+  interface TransformedBill {
+    id: string;
+    dueDate: Date;
+    forMonth: string;
+    totalAmount: string;
+    status: string;
+    paymentDate: Date | null;
+    receiptUrl: string | boolean;
+    breakdown: {
+      rent: number;
+      water: number;
+      electricity: number;
+    };
+  }
   
   // Add state for unpaid bills
   const [unpaidBills, setUnpaidBills] = useState([]);
@@ -136,7 +164,7 @@ const UserMain = () => {
         const data = await response.json();
         
         // Process bills data
-        const transformedBills = data.map(billData => {
+        const transformedBills = data.map((billData: BillData) => {
           const dueDate = new Date(billData.DueDate);
           const forMonth = dueDate.toLocaleString("th-TH", {
             month: "long",
@@ -170,14 +198,16 @@ const UserMain = () => {
         });
 
         // Filter for unpaid bills
-        const pending = transformedBills.filter(bill => bill.status === "pending");
+        const pending = transformedBills.filter((bill: TransformedBill) => bill.status === "pending");
         setUnpaidBills(pending);
         setHasUnpaidBill(pending.length > 0);
         
         // Set next payment date (use the earliest due date from pending bills)
         if (pending.length > 0) {
           // Sort by due date (ascending)
-          const sortedPending = [...pending].sort((a, b) => a.dueDate - b.dueDate);
+          const sortedPending = [...pending].sort((a: TransformedBill, b: TransformedBill) => 
+            a.dueDate.getTime() - b.dueDate.getTime()
+          );
           setNextPaymentDate(sortedPending[0].dueDate);
         }
       } catch (error) {
@@ -188,9 +218,8 @@ const UserMain = () => {
     fetchUserProfile();
     fetchBills();
   }, []);
-
   // Function to format date in Thai
-  const formatThaiDate = (date) => {
+  const formatThaiDate = (date: Date | null) => {
     if (!date) return "";
     return date.toLocaleDateString('th-TH', {
       year: 'numeric',
