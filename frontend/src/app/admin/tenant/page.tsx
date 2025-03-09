@@ -553,23 +553,32 @@ const TenantsPage = () => {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
-
-            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                            This action cannot be undone.  This will permanently remove the tenant from room {selectedRoomId && rooms.find(r => r.id === selectedRoomId)?.roomName} and mark the room as vacant.
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel onClick={cancelDeleteTenant}>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={confirmDeleteTenant}>Continue</AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
-        </div>
-    );
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>ลบผู้เช่า</AlertDialogTitle>
+            <AlertDialogDescription>
+              คุณแน่ใจหรือไม่ว่าต้องการลบผู้เช่ารายนี้ออกจากห้อง{" "}
+              {selectedRoomId &&
+                rooms.find((r) => r.id === selectedRoomId)?.roomName}
+              ห้องนี้จะถูกเปลี่ยนสถานะเป็น "ไม่มีผู้เช่า"
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={cancelDeleteTenant}>
+              ยกเลิก
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDeleteTenant} className="bg-destructive hover:bg-[#bc3535]">
+              ลบ
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
+  );
 };
 
 export default TenantsPage;

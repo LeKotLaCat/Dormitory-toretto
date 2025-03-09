@@ -249,7 +249,6 @@ const UserMain = () => {
                   <div className="flex flex-col md:flex-row md:justify-between md:items-start">
                     <div>
                       <h2 className="text-2xl font-bold text-gray-800">{greeting}, {userProfile.name.split(' ')[0]}</h2>
-                      <p className="text-gray-600 mb-3">รหัสนักศึกษา: {userProfile.studentId}</p>
                     </div>
                     
                     <Link href="/user/profile" className="inline-flex items-center mt-2 md:mt-0 px-4 py-2 text-sm bg-primary/10 text-primary hover:bg-primary/20 rounded-md transition-colors">
