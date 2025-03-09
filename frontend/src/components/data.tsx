@@ -402,7 +402,7 @@ export const TenantData = [
 
 export const initialRooms = [
   { 
-    roomNumber: "101", 
+    roomNumber: "12011", 
     floor: 9, 
     type: "Single", 
     status: "occupied", 

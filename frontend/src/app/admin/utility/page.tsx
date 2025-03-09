@@ -82,19 +82,28 @@ interface NewUtility {
   status: "paid" | "unpaid";
   dueDate: Date;
 }
+interface Room {
+  id: number;
+  roomNumber: string;
+  floor: number;
+  type: string;
+  status: string;
+  tenantId: string;
+  monthlyRent: number;
+}
 
 const UtilityPage = () => {
   // Sample utility data
   const initialUtilityData: UtilityRecord[] = [];
-  const [rooms, setRoom] = useState(
-    initialRooms.map((room, index) => ({
-      id: index + 1,
-      ...room,
-    }))
-  );
+  const [rooms, setRoom] = useState<Room[]>();
+  // const [rooms, setRoom] = useState(
+  //   initialRooms.map((room, index) => ({
+  //     id: index + 1,
+  //     ...room,
+  //   }))
+  // );
   const [feenotfromfetch, setFeenotfromfetch] = useState([] as AdditionalFee[]);
-  const [utilityData, setUtilityData] =
-    useState<UtilityRecord[]>(initialUtilityData);
+  const [utilityData, setUtilityData] = useState<UtilityRecord[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterMonth, setFilterMonth] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
@@ -117,11 +126,12 @@ const UtilityPage = () => {
     amount: 0,
     description: "",
   });
-
+  const [isLoading, setLoading] = useState(true)
   const [previewItem, setPreviewItem] = useState<number | null>(null);
   const [isReceiptDialogOpen, setIsReceiptDialogOpen] = useState(false);
-
+  const [RoomLoading,setRoomLoading] = useState(true)
   useEffect(() => {
+    setRoom([]);
     fetch("http://localhost:3000/rooms", {
       method: "GET",
       credentials: "include",
@@ -156,9 +166,17 @@ const UtilityPage = () => {
             monthlyRent: roomprice,
           };
         });
-
+        console.log(nda)
         setRoom(nda);
-      });
+        setRoomLoading(false)
+      }).then(()=> {
+      })
+      
+  }, []);
+  useEffect(() => {
+    if (RoomLoading) return
+    console.log(rooms)
+
     fetch("http://localhost:3000/bills", {
       method: "GET",
       credentials: "include",
@@ -167,12 +185,13 @@ const UtilityPage = () => {
         return js.json();
       })
       .then((data) => {
-        if (data.length == 0) return;
+        if (data.length == 0) return setLoading(false);
         const newdata = data.map((s: any) => {
           console.log(s);
+          console.log(rooms);
           return {
             id: s.BillID,
-            roomNumber: rooms.find((v) => v.id === s.RoomID)?.roomNumber,
+            roomNumber: rooms!.find((v) => v.id === s.RoomID)?.roomNumber,
             month: format(new Date(s.billMonth), "MMM yyyy"),
             electric: Number.parseFloat(s.electricprice),
             water: Number.parseFloat(s.waterprice),
@@ -185,13 +204,15 @@ const UtilityPage = () => {
           } as UtilityRecord;
         });
         setUtilityData(newdata);
+        setLoading(false)
       });
-  }, []);
+  }, [RoomLoading]);
 
   useEffect(() => {
+    if (RoomLoading) return
     if (newUtility.roomNumber) {
       // Find the selected room from the rooms state
-      const selectedRoom = rooms.find(
+      const selectedRoom = rooms!.find(
         (room) => room.roomNumber === newUtility.roomNumber
       );
 
@@ -214,7 +235,7 @@ const UtilityPage = () => {
 
         fetch(
           `http://localhost:3000/tasks?roomid=${
-            rooms.find((i) => i.roomNumber == newUtility.roomNumber)?.id
+            rooms!.find((i) => i.roomNumber == newUtility.roomNumber)?.id
           }&month=${newUtility.month}`,
           { method: "GET", credentials: "include" }
         )
@@ -249,7 +270,7 @@ const UtilityPage = () => {
     }
 
     console.log(newUtility);
-  }, [newUtility.roomNumber, newUtility.month, rooms]);
+  }, [RoomLoading,newUtility.roomNumber, newUtility.month, rooms]);
 
   const handleConfirmPayment = (id: number) => {
     // Find the utility item
@@ -348,18 +369,18 @@ const UtilityPage = () => {
     });
   };
   // "housewife" | "fixing" | "laundry" | "internet" | "other";
-  function feetypetranslate(feeType:any) {
+  function feetypetranslate(feeType: any) {
     switch (feeType) {
-      case "housewife" :
-        return "จ้างแม่บ้าน"
+      case "housewife":
+        return "จ้างแม่บ้าน";
       case "fixing":
-        return "จ้างซ่อมแซม"
+        return "จ้างซ่อมแซม";
       case "laundry":
-        return "จ้างซักรีด"
+        return "จ้างซักรีด";
       case "internet":
-        return "ค่าบริการอินเตอร์เน็ต"
+        return "ค่าบริการอินเตอร์เน็ต";
       default:
-        return "อื่นๆ"
+        return "อื่นๆ";
     }
   }
   // Handle adding new utility record
@@ -375,7 +396,7 @@ const UtilityPage = () => {
     }
 
     // Check if room exists
-    if (!rooms.find((room) => room.roomNumber === newUtility.roomNumber)) {
+    if (!rooms!.find((room) => room.roomNumber === newUtility.roomNumber)) {
       toast.error("ไม่มีห้องหมายเลขนี้");
       return;
     }
@@ -399,10 +420,10 @@ const UtilityPage = () => {
       },
       0
     );
-    const RoomID = rooms.find(
+    const RoomID = rooms!.find(
       (v) => v.roomNumber === newUtility.roomNumber
     )?.id;
-    const roomprice = rooms.find(
+    const roomprice = rooms!.find(
       (v) => v.roomNumber === newUtility.roomNumber
     )?.monthlyRent;
     console.log(RoomID, roomprice);
@@ -425,7 +446,9 @@ const UtilityPage = () => {
       }),
     }).catch((ex) => {
       console.error(ex);
-    });
+    }
+  );
+ 
 
     // Add new utility record
     const newItem = {
@@ -476,7 +499,13 @@ const UtilityPage = () => {
     0
   );
   let oldmonth = "";
-
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p>กำลังโหลดข้อมูล...</p>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col overflow-auto">
       <div className="flex flex-1">
@@ -625,9 +654,7 @@ const UtilityPage = () => {
               {filteredData.length === 0 ? (
                 <Card>
                   <CardContent className="p-8 text-center">
-                    <p className="text-gray-500 mb-4">
-                      ไม่พบรายการ
-                    </p>
+                    <p className="text-gray-500 mb-4">ไม่พบรายการ</p>
                     <Button
                       variant="outline"
                       onClick={() => {
@@ -662,7 +689,7 @@ const UtilityPage = () => {
                             ค่าห้อง (฿)
                           </th>
                           <th className="px-4 py-3 text-sm font-medium text-gray-700">
-                          ค่าใช้จ่ายเพิ่มเติม
+                            ค่าใช้จ่ายเพิ่มเติม
                           </th>
                           <th className="px-4 py-3 text-sm font-medium text-gray-700">
                             ทั้งหมด (฿)
@@ -821,9 +848,7 @@ const UtilityPage = () => {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>เพิ่มบิลชำระ</DialogTitle>
-            <DialogDescription>
-              เพิ่มบิลชำระสำหรับห้องพัก
-            </DialogDescription>
+            <DialogDescription>เพิ่มบิลชำระสำหรับห้องพัก</DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-2">
@@ -839,7 +864,7 @@ const UtilityPage = () => {
                   <SelectValue placeholder="Select room number" />
                 </SelectTrigger>
                 <SelectContent>
-                  {rooms.map((room) => (
+                  {rooms!.map((room) => (
                     <SelectItem key={room.roomNumber} value={room.roomNumber}>
                       ห้อง {room.roomNumber}
                     </SelectItem>
@@ -1036,11 +1061,11 @@ const UtilityPage = () => {
                         <SelectValue placeholder="Select fee type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="housewife">
-                          บริการแม่บ้าน
-                        </SelectItem>
+                        <SelectItem value="housewife">บริการแม่บ้าน</SelectItem>
                         <SelectItem value="fixing">บริการซ่อมแซม</SelectItem>
-                        <SelectItem value="internet">บริการอินเตอร์เน็ต</SelectItem>
+                        <SelectItem value="internet">
+                          บริการอินเตอร์เน็ต
+                        </SelectItem>
                         <SelectItem value="other">อื่นๆ</SelectItem>
                       </SelectContent>
                     </Select>
@@ -1100,7 +1125,7 @@ const UtilityPage = () => {
                     ยอดทั้งหมด: ฿
                     {(
                       Number(newUtility.electric) +
-                      Number(newUtility.water) +
+                      Number(newUtility.water) + Number(newUtility.roomFee) + 
                       newUtility.additionalFees.reduce(
                         (sum, fee) => sum + Number(fee.amount),
                         0

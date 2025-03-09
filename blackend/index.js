@@ -1055,7 +1055,7 @@ app.post("/bills", verifyToken, (req, res) => {
     "INSERT INTO bill (RoomID, billMonth, DueDate, waterprice, electricprice, taskprice, roomprice, missDateCount, missfee, totalPrice, billStatus,additionalFees) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
       data.RoomID,
-      new Date(data.billMonth).toISOString(),
+      data.billMonth,
       data.DueDate,
       data.waterprice !== undefined ? data.waterprice : 0,
       data.electricprice !== undefined ? data.electricprice : 0,
@@ -1079,7 +1079,7 @@ app.post("/bills", verifyToken, (req, res) => {
 
 app.get("/bills", verifyToken, (req, res) => {
   let query =
-    "SELECT b.*,r.roomName from bill b join room r ON (b.RoomID == r.id)";
+    "SELECT b.*,r.roomName as roomNumber from bill b join room r ON (b.RoomID == r.id)";
   let params = [];
 
   if (req.query.roomid && req.user.role === "admin") {
