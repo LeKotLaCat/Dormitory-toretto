@@ -326,14 +326,14 @@ const CleaningQueuePage = () => {
             <div className="container mx-auto">
               <div className="flex flex-col md:space-y-4 lg:space-y-0 lg:flex-row md:items-center justify-between mb-6">
                 <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-0">
-                  Cleaning Service Queue
+                คิวการขอใช้บริการห้องพัก
                 </h1>
                 <div className="flex flex-col md:flex-row gap-3">
                   <div className="relative">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                     <Input
                       type="text"
-                      placeholder="Search room or service..."
+                      placeholder="ค้นหาห้องหรือบริการ..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-9 w-full md:w-64"
@@ -349,23 +349,23 @@ const CleaningQueuePage = () => {
                     ) : (
                       <CheckCircle className="h-4 w-4" />
                     )}
-                    {showCompleted ? "Hide Completed" : "Show Completed"}
+                    {showCompleted ? "ซ่อนรายการที่เสร็จแล้ว" : "แสดงรายการที่เสร็จแล้ว"}
                   </Button>
                 </div>
               </div>
 
               <div className="mb-4 flex items-center justify-between">
                 <p className="text-gray-600">
-                  Showing{" "}
+                แสดงทั้งหมด {" "}
                   {
                     sortedRequests.filter((item) => item.status === "pending")
                       .length
                   }{" "}
-                  pending requests
+                  คำขอ
                 </p>
                 <div className="flex items-center space-x-2">
                   <p className="text-sm text-gray-500">
-                    Page {currentPage} of {totalPages}
+                  หน้า {currentPage} จาก {totalPages}
                   </p>
                 </div>
               </div>
@@ -385,7 +385,7 @@ const CleaningQueuePage = () => {
                             <div className="flex items-center gap-2">
                               <Home className="h-5 w-5 text-gray-700" />
                               <CardTitle className="text-lg">
-                                Room {request.roomNumber}
+                                ห้อง {request.roomNumber}
                               </CardTitle>
                             </div>
                             <Badge
@@ -397,15 +397,15 @@ const CleaningQueuePage = () => {
                               }`}
                             >
                               {request.status === "pending"
-                                ? "Pending"
-                                : "Completed"}
+                                ? "รอการยืนยัน"
+                                : "เสร็จแล้ว"}
                             </Badge>
                           </div>
                         </CardHeader>
                         <CardContent className="pb-3">
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                             <div className="flex items-center gap-2">
-                              <span className="text-gray-500">Service:</span>
+                              <span className="text-gray-500">บริการ:</span>
                               <span className="font-medium">
                                 {request.service}
                               </span>
@@ -436,7 +436,7 @@ const CleaningQueuePage = () => {
                                 handleOpenRequestDetails(request.id);
                               }}
                             >
-                              View Details
+                              ดูข้อมูล
                             </Button>
                           </CardFooter>
                         )}
@@ -447,7 +447,7 @@ const CleaningQueuePage = () => {
 
                 {sortedRequests.length === 0 && (
                   <div className="bg-white rounded-md p-8 text-center">
-                    <p className="text-gray-500">No cleaning requests found</p>
+                    <p className="text-gray-500">ไม่พบการค้นหา</p>
                   </div>
                 )}
               </div>
@@ -465,7 +465,7 @@ const CleaningQueuePage = () => {
                   className="hidden sm:flex"
                 >
                   <ChevronLeft className="h-4 w-4" />
-                  <span className="ml-1">Previous</span>
+                  <span className="ml-1">ก่อนหน้า</span>
                 </Button>
 
                 <Button
@@ -534,7 +534,7 @@ const CleaningQueuePage = () => {
                   size="sm"
                   className="hidden sm:flex"
                 >
-                  <span className="mr-1">Next</span>
+                  <span className="mr-1">หน้าถัดไป</span>
                   <ChevronRight className="h-4 w-4" />
                 </Button>
 
@@ -559,9 +559,9 @@ const CleaningQueuePage = () => {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Cleaning Request Details</DialogTitle>
+            <DialogTitle>ข้อมูลการขอใช้บริการ</DialogTitle>
             <DialogDescription>
-              Service details and confirmation
+            ข้อมูลการบริการและการยืนยัน
             </DialogDescription>
           </DialogHeader>
 
@@ -574,14 +574,14 @@ const CleaningQueuePage = () => {
                     <CheckCircle className="h-5 w-5 text-green-500" />
                     <div>
                       <p className="font-medium text-green-800">
-                        Cleaning Completed
+                      การให้บริการสำเร็จ
                       </p>
                       <p className="text-sm text-green-700">
-                        Completed on{" "}
+                      สำเร็จเมื่อวันที่ {" "}
                         {format(
                           cleaningRequests.find((r) => r.id === selectedRequest)
                             ?.completedAt || new Date(),
-                          "dd/MM/yyyy 'at' HH:mm"
+                          "dd/MM/yyyy 'เวลา' HH:mm"
                         )}
                       </p>
                     </div>
@@ -591,7 +591,7 @@ const CleaningQueuePage = () => {
                 <>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Room Number</p>
+                      <p className="text-sm text-gray-500 mb-1">หมายเลขห้อง</p>
                       <p className="font-medium">
                         {
                           cleaningRequests.find((r) => r.id === selectedRequest)
@@ -600,7 +600,7 @@ const CleaningQueuePage = () => {
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Requested By</p>
+                      <p className="text-sm text-gray-500 mb-1">ผู้ขอบริการ</p>
                       <p className="font-medium">
                         {
                           cleaningRequests.find((r) => r.id === selectedRequest)
@@ -609,7 +609,7 @@ const CleaningQueuePage = () => {
                       </p>
                     </div>
                     <div className="col-span-2">
-                      <p className="text-sm text-gray-500 mb-1">Service Type</p>
+                      <p className="text-sm text-gray-500 mb-1">ประเภทการบริการ</p>
                       <p className="font-medium">
                         {
                           cleaningRequests.find((r) => r.id === selectedRequest)
@@ -618,7 +618,7 @@ const CleaningQueuePage = () => {
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Date</p>
+                      <p className="text-sm text-gray-500 mb-1">วันที่</p>
                       <p className="font-medium">
                         {format(
                           cleaningRequests.find((r) => r.id === selectedRequest)
@@ -628,7 +628,7 @@ const CleaningQueuePage = () => {
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Time</p>
+                      <p className="text-sm text-gray-500 mb-1">เวลา</p>
                       <p className="font-medium">
                         {format(
                           cleaningRequests.find((r) => r.id === selectedRequest)
@@ -639,7 +639,7 @@ const CleaningQueuePage = () => {
                     </div>
                     <div className="col-span-2">
                       <p className="text-sm text-gray-500 mb-1">
-                        Additional Notes
+                        ข้อมูลเพิ่มเติม
                       </p>
                       <p className="font-medium">
                         {cleaningRequests.find((r) => r.id === selectedRequest)
@@ -655,7 +655,7 @@ const CleaningQueuePage = () => {
                       type="number"
                       placeholder="Enter Price"
                       value={price}
-                      onChange={(e) => setPrice(Number.parseFloat(e.target.value))}
+                      onChange={(e) => setPrice(e.target.value === "" ? 0 : Number.parseFloat(e.target.value))}
                       className="pl-9 w-full md:w-64"
                       step={0.01}
                     />
@@ -668,14 +668,14 @@ const CleaningQueuePage = () => {
                       onClick={() => setIsDialogOpen(false)}
                       className="w-full sm:w-auto"
                     >
-                      Cancel
+                      ยกเลิก
                     </Button>
                     <Button
                       className="w-full sm:w-auto"
                       onClick={() => handleConfirmCleaning(selectedRequest)}
                     >
                       <CheckIcon className="mr-2 h-4 w-4" />
-                      Confirm Cleaning Completed
+                      ยืนยันการใช้บริการสำเร็จ
                     </Button>
                   </DialogFooter>
                 </>

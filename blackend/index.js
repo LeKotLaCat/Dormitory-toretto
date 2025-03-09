@@ -983,7 +983,7 @@ app.put("/tasks/:taskid/setDone", verifyToken, (req, res) => {
   db.run(
     `UPDATE task SET taskstatus=1,doneDate=current_timestamp,taskprice=?,priceset=1 WHERE taskid=?`,
     [req.body.price, req.params["taskid"]],
-    (ex) => {
+    function(ex) {
       if (ex) {
         console.error(
           `Got Error while setting Task ${req.params["taskid"]} status: ${ex} `

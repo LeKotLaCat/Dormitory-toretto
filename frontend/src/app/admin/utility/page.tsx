@@ -49,6 +49,7 @@ import {
 import { format } from "date-fns";
 import Image from "next/image";
 import { initialRooms } from "@/components/data";
+import { toast } from "sonner";
 
 interface AdditionalFee {
   type: "housewife" | "fixing" | "laundry" | "internet" | "other";
@@ -73,6 +74,7 @@ interface UtilityRecord {
 interface NewUtility {
   id: number;
   roomNumber: string;
+  roomFee: number;
   month: string;
   electric: number;
   water: number;
@@ -83,117 +85,42 @@ interface NewUtility {
 
 const UtilityPage = () => {
   // Sample utility data
-  const initialUtilityData: UtilityRecord[] = [
-    {
-      id: 1,
-      roomNumber: "101",
-      month: "Feb 2025",
-      electric: 750,
-      water: 250,
-      roomFee: 1000,
-      additionalFees: [
-        {
-          type: "housewife",
-          amount: 400,
-          description: "Weekly cleaning service",
-        },
-      ],
-      status: "unpaid",
-      dueDate: new Date(2025, 2, 15),
-      imageFile:
-        "https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg",
-    },
-    {
-      id: 2,
-      roomNumber: "102",
-      month: "Feb 2025",
-      electric: 820,
-      water: 320,
-      roomFee: 1000,
-      additionalFees: [],
-      status: "paid",
-      paidDate: new Date(2025, 2, 10),
-      dueDate: new Date(2025, 2, 15),
-      imageFile:
-        "https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg",
-    },
-    {
-      id: 3,
-      roomNumber: "201",
-      month: "Feb 2025",
-      electric: 680,
-      water: 190,
-      roomFee: 1000,
-      additionalFees: [
-        { type: "fixing", amount: 350, description: "Sink repair" },
-      ],
-      status: "unpaid",
-      dueDate: new Date(2025, 2, 15),
-      imageFile:
-        "https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg",
-    },
-    {
-      id: 4,
-      roomNumber: "202",
-      month: "Feb 2025",
-      electric: 920,
-      water: 280,
-      roomFee: 1000,
-      additionalFees: [
-        {
-          type: "housewife",
-          amount: 400,
-          description: "Weekly cleaning service",
-        },
-        {
-          type: "fixing",
-          amount: 600,
-          description: "Air conditioner maintenance",
-        },
-      ],
-      status: "paid",
-      paidDate: new Date(2025, 2, 8),
-      dueDate: new Date(2025, 2, 15),
-      imageFile:
-        "https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg",
-    },
-    {
-      id: 5,
-      roomNumber: "101",
-      month: "Jan 2025",
-      electric: 720,
-      water: 230,
-      roomFee: 1000,
-      additionalFees: [],
-      status: "paid",
-      paidDate: new Date(2025, 1, 14),
-      dueDate: new Date(2025, 1, 15),
-      imageFile:
-        "https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg",
-    },
-    {
-      id: 6,
-      roomNumber: "102",
-      month: "Jan 2025",
-      electric: 790,
-      water: 310,
-      roomFee: 1000,
-      additionalFees: [
-        { type: "fixing", amount: 500, description: "Door lock replacement" },
-      ],
-      status: "paid",
-      paidDate: new Date(2025, 1, 12),
-      dueDate: new Date(2025, 1, 15),
-      imageFile:
-        "https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg",
-    },
-  ];
+  const initialUtilityData: UtilityRecord[] = [];
   const [rooms, setRoom] = useState(
     initialRooms.map((room, index) => ({
       id: index + 1,
       ...room,
     }))
   );
+  const [feenotfromfetch, setFeenotfromfetch] = useState([] as AdditionalFee[])
+  const [utilityData, setUtilityData] =
+    useState<UtilityRecord[]>(initialUtilityData);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterMonth, setFilterMonth] = useState("all");
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [newUtility, setNewUtility] = useState<NewUtility>({
+    id:0,
+    roomNumber: "",
+    roomFee: 0,
+    month: format(new Date(), "MMM yyyy"),
+    electric: 0,
+    water: 0,
+    additionalFees: [],
+    status: "unpaid",
+    dueDate: new Date(new Date().setDate(15)),
+  });
+
+  const [showAddFee, setShowAddFee] = useState(false);
+  const [newFee, setNewFee] = useState<AdditionalFee>({
+    type: "housewife",
+    amount: 0,
+    description: "",
+  });
+
+  const [previewItem, setPreviewItem] = useState<number | null>(null);
+  const [isReceiptDialogOpen, setIsReceiptDialogOpen] = useState(false);
+
 
   useEffect(() => {
     fetch("http://localhost:3000/rooms", {
@@ -256,40 +183,76 @@ const UtilityPage = () => {
             dueDate: new Date(s.DueDate),
             paidDate: s.paidDate && new Date(s.paidDate),
             imageFile:
-              s.transactionimg ||
-              "https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/life/life-13.jpg",
+              s.transactionimg,
           } as UtilityRecord;
         });
         setUtilityData(newdata);
       });
   }, []);
-  const [feenotfromfetch, setFeenotfromfetch] = useState([] as AdditionalFee[])
-  const [utilityData, setUtilityData] =
-    useState<UtilityRecord[]>(initialUtilityData);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterMonth, setFilterMonth] = useState("all");
-  const [filterStatus, setFilterStatus] = useState("all");
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [newUtility, setNewUtility] = useState<NewUtility>({
-    id:0,
-    roomNumber: "",
-    month: format(new Date(), "MMM yyyy"),
-    electric: 0,
-    water: 0,
-    additionalFees: [],
-    status: "unpaid",
-    dueDate: new Date(new Date().setDate(15)),
-  });
 
-  const [showAddFee, setShowAddFee] = useState(false);
-  const [newFee, setNewFee] = useState<AdditionalFee>({
-    type: "housewife",
-    amount: 0,
-    description: "",
-  });
 
-  const [previewItem, setPreviewItem] = useState<number | null>(null);
-  const [isReceiptDialogOpen, setIsReceiptDialogOpen] = useState(false);
+useEffect(() => {
+  if (newUtility.roomNumber) {
+    // Find the selected room from the rooms state
+    const selectedRoom = rooms.find(
+      (room) => room.roomNumber === newUtility.roomNumber
+    );
+    
+    // Update the roomFee in newUtility state with the selected room's monthly rent
+    if (selectedRoom) {
+      setNewUtility({
+        ...newUtility,
+        roomFee: selectedRoom.monthlyRent || 0
+      });
+    }
+
+    // The rest of the existing code for handling month changes and fees
+    if (newUtility.month && newUtility.month !== oldmonth) {
+      oldmonth = newUtility.month;
+
+      setNewUtility((prevUtility) => ({
+        ...prevUtility,
+        additionalFees: [],
+      }));
+  
+      fetch(
+        `http://localhost:3000/tasks?roomid=${
+          rooms.find((i) => i.roomNumber == newUtility.roomNumber)?.id
+        }&month=${newUtility.month}`,
+        { method: "GET", credentials: "include" }
+      )
+        .then((jso) => jso.json())
+        .then((value) => {
+          console.log(value);
+          if (value.length) {
+            const newFees = value.map((s: any) => {
+              return {
+                amount: Number.parseFloat(s.taskprice),
+                description: `จากการจ้าง ${s.taskname} ` + s.description,
+                type: s.tasktype == "housekeeping" ? "housewife" : "fixing",
+              } as AdditionalFee;
+            });
+  
+            setNewUtility((prevUtility) => ({
+              ...prevUtility,
+              additionalFees: [
+                ...newFees, // New fees first
+                ...feenotfromfetch, // Then add old fees after
+              ],
+            }));
+          } else {
+            // If no new data, just show the old fees (feenotfromfetch)
+            setNewUtility((prevUtility) => ({
+              ...prevUtility,
+              additionalFees: [...feenotfromfetch], // Only old fees
+            }));
+          }
+        });
+    }
+  }
+  
+  console.log(newUtility);
+}, [newUtility.roomNumber, newUtility.month, rooms]);
 
   const handleConfirmPayment = (id: number) => {
     // Find the utility item
@@ -388,31 +351,24 @@ const UtilityPage = () => {
   // Handle adding new utility record
   const handleAddUtility = () => {
     // Validate input data
-    if (
-      !newUtility.roomNumber ||
-      newUtility.electric < 0 ||
-      newUtility.water < 0
-    ) {
-      alert("Please fill in all required fields with valid values");
+    if (!newUtility.roomNumber || newUtility.electric < 0 || newUtility.water < 0) {
+      toast.error("กรุณาใส่ข้อมูลให้ถูกต้อง");
       return;
     }
 
     // Check if room exists
-    if (!rooms.find((room) => room.roomNumber === newUtility.roomNumber)) {
-      alert("Room number does not exist");
+    if (!rooms.find(room => room.roomNumber === newUtility.roomNumber)) {
+      toast.error("ไม่มีห้องหมายเลขนี้");
       return;
     }
 
     // Check for duplicates
     const duplicate = utilityData.find(
-      (item) =>
-        item.roomNumber === newUtility.roomNumber &&
-        item.month === newUtility.month
+      item => item.roomNumber === newUtility.roomNumber && item.month === newUtility.month
     );
+
     if (duplicate) {
-      alert(
-        `Utility for Room ${newUtility.roomNumber} in ${newUtility.month} already exists`
-      );
+      toast.error(`ค่าสาธารณูประโภคของห้อง ${newUtility.roomNumber} ในเดือน ${newUtility.month} มีอยู่แล้ว`);
       return;
     }
     const taskprice: number = newUtility.additionalFees.reduce(
@@ -459,6 +415,7 @@ const UtilityPage = () => {
     setNewUtility({
       id:0,
       roomNumber: "",
+      roomFee: 0,
       month: format(new Date(), "MMM yyyy"),
       electric: 0,
       water: 0,
@@ -493,57 +450,6 @@ const UtilityPage = () => {
     0
   );
   let oldmonth = "";
-  useEffect(() => {
-    if (newUtility.roomNumber && newUtility.month && newUtility.month !== oldmonth) {
-      oldmonth = newUtility.month;
-  
-      console.log("Old fees:", feenotfromfetch);
-      
-      // First, clear the previous additionalFees
-      setNewUtility((prevUtility) => ({
-        ...prevUtility,
-        additionalFees: [], // Clear previous fees before fetching new data
-      }));
-  
-      fetch(
-        `http://localhost:3000/tasks?roomid=${
-          rooms.find((i) => i.roomNumber == newUtility.roomNumber)?.id
-        }&month=${newUtility.month}`,
-        { method: "GET", credentials: "include" }
-      )
-        .then((jso) => jso.json())
-        .then((value) => {
-          console.log(value);
-          if (value.length) {
-
-            const newFees = value.map((s: any) => {
-              return {
-                amount: Number.parseFloat(s.taskprice),
-                description: `จากการจ้าง ${s.taskname} ` + s.description,
-                type: s.tasktype == "housekeeping" ? "housewife" : "fixing",
-              } as AdditionalFee;
-            });
-  
-
-            setNewUtility((prevUtility) => ({
-              ...prevUtility,
-              additionalFees: [
-                ...newFees, // New fees first
-                ...feenotfromfetch, // Then add old fees after
-              ],
-            }));
-          } else {
-            // If no new data, just show the old fees (feenotfromfetch)
-            setNewUtility((prevUtility) => ({
-              ...prevUtility,
-              additionalFees: [...feenotfromfetch], // Only old fees
-            }));
-          }
-        });
-    }
-  
-    console.log(newUtility);
-  }, [newUtility.roomNumber, newUtility.month]);
   
   
   return (
@@ -556,14 +462,14 @@ const UtilityPage = () => {
               {/* Header and Actions */}
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
                 <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-0">
-                  Utility Cost Tracking
+                ติดตามค่าสาธาณูประโภค
                 </h1>
                 <div className="flex flex-col md:flex-row gap-3">
                   <div className="relative w-full md:w-64">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                     <Input
                       type="text"
-                      placeholder="Search by room number..."
+                      placeholder="ค้นหาหมายเลขห้องพัก..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-9 w-full"
@@ -574,7 +480,7 @@ const UtilityPage = () => {
                     className="w-full md:w-auto"
                   >
                     <Plus className="h-4 w-4 mr-2" />
-                    Add New Utility
+                    เพิ่มบิลใหม่
                   </Button>
                 </div>
               </div>
@@ -584,7 +490,7 @@ const UtilityPage = () => {
                 <Card>
                   <CardContent className="p-4 flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-500">Current Month</p>
+                      <p className="text-sm text-gray-500">เดือนปัจจุบัน</p>
                       <p className="text-2xl font-bold">{currentMonth}</p>
                     </div>
                     <div className="bg-blue-100 p-3 rounded-full">
@@ -911,6 +817,21 @@ const UtilityPage = () => {
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="roomFee">Room Fee (฿) *</Label>
+              <div className="relative">
+                <Home className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+                <Input
+                  id="roomFee"
+                  type="number"
+                  className="pl-9 bg-gray-50"
+                  readOnly
+                  value={newUtility.roomFee}
+                />
+              </div>
+              <p className="text-xs text-gray-500">Room fee is automatically set based on the selected room</p>
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="month">Month *</Label>
               <Select
                 value={newUtility.month}
@@ -1191,20 +1112,24 @@ const UtilityPage = () => {
                 : "Confirm payment after reviewing"}
             </DialogDescription>
           </DialogHeader>
-
           <div className="flex justify-center p-4">
             <div className="relative w-full h-[500px] border rounded-md overflow-hidden shadow-md">
               {previewItem && (
-                <Image
-                  src={
-                    utilityData.find((item) => item.id === previewItem)
-                      ?.imageFile ||
-                    "https://www.it.kmitl.ac.th/wp-content/themes/itkmitl2017wp/img/ogimage.png"
-                  }
-                  alt="Receipt"
-                  fill
-                  className="object-contain"
-                />
+                (() => {
+                  const imageFile = utilityData.find((item) => item.id === previewItem)?.imageFile;
+                  return imageFile ? (
+                    <Image
+                      src={imageFile}
+                      alt="ใบเสร็จ"
+                      fill
+                      className="object-contain"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <span className="text-gray-400">ไม่มีรูปภาพ</span>
+                    </div>
+                  );
+                })()
               )}
             </div>
           </div>

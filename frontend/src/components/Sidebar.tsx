@@ -154,7 +154,7 @@ const Sidebar = ({ className }: SidebarProps) => {
             onClick={handleLogout}
           >
             <LogOut className="mr-2 h-6 w-6 md:h-8 md:w-8" />
-            Log Out
+            ออกจากระบบ
           </Button>
           <Button
             variant="ghost"
@@ -162,7 +162,7 @@ const Sidebar = ({ className }: SidebarProps) => {
             onClick={() => handleNavigation('/help')}
           >
             <HelpCircle className="mr-2 h-6 w-6 md:h-8 md:w-8" />
-            Help & Support
+            ช่วยเหลือ & สนับสนุน
           </Button>
         </div>
       </div>
@@ -178,8 +178,8 @@ const Sidebar = ({ className }: SidebarProps) => {
       </SheetTrigger>
       <SheetContent side="left" className="p-0 w-72">
         <SheetHeader className="sr-only">
-          <SheetTitle>Navigation Menu</SheetTitle>
-          <SheetDescription>Navigation options for the dormitory management system</SheetDescription>
+          <SheetTitle>เมนู</SheetTitle>
+          <SheetDescription>เมนูสำหรับระบบจัดการหอพัก</SheetDescription>
         </SheetHeader>
         <SidebarContent />
       </SheetContent>

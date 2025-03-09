@@ -221,7 +221,6 @@ const BillPage = () => {
   const [qr, setQr] = useState<QrPayment | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    console.log("SDSDSD");
     if (paymentStep !== "payment") return;
     fetch(`http://localhost:3000/bills/${selectedTransaction?.id}/qr`, {
       method: "GET",

@@ -124,7 +124,7 @@ const Register = () => {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="First Name / ชื่อ"
+                  placeholder="ชื่อ"
                   name="firstName"
                   className="w-full p-3 border border-gray-300 rounded-xl bg-white"
                   required={true}
@@ -134,7 +134,7 @@ const Register = () => {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Last Name / นามสกุล"
+                  placeholder="นามสกุล"
                   name="lastName"
                   className="w-full p-3 border border-gray-300 rounded-xl bg-white"
                   required={true}
@@ -145,7 +145,7 @@ const Register = () => {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Username / ชื่อผู้ใช้"
+                placeholder="ชื่อผู้ใช้"
                 name="username"
                 className="w-full p-3 border border-gray-300 rounded-xl bg-white"
                 required={true}
@@ -155,7 +155,7 @@ const Register = () => {
             <div className="relative">
               <input
                 type="email"
-                placeholder="Email / อีเมล"
+                placeholder="อีเมล"
                 name="email"
                 className="w-full p-3 border border-gray-300 rounded-xl bg-white"
                 required={true}
@@ -166,7 +166,7 @@ const Register = () => {
             <div className="relative">
               <input
                 type="tel"
-                placeholder="Telephone / เบอร์โทรศัพท์"
+                placeholder="เบอร์โทรศัพท์"
                 name="telephone"
                 className="w-full p-3 border border-gray-300 rounded-xl bg-white"
                 required={true}
@@ -178,7 +178,7 @@ const Register = () => {
             <div className="relative">
               <input
                 type="date"
-                placeholder="Date of Birth / วันเกิด"
+                placeholder="วันเกิด"
                 name="dateOfBirth"
                 className="w-full p-3 border border-gray-300 rounded-xl bg-white"
                 required={true}
@@ -187,7 +187,7 @@ const Register = () => {
 
             <div className="relative">
               <textarea
-                placeholder="Address / ที่อยู่"
+                placeholder="ที่อยู่"
                 name="address"
                 className="w-full p-3 border border-gray-300 rounded-xl bg-white"
                 required={true}
@@ -198,7 +198,7 @@ const Register = () => {
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="Password / รหัสผ่าน"
+                placeholder="รหัสผ่าน"
                 name="password"
                 minLength={8}
                 className="w-full p-3 border border-gray-300 rounded-xl bg-white"
@@ -215,7 +215,7 @@ const Register = () => {
             <div className="relative">
               <input
                 type={showConfirmPassword ? "text" : "password"}
-                placeholder="Confirm password / ยืนยันรหัสผ่าน"
+                placeholder="ยืนยันรหัสผ่าน"
                 name="confirmedPassword"
                 minLength={8}
                 className="w-full p-3 border border-gray-300 rounded-xl bg-white"

@@ -1,26 +1,50 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import Sidebar from '@/components/Sidebar';
-import Footer from '@/components/Footer';
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Sidebar from "@/components/Sidebar";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Search, Home, User, Edit, Trash2, Phone, Mail, Key,
-  CalendarRange, AlertTriangle, Info, UserPlus, X, Check, BedDouble, ImagePlus
+  Search,
+  Home,
+  User,
+  Edit,
+  Trash2,
+  Phone,
+  Mail,
+  Key,
+  CalendarRange,
+  AlertTriangle,
+  Info,
+  UserPlus,
+  X,
+  Check,
+  BedDouble,
+  ImagePlus,
 } from "lucide-react";
 import {
-  Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import {
-  Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
-import { toast } from 'sonner';
+import { toast } from "sonner";
 
 type RoomType = {
   id: number;
@@ -29,7 +53,7 @@ type RoomType = {
   floor: number;
   occupied: boolean;
   description: string;
-  roomImg: string; 
+  roomImg: string;
   renterID: string | null;
 };
 
@@ -50,7 +74,7 @@ const RoomManagementPage = () => {
     occupied: false,
     description: "",
     roomImg: "",
-    renterID: null
+    renterID: null,
   });
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
@@ -62,18 +86,17 @@ const RoomManagementPage = () => {
   const [originalRoomImg, setOriginalRoomImg] = useState<string | null>(null);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
 
-
   const router = useRouter();
 
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const response = await fetch('http://localhost:3000/rooms/', {
-          method: 'GET',
+        const response = await fetch("http://localhost:3000/rooms/", {
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          credentials: 'include',
+          credentials: "include",
         });
 
         if (!response.ok) {
@@ -92,7 +115,6 @@ const RoomManagementPage = () => {
           renterID: room.renterID,
         }));
 
-
         setRooms(mappedRooms);
       } catch (error) {
         console.error("Error fetching rooms:", error);
@@ -102,9 +124,13 @@ const RoomManagementPage = () => {
     fetchRooms();
   }, []);
 
-    const filteredRooms = rooms.filter(room =>
-    room.roomName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    roomTypeOptions.find(type => type.id === room.roomTypeId)?.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredRooms = rooms.filter(
+    (room) =>
+      room.roomName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      roomTypeOptions
+        .find((type) => type.id === room.roomTypeId)
+        ?.name.toLowerCase()
+        .includes(searchTerm.toLowerCase())
   );
 
   const handleEditClick = (room: RoomType) => {
@@ -114,31 +140,38 @@ const RoomManagementPage = () => {
     setOriginalRoomImg(room.roomImg);
     setIsEditDialogOpen(true);
     setEditRoomError(null);
-
   };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
     const { name, value } = e.target;
     if (editFormData) {
-      const updatedValue = (name === "floor") ? parseInt(value, 10) : value;
+      const updatedValue = name === "floor" ? parseInt(value, 10) : value;
       setEditFormData({
         ...editFormData,
-        [name]: updatedValue
+        [name]: updatedValue,
       });
     }
   };
 
-  const handleNewRoomInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleNewRoomInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
     const { name, value } = e.target;
-    const updatedValue = (name === "floor" ) ? parseInt(value, 10) : value;
+    const updatedValue = name === "floor" ? parseInt(value, 10) : value;
     console.log(updatedValue);
-    setNewRoomData(prev => ({ ...prev, [name]: updatedValue }));
+    setNewRoomData((prev) => ({ ...prev, [name]: updatedValue }));
     setAddRoomError(null);
   };
 
-    const handleNewRoomImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        handleImageChange(e);
-    };
+  const handleNewRoomImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleImageChange(e);
+  };
 
   const validateNewRoomData = () => {
     if (!newRoomData.roomName) {
@@ -157,27 +190,25 @@ const RoomManagementPage = () => {
       setAddRoomError("กรุณากรอกรายละเอียดห้อง");
       return false;
     }
-        if (!newRoomData.roomImg) {
-        setAddRoomError("กรุณาใส่รูปภาพ");
-        return;
-        }
-    if (rooms.some(room => room.roomName === newRoomData.roomName)) {
+    if (!newRoomData.roomImg) {
+      setAddRoomError("กรุณาใส่รูปภาพ");
+      return;
+    }
+    if (rooms.some((room) => room.roomName === newRoomData.roomName)) {
       setAddRoomError("ชื่อห้องนี้มีอยู่แล้ว");
       return false;
     }
     return true;
   };
 
-
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result as string);
-      reader.onerror = error => reject(error);
+      reader.onerror = (error) => reject(error);
     });
   };
-
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -189,7 +220,7 @@ const RoomManagementPage = () => {
         const base64String = await fileToBase64(file);
 
         if (editFormData) {
-          setEditFormData(prev => {
+          setEditFormData((prev) => {
             if (prev) {
               return {
                 ...prev,
@@ -200,9 +231,9 @@ const RoomManagementPage = () => {
           });
         }
         if (newRoomData) {
-          setNewRoomData(prev => ({
+          setNewRoomData((prev) => ({
             ...prev,
-            roomImg: base64String
+            roomImg: base64String,
           }));
         }
       } catch (error) {
@@ -212,27 +243,25 @@ const RoomManagementPage = () => {
     }
   };
 
-
- const handleAddRoomSubmit = async () => {
+  const handleAddRoomSubmit = async () => {
     if (!validateNewRoomData()) return;
 
     const requestData = {
-      roomName: newRoomData.roomName ?? '',
-      roomTypeId: newRoomData.roomTypeId?.toString() ?? '',
-      floor: newRoomData.floor?.toString() ?? '',
-      description: newRoomData.description ?? '',
-      roomImg: newRoomData.roomImg || '',
-      userId: newRoomData.renterID || '',
+      roomName: newRoomData.roomName ?? "",
+      roomTypeId: newRoomData.roomTypeId?.toString() ?? "",
+      floor: newRoomData.floor?.toString() ?? "",
+      description: newRoomData.description ?? "",
+      roomImg: newRoomData.roomImg || "",
+      userId: newRoomData.renterID || "",
     };
-        console.log(requestData)
-
+    console.log(requestData);
 
     try {
-      const response = await fetch('http://localhost:3000/rooms/', {
-        method: 'POST',
-        credentials: 'include',
+      const response = await fetch("http://localhost:3000/rooms/", {
+        method: "POST",
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(requestData),
       });
@@ -240,49 +269,57 @@ const RoomManagementPage = () => {
       if (!response.ok) {
         const errorData = await response.json();
         setAddRoomError(`Failed to add room: ${errorData.message}`);
-        throw new Error(`Failed to add room: ${response.status} - ${errorData.message}`);
+        throw new Error(
+          `Failed to add room: ${response.status} - ${errorData.message}`
+        );
       }
 
-            const data = await response.json();
-            const refetchResponse = await fetch('http://localhost:3000/rooms/', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            });
+      const data = await response.json();
+      const refetchResponse = await fetch("http://localhost:3000/rooms/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
 
-            if (!refetchResponse.ok) {
-            throw new Error(`Failed to refetch rooms: ${refetchResponse.status}`);
-            }
+      if (!refetchResponse.ok) {
+        throw new Error(`Failed to refetch rooms: ${refetchResponse.status}`);
+      }
 
-            const refetchData = await refetchResponse.json();
-            const mappedRooms: RoomType[] = refetchData.rooms.map((room: any) => ({
-            id: room.id,
-            roomName: room.roomName,
-            roomTypeId: room.roomTypeId,
-            floor: room.floor,
-            occupied: room.renterID != null,
-            description: room.description,
-            roomImg: room.roomImg,
-            renterID: room.renterID,
-            }));
+      const refetchData = await refetchResponse.json();
+      const mappedRooms: RoomType[] = refetchData.rooms.map((room: any) => ({
+        id: room.id,
+        roomName: room.roomName,
+        roomTypeId: room.roomTypeId,
+        floor: room.floor,
+        occupied: room.renterID != null,
+        description: room.description,
+        roomImg: room.roomImg,
+        renterID: room.renterID,
+      }));
 
       setRooms(mappedRooms);
       setIsAddDialogOpen(false);
-      setNewRoomData({ roomName: "", roomTypeId: "A", floor: 1, occupied: false, description: "", roomImg: "", renterID: null });
+      setNewRoomData({
+        roomName: "",
+        roomTypeId: "A",
+        floor: 1,
+        occupied: false,
+        description: "",
+        roomImg: "",
+        renterID: null,
+      });
       if (imagePreview) {
         URL.revokeObjectURL(imagePreview);
       }
       setImageFile(null);
       setImagePreview(null);
-        } catch (error) {
+    } catch (error) {
       console.error("Error adding room:", error);
-        setAddRoomError("Failed to add room.  Check console for details.");
+      setAddRoomError("Failed to add room.  Check console for details.");
     }
   };
-
-
 
   const validateEditRoomData = () => {
     if (!editFormData?.roomName) {
@@ -304,12 +341,17 @@ const RoomManagementPage = () => {
       setEditRoomError("กรุณากรอกรายละเอียด");
       return false;
     }
-        if (!editFormData.roomImg) {
-        setEditRoomError("กรุณาใส่รูปภาพ");
-        return;
+    if (!editFormData.roomImg) {
+      setEditRoomError("กรุณาใส่รูปภาพ");
+      return;
     }
 
-    if (rooms.some(room => room.roomName === editFormData.roomName && room.id !== editFormData.id)) {
+    if (
+      rooms.some(
+        (room) =>
+          room.roomName === editFormData.roomName && room.id !== editFormData.id
+      )
+    ) {
       setEditRoomError("ชื่อห้องนี้มีอยู่แล้ว");
       return false;
     }
@@ -321,61 +363,68 @@ const RoomManagementPage = () => {
     if (!editFormData || !validateEditRoomData()) return;
     console.log("เลขห้อง:", editFormData.roomName);
     console.log("ชั้น:", editFormData.floor);
-    console.log("ประเภทห้อง:", roomTypeOptions.find(type => type.id === editFormData.roomTypeId)?.name);
+    console.log(
+      "ประเภทห้อง:",
+      roomTypeOptions.find((type) => type.id === editFormData.roomTypeId)?.name
+    );
     console.log("รายละเอียด:", editFormData.description);
     const requestData = {
-        roomName: editFormData.roomName,
-        roomTypeId: editFormData.roomTypeId.toString(),
-        floor: editFormData.floor.toString(),
-        description: editFormData.description,
-        roomImg: editFormData.roomImg, 
-        renterID: editFormData.renterID || '',
+      roomName: editFormData.roomName,
+      roomTypeId: editFormData.roomTypeId.toString(),
+      floor: editFormData.floor.toString(),
+      description: editFormData.description,
+      roomImg: editFormData.roomImg,
+      renterID: editFormData.renterID || "",
     };
-     console.log(requestData)
-
+    console.log(requestData);
 
     try {
-      const response = await fetch(`http://localhost:3000/rooms/${editFormData.id}`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json', 
-        },
-        body: JSON.stringify(requestData),
-      });
+      const response = await fetch(
+        `http://localhost:3000/rooms/${editFormData.id}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
         setEditRoomError(`Failed to update room: ${errorData.message}`);
-        throw new Error(`Failed to update room: ${response.status} - ${errorData.message}`);
+        throw new Error(
+          `Failed to update room: ${response.status} - ${errorData.message}`
+        );
       }
-            const refetchResponse = await fetch('http://localhost:3000/rooms/', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            });
+      const refetchResponse = await fetch("http://localhost:3000/rooms/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
 
-            if (!refetchResponse.ok) {
-            throw new Error(`Failed to refetch rooms: ${refetchResponse.status}`);
-            }
+      if (!refetchResponse.ok) {
+        throw new Error(`Failed to refetch rooms: ${refetchResponse.status}`);
+      }
 
-            const refetchData = await refetchResponse.json();
-            const mappedRooms: RoomType[] = refetchData.rooms.map((room: any) => ({
-            id: room.id,
-            roomName: room.roomName,
-            roomTypeId: room.roomTypeId,
-            floor: room.floor,
-            occupied: room.renterID !== null,
-            description: room.description,
-            roomImg: room.roomImg,
-            renterID: room.renterID,
-            }));
+      const refetchData = await refetchResponse.json();
+      const mappedRooms: RoomType[] = refetchData.rooms.map((room: any) => ({
+        id: room.id,
+        roomName: room.roomName,
+        roomTypeId: room.roomTypeId,
+        floor: room.floor,
+        occupied: room.renterID !== null,
+        description: room.description,
+        roomImg: room.roomImg,
+        renterID: room.renterID,
+      }));
 
       setRooms(mappedRooms);
       setIsEditDialogOpen(false);
-      if (imagePreview && imagePreview !== originalRoomImg) { 
+      if (imagePreview && imagePreview !== originalRoomImg) {
         URL.revokeObjectURL(imagePreview);
       }
       setImageFile(null);
@@ -383,50 +432,54 @@ const RoomManagementPage = () => {
       setEditFormData(null);
     } catch (error) {
       console.error("Error updating room:", error);
-        setEditRoomError("Failed to update room. Check console for details.");
-
+      setEditRoomError("Failed to update room. Check console for details.");
     }
   };
   const handleDeleteRoom = async () => {
     if (!editFormData) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/rooms/${editFormData.id}`, {
-        method: 'DELETE',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        `http://localhost:3000/rooms/${editFormData.id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
         setEditRoomError(`Failed to delete room: ${errorData.message}`);
-        throw new Error(`Failed to delete room: ${response.status} - ${errorData.message}`);
+        throw new Error(
+          `Failed to delete room: ${response.status} - ${errorData.message}`
+        );
       }
-      const refetchResponse = await fetch('http://localhost:3000/rooms/', {
-        method: 'GET',
-        credentials: 'include',
+      const refetchResponse = await fetch("http://localhost:3000/rooms/", {
+        method: "GET",
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
-      
+
       if (!refetchResponse.ok) {
         throw new Error(`Failed to refetch rooms: ${refetchResponse.status}`);
       }
 
       const refetchData = await refetchResponse.json();
-            const mappedRooms: RoomType[] = refetchData.rooms.map((room: any) => ({
-            id: room.id,
-            roomName: room.roomName,
-            roomTypeId: room.roomTypeId,
-            floor: room.floor,
-            occupied: room.renterID != null,
-            description: room.description,
-            roomImg: room.roomImg,
-            renterID: room.renterID,
-            }));
+      const mappedRooms: RoomType[] = refetchData.rooms.map((room: any) => ({
+        id: room.id,
+        roomName: room.roomName,
+        roomTypeId: room.roomTypeId,
+        floor: room.floor,
+        occupied: room.renterID != null,
+        description: room.description,
+        roomImg: room.roomImg,
+        renterID: room.renterID,
+      }));
       setRooms(mappedRooms);
 
       setIsEditDialogOpen(false);
@@ -437,50 +490,52 @@ const RoomManagementPage = () => {
       setImagePreview(null);
       setEditFormData(null);
       setDeleteConfirmation(false);
-
-    } catch (error) { 
+    } catch (error) {
       toast.error("ไม่สามารถลบห้องได้ เนื่องจากมีผู้เช่าอยู่");
-      setDeleteConfirmation(false)
+      setDeleteConfirmation(false);
       setEditRoomError("Failed to delete room. Check console for details.");
     }
   };
 
-
-
-
-
   return (
-     <div className='min-h-screen bg-gray-50 flex flex-col overflow-auto'>
-      <div className='flex flex-1'>
+    <div className="min-h-screen bg-gray-50 flex flex-col overflow-auto">
+      <div className="flex flex-1">
         <Sidebar />
 
-        <main className='h-screen flex-1 overflow-auto'>
+        <main className="h-screen flex-1 overflow-auto">
           <div className="p-6 pt-16 md:pt-6">
             <div className="container mx-auto">
-              <div className='flex flex-col md:flex-row md:items-center justify-between mb-6'>
-                <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-0">จัดการห้องพัก</h1>
+              <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-0">
+                  จัดการห้องพัก
+                </h1>
                 <div className="flex space-x-4">
-                  <div className='relative w-full md:w-64'>
+                  <div className="relative w-full md:w-64">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                     <Input
                       type="text"
-                      placeholder='ค้นหาห้องพัก...'
+                      placeholder="ค้นหาห้องพัก..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className='pl-9 w-full'
+                      className="pl-9 w-full"
                     />
                   </div>
                   <Button
                     type="button"
                     onClick={() => setIsAddDialogOpen(true)}
-                  >เพิ่มห้องพัก</Button>
+                  >
+                    เพิ่มห้องพัก
+                  </Button>
                 </div>
               </div>
 
               {/* Room Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredRooms.map((room) => (
-                  <Card key={room.id} className="overflow-hidden hover:shadow-md transition-shadow duration-300">
+                  <Card
+                    key={room.id}
+                    className="overflow-hidden hover:shadow-md transition-shadow duration-300"
+                  >
                     <div className="relative w-full h-48">
                       <Image
                         src={room.roomImg}
@@ -489,19 +544,29 @@ const RoomManagementPage = () => {
                         fill
                       />
                       <Badge
-                        className={`absolute top-2 right-2 ${room.occupied
-                          ? "bg-red-100 text-red-800 border-red-200"
-                          : "bg-green-100 text-green-800 border-green-200"
-                          }`}
+                        className={`absolute top-2 right-2 ${
+                          room.occupied
+                            ? "bg-red-100 text-red-800 border-red-200"
+                            : "bg-green-100 text-green-800 border-green-200"
+                        }`}
                       >
                         {room.occupied ? "ไม่ว่าง" : "ว่าง"}
                       </Badge>
                     </div>
                     <CardHeader className="pb-2">
                       <div className="flex justify-between items-center">
-                        <CardTitle className="text-xl">ห้อง {room.roomName}</CardTitle>
-                        <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                          {roomTypeOptions.find(type => type.id === room.roomTypeId)?.name}
+                        <CardTitle className="text-xl">
+                          ห้อง {room.roomName}
+                        </CardTitle>
+                        <Badge
+                          variant="outline"
+                          className="bg-blue-50 text-blue-700 border-blue-200"
+                        >
+                          {
+                            roomTypeOptions.find(
+                              (type) => type.id === room.roomTypeId
+                            )?.name
+                          }
                         </Badge>
                       </div>
                       <CardDescription className="line-clamp-2 mt-1">
@@ -546,7 +611,9 @@ const RoomManagementPage = () => {
             </DialogHeader>
 
             <div className="grid gap-4 py-4">
-              {editRoomError && <div className="text-red-500 text-sm">{editRoomError}</div>}
+              {editRoomError && (
+                <div className="text-red-500 text-sm">{editRoomError}</div>
+              )}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="roomName" className="text-right">
                   เลขห้อง
@@ -653,11 +720,11 @@ const RoomManagementPage = () => {
                 variant="outline"
                 onClick={() => {
                   setIsEditDialogOpen(false);
-                   if (imagePreview && imagePreview !== originalRoomImg) {
+                  if (imagePreview && imagePreview !== originalRoomImg) {
                     URL.revokeObjectURL(imagePreview);
                   }
                   setImageFile(null);
-                  setImagePreview(null)
+                  setImagePreview(null);
                 }}
               >
                 <X className="mr-2 h-4 w-4" />
@@ -680,19 +747,26 @@ const RoomManagementPage = () => {
                 <Trash2 className="mr-2 h-4 w-4" />
                 ลบห้องพัก
               </Button>
-              </DialogFooter>
-             {/* Delete Confirmation Dialog */}
+            </DialogFooter>
+            {/* Delete Confirmation Dialog */}
             {deleteConfirmation && (
-              <Dialog open={deleteConfirmation} onOpenChange={setDeleteConfirmation}>
+              <Dialog
+                open={deleteConfirmation}
+                onOpenChange={setDeleteConfirmation}
+              >
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>ยืนยันการลบห้องพัก</DialogTitle>
                     <DialogDescription>
-                      คุณแน่ใจหรือไม่ว่าต้องการลบห้องพักนี้? การดำเนินการนี้ไม่สามารถย้อนกลับได้
+                      คุณแน่ใจหรือไม่ว่าต้องการลบห้องพักนี้?
+                      การดำเนินการนี้ไม่สามารถย้อนกลับได้
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter>
-                    <Button variant="outline" onClick={() => setDeleteConfirmation(false)}>
+                    <Button
+                      variant="outline"
+                      onClick={() => setDeleteConfirmation(false)}
+                    >
                       ยกเลิก
                     </Button>
                     <Button variant="destructive" onClick={handleDeleteRoom}>
@@ -702,10 +776,9 @@ const RoomManagementPage = () => {
                 </DialogContent>
               </Dialog>
             )}
-                </DialogContent>
-              </Dialog>
+          </DialogContent>
+        </Dialog>
       )}
-
 
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
         <DialogContent className="sm:max-w-md">
@@ -717,7 +790,9 @@ const RoomManagementPage = () => {
           </DialogHeader>
 
           <div className="grid gap-4 py-4">
-            {addRoomError && <div className="text-red-500 text-sm">{addRoomError}</div>}
+            {addRoomError && (
+              <div className="text-red-500 text-sm">{addRoomError}</div>
+            )}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="roomName" className="text-right">
                 เลขห้อง
@@ -837,8 +912,7 @@ const RoomManagementPage = () => {
             <Button
               type="button"
               onClick={handleAddRoomSubmit}
-  className="bg-red-600 hover:bg-red-700 text-white"
-              
+              className="bg-red-600 hover:bg-red-700 text-white"
             >
               <Check className="mr-2 h-4 w-4" />
               เพิ่มห้องพัก

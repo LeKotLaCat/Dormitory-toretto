@@ -48,11 +48,11 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    // if ((path !== "/user/queue") && !userRoom) {
-    //   url.pathname = "/user/queue"; // Redirect unauthorized access
-    //   return NextResponse.redirect(url);
+    if ((path !== "/user/queue") && !userRoom && userRole == 'user') {
+      url.pathname = "/user/queue"; // Redirect unauthorized access
+      return NextResponse.redirect(url);
 
-    // }
+    }
 
     // Protect admin pages
     if (path.startsWith("/admin") && userRole !== "admin") {
