@@ -327,6 +327,14 @@ const QueueAppointment = () => {
                   <p className="text-gray-500">ไม่พบข้อมูลประเภทห้องพัก</p>
                 </div>
               )}
+
+              
+            <div className='flex justify-end mt-12'>
+              <Button variant="destructive" className='hover:scale-105 transition-all duration-300'
+              onClick={() => {router.back()}}>
+                ออกจากระบบ
+              </Button>
+            </div>
             </div>
           </div>
 

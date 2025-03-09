@@ -197,14 +197,6 @@ const UserMain = () => {
                         <p className="font-medium truncate">{userProfile.email}</p> {/* Update here */}
                       </div>
                     </div>
-                    
-                    <div className="flex items-center gap-2">
-                      <Calendar className="text-primary w-5 h-5 flex-shrink-0" />
-                      <div>
-                        <p className="text-sm text-gray-500">เข้าพักเมื่อ</p>
-                        <p className="font-medium">{userProfile.checkInDate}</p> {/* Update here */}
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>

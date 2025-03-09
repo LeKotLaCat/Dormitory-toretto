@@ -235,6 +235,14 @@ const AdminQueue = () => {
         );
     };
 
+    const handleAcceptCancle = (id: number) => {
+        setQueueList(
+            queueList.map((item) =>
+                item.id === id ? { ...item, expanded: false } : item 
+            )
+        );
+    };
+
     const handleConfirmAccept = (id: number) => {
         const item = queueList.find(item => item.id === id);
         if (item) {
@@ -500,7 +508,18 @@ const AdminQueue = () => {
                                                         </div>
 
                                                         {item.status === "pending" && (
-                                                            <div className="flex justify-end mt-4  animate-fadeIn">
+                                                            <div className="flex justify-end mt-4 space-x-4 animate-fadeIn">
+
+                                                                <Button
+                                                                    variant="outline"
+                                                                    onClick={() => handleAcceptCancle(item.id)}
+                                                                    className="w-full md:w-auto transition-all duration-300 ease-in-out transform hover:scale-105"
+                                                                >
+                                                                    <X className="mr-2 h-4 w-4" />
+                                                                    ยกเลิก
+                                                                </Button>
+
+
                                                                 <Button
                                                                     onClick={() => handleConfirmAccept(item.id)}
                                                                     className="w-full md:w-auto transition-all duration-300 ease-in-out transform hover:scale-105"
