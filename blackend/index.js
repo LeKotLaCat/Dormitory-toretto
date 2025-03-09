@@ -665,57 +665,66 @@ app.post("/queue/:roomTypeId", verifyToken, (req, res, next) => {
   const { description, bookingDate, bookingTime } = req.body;
   const queueDate = new Date();
   const userId = req.user.id;
+
   db.get(
-    "SELECT COUNT(id) as vacantCount FROM room WHERE roomTypeId = ?",
-    [roomTypeId],
-    (err, vacantResult) => {
+    "SELECT COUNT(id) as checkqueue FROM Queue WHERE userId = ?",
+    [userId],
+    (err, queueCheckResult) => {
       if (err) {
         return next(err);
       }
 
+      if (queueCheckResult.checkqueue > 0) {
+        return res.status(409).json({ message: "คุณมีคิวอยู่แล้ว" });
+      }
+
       db.get(
-        "SELECT COUNT(id) as unavailableCount FROM room WHERE roomTypeId = ? AND renterID IS NOT NULL",
+        "SELECT COUNT(id) as vacantCount FROM room WHERE roomTypeId = ?",
         [roomTypeId],
-        (err, unavailableResult) => {
+        (err, vacantResult) => {
           if (err) {
             return next(err);
           }
 
           db.get(
-            "SELECT COUNT(id) as queueCount FROM Queue WHERE roomTypeId = ?",
+            "SELECT COUNT(id) as unavailableCount FROM room WHERE roomTypeId = ? AND renterID IS NOT NULL",
             [roomTypeId],
-            (err, queueResult) => {
+            (err, unavailableResult) => {
               if (err) {
                 return next(err);
               }
 
-              const vacantCount = vacantResult.vacantCount;
-              const unavailableCount = unavailableResult.unavailableCount;
-              const queueCount = queueResult.queueCount;
-              console.log(vacantCount, unavailableCount, queueCount);
-              if (queueCount + unavailableCount >= vacantCount) {
-                res.status(409).json({ message: "ไม่สามารถจองคิวได้" });
-              } else {
-                const insertQueue = `INSERT INTO Queue (userId, roomTypeId, queueDate, description, bookingDate, bookingTime) VALUES (?, ?, ?, ?, ?, ?);`;
-                db.run(
-                  insertQueue,
-                  [
-                    userId,
-                    roomTypeId,
-                    queueDate,
-                    description,
-                    bookingDate,
-                    bookingTime,
-                  ],
-                  function (error) {
-                    if (error) {
-                      return next(error);
-                    }
-
-                    res.status(201).json({ roomId: this.lastID });
+              db.get(
+                "SELECT COUNT(id) as queueCount FROM Queue WHERE roomTypeId = ?",
+                [roomTypeId],
+                (err, queueResult) => {
+                  if (err) {
+                    return next(err);
                   }
-                );
-              }
+
+                  const vacantCount = vacantResult.vacantCount;
+                  const unavailableCount = unavailableResult.unavailableCount;
+                  const queueCount = queueResult.queueCount;
+
+                  console.log(vacantCount, unavailableCount, queueCount);
+
+                  if (queueCount + unavailableCount >= vacantCount) {
+                    return res.status(409).json({ message: "ไม่สามารถจองคิวได้" });
+                  }
+
+                  const insertQueue = `INSERT INTO Queue (userId, roomTypeId, queueDate, description, bookingDate, bookingTime) VALUES (?, ?, ?, ?, ?, ?);`;
+                  db.run(
+                    insertQueue,
+                    [userId, roomTypeId, queueDate, description, bookingDate, bookingTime],
+                    function (error) {
+                      if (error) {
+                        return next(error);
+                      }
+                      res.status(201).json({ roomId: this.lastID });
+                    }
+                  );
+                }
+              );
             }
           );
         }
@@ -723,6 +732,7 @@ app.post("/queue/:roomTypeId", verifyToken, (req, res, next) => {
     }
   );
 });
+
 app.delete("/queue/del/:queueId", verifyToken, (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({ message: "กรุณา login" });
