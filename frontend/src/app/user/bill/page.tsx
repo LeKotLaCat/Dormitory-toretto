@@ -102,15 +102,15 @@ const BillPage = () => {
             other: parseFloat(billData.taskprice),
           };
           return {
-            id: billData.BillID, // Use BillID as the ID
-            paidDate, // Use the formatted date
-            forMonth, // The month formatted in Thai
-            totalAmount: totalAmount.toFixed(2), // Total amount rounded to 2 decimal places
+            id: billData.BillID,
+            paidDate,
+            forMonth,
+            totalAmount: totalAmount.toFixed(2),
             status,
             paymentDate:billData.paidDate ? new Date(billData.paidDate) : null, // Use the same paidDate for paymentDate (or modify if needed)
             receiptUrl:
               billData.billStatus !== 0 &&
-              billData.transactionimg, // Example URL for the receipt
+              billData.transactionimg,
             breakdown,
           };
         });
