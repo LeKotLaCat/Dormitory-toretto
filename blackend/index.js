@@ -334,7 +334,8 @@ app.post("/rooms", verifyToken, (req, res, next) => {
       if (error) {
         return next(error);
       }
-      if (result) {
+      console.log(result.length == 0)
+      if (result.length) {
         return res.status(409).json({ message: "ชื่อห้องนี้มีในระบบแล้ว" });
       }
     }
