@@ -179,7 +179,6 @@ const TenantsPage = () => {
       if (rooms.length > 0) {
         const newCurrentTenants: Record<string, BasicUser> = {};
         for (const room of rooms) {
-          console.log(room.renterID + "ewew");
           if (room.renterID) {
             const user = await fetchUserById(room.renterID);
             if (user) {
@@ -507,7 +506,7 @@ const TenantsPage = () => {
                         -- ไม่มีผู้เช่า (ว่าง) --
                       </SelectItem>
                       {users.map((user) => (
-                        <SelectItem key={user.id} value={user.id}>
+                        <SelectItem key={user.id} value={user.id.toString()}>
                           {user.firstname} {user.lastname} ({user.id})
                         </SelectItem>
                       ))}

@@ -40,7 +40,6 @@ const Signin = () => {
         });
   
         const data = await response.json();
-        console.log("Response Data:", data);
         if (!response.ok) {
           throw new Error(data.message || 'เข้าสู่ระบบไม่สำเร็จ');
         }
@@ -53,7 +52,6 @@ const Signin = () => {
           router.push('/admin/main');
         }
         else {
-          console.log(data.room);
           if (data.room == undefined){
             router.push('/user/queue');
           }
