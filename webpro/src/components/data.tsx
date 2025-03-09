@@ -396,7 +396,7 @@ export const movingIn = [
 export const TenantData = [
   {
     id: "U001",
-    name: "Supakorn Wacharasindhu",
+    name: "ศุภกร ไม่รู้",
     email: "supakorn@example.com",
     phone: "062-345-6789",
     faculty: "Information Technology",

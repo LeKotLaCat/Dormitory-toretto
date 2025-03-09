@@ -256,14 +256,14 @@ const AdminQueue = () => {
             <div className="container mx-auto">
               <div className="flex items-center justify-between mb-6">
                 <h1 className="text-2xl font-bold text-gray-800">
-                  Room Viewing Queue
+                  คิวขอเข้าดูห้อง
                 </h1>
                 <div className="flex space-x-4">
                   <div className="relative">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                     <Input
                       type="text"
-                      placeholder="Search room or service..."
+                      placeholder="ค้นหาห้องหรือรายชื่อ..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-9 w-full md:w-64"
@@ -274,16 +274,16 @@ const AdminQueue = () => {
 
               <div className="mb-4 flex items-center justify-between">
                 <p className="text-gray-600">
-                  Showing{" "}
+                  กำลังแสดง {" "}
                   {
                     sortedRequests.filter((item) => item.status === "pending")
                       .length
                   }{" "}
-                  pending requests
+                  ผลการค้นหา
                 </p>
                 <div className="flex items-center space-x-2">
                   <p className="text-sm text-gray-500">
-                    Page {currentPage} of {totalPages}
+                    หน้า {currentPage} จาก {totalPages}
                   </p>
                 </div>
               </div>
@@ -300,13 +300,6 @@ const AdminQueue = () => {
                       <div className="flex justify-between items-start">
                         <div>
                           <CardTitle>{item.name}</CardTitle>
-                          <CardDescription className="flex items-center gap-2 mt-1">
-                            <Clock size={14} />
-                            Requested{" "}
-                            {formatDistanceToNow(new Date(item.requestedOn), {
-                              addSuffix: true,
-                            })}
-                          </CardDescription>
                         </div>
                         <div>
                           <AnimatePresence mode="wait">
@@ -322,7 +315,7 @@ const AdminQueue = () => {
                                   variant="outline"
                                   className="bg-yellow-50 text-yellow-700 border-yellow-200"
                                 >
-                                  Pending
+                                  รอการยืนยัน
                                 </Badge>
                               </motion.div>
                             ) : item.status === "accepted" ? (
@@ -337,7 +330,7 @@ const AdminQueue = () => {
                                   variant="outline"
                                   className="bg-green-50 text-green-700 border-green-200"
                                 >
-                                  Accepted
+                                  ยืนยันแล้ว
                                 </Badge>
                               </motion.div>
                             ) : (
@@ -352,7 +345,7 @@ const AdminQueue = () => {
                                   variant="outline"
                                   className="bg-red-50 text-red-700 border-red-200"
                                 >
-                                  Rejected
+                                  ปฏิเสธแล้ว
                                 </Badge>
                               </motion.div>
                             )}
@@ -361,7 +354,7 @@ const AdminQueue = () => {
                           {sortedRequests.length === 0 && (
                             <div className="bg-white rounded-md p-8 text-center">
                               <p className="text-gray-500">
-                                No cleaning requests found
+                                ไม่พบการค้นหา
                               </p>
                             </div>
                           )}
@@ -377,7 +370,7 @@ const AdminQueue = () => {
                         <div className="flex items-center gap-2">
                           <CalendarIcon size={16} className="text-gray-500" />
                           <span className="text-sm">
-                            {item.preferredDate.toLocaleDateString("en-US", {
+                            {item.preferredDate.toLocaleDateString("th-TH", {
                               weekday: "short",
                               day: "numeric",
                               month: "short",
@@ -398,13 +391,13 @@ const AdminQueue = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4   animate-fadeIn">
                               <div className="transition duration-300 ease-in-out transform hover:bg-gray-50 p-2 rounded">
                                 <h4 className="text-sm font-medium text-gray-500 mb-1">
-                                  Email
+                                  อีเมล
                                 </h4>
                                 <p className="text-sm">{item.email}</p>
                               </div>
                               <div className="transition duration-300 ease-in-out transform hover:bg-gray-50 p-2 rounded">
                                 <h4 className="text-sm font-medium text-gray-500 mb-1">
-                                  Planned Moving Date
+                                  เข้าดูห้องพักวันที่
                                 </h4>
                                 <p className="text-sm">
                                   {item.additionalInfo.movingDate.toLocaleDateString(
@@ -415,11 +408,11 @@ const AdminQueue = () => {
                                       year: "numeric",
                                     }
                                   )}
-                                </p>
+                                </p>  
                               </div>
                               <div className="md:col-span-2 transition duration-300 ease-in-out transform hover:bg-gray-50 p-2 rounded">
                                 <h4 className="text-sm font-medium text-gray-500 mb-1">
-                                  Special Requests
+                                  ข้อมูลเพิ่มเติม
                                 </h4>
                                 <p className="text-sm">
                                   {item.additionalInfo.specialRequests}
@@ -434,7 +427,7 @@ const AdminQueue = () => {
                                   className="w-full md:w-auto transition-all duration-300 ease-in-out transform hover:scale-105"
                                 >
                                   <CheckIcon className="mr-2 h-4 w-4" />
-                                  Confirm Appointment
+                                  คอนเฟิร์มการเข้าดูห้องพัก
                                 </Button>
                               </div>
                             )}
@@ -451,7 +444,7 @@ const AdminQueue = () => {
                           className="transition-all duration-200 ease-in-out hover:bg-red-50"
                         >
                           <X className="mr-2 h-4 w-4" />
-                          Reject
+                          ปฎิเสธ
                         </Button>
                         <motion.div
                           whileHover={{ scale: 1.05 }}
@@ -462,7 +455,7 @@ const AdminQueue = () => {
                             className="transition-all duration-300 ease-in-out"
                           >
                             <CheckIcon className="mr-2 h-4 w-4" />
-                            Accept
+                            ยอมรับ
                           </Button>
                         </motion.div>
                       </CardFooter>
@@ -482,7 +475,7 @@ const AdminQueue = () => {
                       className="hidden sm:flex"
                     >
                       <ChevronLeft className="h-4 w-4" />
-                      <span className="ml-1">Previous</span>
+                      <span className="ml-1">ก่อนหน้า</span>
                     </Button>
 
                     <Button
@@ -554,7 +547,7 @@ const AdminQueue = () => {
                       size="sm"
                       className="hidden sm:flex"
                     >
-                      <span className="mr-1">Next</span>
+                      <span className="mr-1">หน้าถัดไป</span>
                       <ChevronRight className="h-4 w-4" />
                     </Button>
 
@@ -583,19 +576,18 @@ const AdminQueue = () => {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle>แน่ใจใช่ไหม?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action will reject the room viewing request. This cannot be
-              undone.
+              การกระทำนี้จะทำการยกเลิกการเข้าดูห้องพัก เมื่อกดแล้วจะไม่สามารถยกเลิกได้
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>ยกเลิก</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmReject}
               className="bg-red-500 hover:bg-red-600 text-white"
             >
-              Reject Request
+              ปฏิเสธคำขอ
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -604,9 +596,9 @@ const AdminQueue = () => {
       <Dialog open={isRoomDialogOpen} onOpenChange={setIsRoomDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Assign Room</DialogTitle>
+            <DialogTitle>เพิ่มห้องให้ผู้เช่า</DialogTitle>
             <DialogDescription>
-              Select an available room that matches the requested type.
+              เลือกห้องที่ว่างอยู่เพื่อให้ผู้เช่าเข้าพัก
             </DialogDescription>
           </DialogHeader>
           
@@ -616,7 +608,7 @@ const AdminQueue = () => {
               onValueChange={setSelectedRoom}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a room" />
+                <SelectValue placeholder="เลือกห้อง" />
               </SelectTrigger>
               <SelectContent>
                 {availableRooms.length > 0 ? (
@@ -627,7 +619,7 @@ const AdminQueue = () => {
                   ))
                 ) : (
                   <SelectItem value="none" disabled>
-                    No rooms available for this type
+                    ไม่มีห้องว่างสำหรับห้องประเภทนี้
                   </SelectItem>
                 )}
               </SelectContent>
@@ -636,7 +628,7 @@ const AdminQueue = () => {
           
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsRoomDialogOpen(false)}>
-              Cancel
+              ยกเลิก
             </Button>
             <Button 
               onClick={handleFinalConfirmation}
@@ -644,7 +636,7 @@ const AdminQueue = () => {
               className="transition-all duration-300 ease-in-out transform hover:scale-105"
             >
               <CheckIcon className="mr-2 h-4 w-4" />
-              Confirm Assignment
+              คอนเฟิร์มห้องพัก
             </Button>
           </DialogFooter>
         </DialogContent>

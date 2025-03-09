@@ -49,6 +49,7 @@ import {
 import { format } from 'date-fns';
 import Image from "next/image";
 import { initialRooms } from '@/components/data';
+import { toast } from 'sonner';
 
 interface AdditionalFee {
     type: 'housewife' | 'fixing' | 'laundry' | 'internet' | 'other';
@@ -175,7 +176,7 @@ const UtilityPage = () => {
   // Handle adding new fee to the utility record
   const handleAddFee = () => {
     if (newFee.amount <= 0 || !newFee.description.trim()) {
-      alert("Please enter a valid amount and description");
+      toast.error("Please enter a valid amount and description");
       return;
     }
 
@@ -210,13 +211,13 @@ const UtilityPage = () => {
   const handleAddUtility = () => {
     // Validate input data
     if (!newUtility.roomNumber || newUtility.electric < 0 || newUtility.water < 0) {
-      alert("Please fill in all required fields with valid values");
+      toast.error("กรุณาใส่ข้อมูลให้ถูกต้อง");
       return;
     }
 
     // Check if room exists
     if (!rooms.find(room => room.roomNumber === newUtility.roomNumber)) {
-      alert("Room number does not exist");
+      toast.error("ไม่มีห้องหมายเลขนี้");
       return;
     }
 
@@ -226,7 +227,7 @@ const UtilityPage = () => {
     );
 
     if (duplicate) {
-      alert(`Utility for Room ${newUtility.roomNumber} in ${newUtility.month} already exists`);
+      toast.error(`ค่าสาธารณูประโภคของห้อง ${newUtility.roomNumber} ในเดือน ${newUtility.month} มีอยู่แล้ว`);
       return;
     }
 
@@ -271,13 +272,13 @@ const UtilityPage = () => {
             <div className="container mx-auto">
               {/* Header and Actions */}
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
-                <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-0">Utility Cost Tracking</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-0">ติดตามค่าสาธาณูประโภค</h1>
                 <div className="flex flex-col md:flex-row gap-3">
                   <div className="relative w-full md:w-64">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                     <Input
                       type="text"
-                      placeholder="Search by room number..."
+                      placeholder="หาห้องพัก..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-9 w-full"
@@ -288,7 +289,7 @@ const UtilityPage = () => {
                     className="w-full md:w-auto"
                   >
                     <Plus className="h-4 w-4 mr-2" />
-                    Add New Utility
+                    เพิ่มบิลใหม่
                   </Button>
                 </div>
               </div>
@@ -298,7 +299,7 @@ const UtilityPage = () => {
                 <Card>
                   <CardContent className="p-4 flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-500">Current Month</p>
+                      <p className="text-sm text-gray-500">เดือนปัจจุบัน</p>
                       <p className="text-2xl font-bold">{currentMonth}</p>
                     </div>
                     <div className="bg-blue-100 p-3 rounded-full">
@@ -309,7 +310,7 @@ const UtilityPage = () => {
                 <Card>
                   <CardContent className="p-4 flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-500">Unpaid Bills</p>
+                      <p className="text-sm text-gray-500">จำนวนบิลที่ยังไม่จ่าย</p>
                       <p className="text-2xl font-bold">{unpaidCount}</p>
                     </div>
                     <div className="bg-amber-100 p-3 rounded-full">
@@ -320,7 +321,7 @@ const UtilityPage = () => {
                 <Card>
                   <CardContent className="p-4 flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-500">Total Electric</p>
+                      <p className="text-sm text-gray-500">ค่าไฟทั้งหมด</p>
                       <p className="text-2xl font-bold">฿{totalElectric.toLocaleString()}</p>
                     </div>
                     <div className="bg-yellow-100 p-3 rounded-full">
@@ -331,7 +332,7 @@ const UtilityPage = () => {
                 <Card>
                   <CardContent className="p-4 flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-500">Total Water</p>
+                      <p className="text-sm text-gray-500">ค่าน้ำทั้งหมด</p>
                       <p className="text-2xl font-bold">฿{totalWater.toLocaleString()}</p>
                     </div>
                     <div className="bg-blue-100 p-3 rounded-full">
@@ -342,7 +343,7 @@ const UtilityPage = () => {
                 <Card>
                   <CardContent className="p-4 flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-500">Additional Fees</p>
+                      <p className="text-sm text-gray-500">ค่าใช้จ่ายเพิ่มเติมทั้งหมด</p>
                       <p className="text-2xl font-bold">฿{totalAdditional.toLocaleString()}</p>
                     </div>
                     <div className="bg-purple-100 p-3 rounded-full">
@@ -358,11 +359,11 @@ const UtilityPage = () => {
                   <SelectTrigger className="w-full md:w-40">
                     <div className="flex items-center">
                       <Calendar className="h-4 w-4 mr-2" />
-                      <span>{filterMonth === "all" ? "All Months" : filterMonth}</span>
+                      <span>{filterMonth === "all" ? "ทุกเดือน" : filterMonth}</span>
                     </div>
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Months</SelectItem>
+                    <SelectItem value="all">ทุกเดือน</SelectItem>
                     {months.map(month => (
                       <SelectItem key={month} value={month}>{month}</SelectItem>
                     ))}
@@ -374,15 +375,15 @@ const UtilityPage = () => {
                     <div className="flex items-center">
                       <Check className="h-4 w-4 mr-2" />
                       <span>
-                        {filterStatus === "all" ? "All Status" : 
+                        {filterStatus === "all" ? "ทุกสถานะ" : 
                          filterStatus === "paid" ? "Paid" : "Unpaid"}
                       </span>
                     </div>
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Status</SelectItem>
-                    <SelectItem value="paid">Paid</SelectItem>
-                    <SelectItem value="unpaid">Unpaid</SelectItem>
+                    <SelectItem value="all">ทุกสถานะ</SelectItem>
+                    <SelectItem value="paid">จ่ายแล้ว</SelectItem>
+                    <SelectItem value="unpaid">ยังไม่จ่าย</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -391,7 +392,7 @@ const UtilityPage = () => {
               {filteredData.length === 0 ? (
                 <Card>
                   <CardContent className="p-8 text-center">
-                    <p className="text-gray-500 mb-4">No utility records found</p>
+                    <p className="text-gray-500 mb-4">ไม่พบรายการ</p>
                     <Button 
                       variant="outline" 
                       onClick={() => {
@@ -410,15 +411,15 @@ const UtilityPage = () => {
                     <table className="w-full">
                       <thead>
                         <tr className="bg-gray-50 text-left">
-                          <th className="px-4 py-3 text-sm font-medium text-gray-700">Room</th>
-                          <th className="px-4 py-3 text-sm font-medium text-gray-700">Month</th>
-                          <th className="px-4 py-3 text-sm font-medium text-gray-700">Electric (฿)</th>
-                          <th className="px-4 py-3 text-sm font-medium text-gray-700">Water (฿)</th>
-                          <th className="px-4 py-3 text-sm font-medium text-gray-700">Add. Fees</th>
-                          <th className="px-4 py-3 text-sm font-medium text-gray-700">Total (฿)</th>
-                          <th className="px-4 py-3 text-sm font-medium text-gray-700">Due Date</th>
-                          <th className="px-4 py-3 text-sm font-medium text-gray-700">Status</th>
-                          <th className="px-4 py-3 text-sm font-medium text-gray-700">Action</th>
+                          <th className="px-4 py-3 text-sm font-medium text-gray-700">ห้อง</th>
+                          <th className="px-4 py-3 text-sm font-medium text-gray-700">เดือน</th>
+                          <th className="px-4 py-3 text-sm font-medium text-gray-700">ค่าไฟ  (฿)</th>
+                          <th className="px-4 py-3 text-sm font-medium text-gray-700">ค่าน้ำ (฿)</th>
+                          <th className="px-4 py-3 text-sm font-medium text-gray-700">ค่าใช้จ่ายเพิ่มเติม</th>
+                          <th className="px-4 py-3 text-sm font-medium text-gray-700">ทั้งหมด (฿)</th>
+                          <th className="px-4 py-3 text-sm font-medium text-gray-700">ชำระกภายในวันที่ </th>
+                          <th className="px-4 py-3 text-sm font-medium text-gray-700">สถานะ</th>
+                          <th className="px-4 py-3 text-sm font-medium text-gray-700">ใบเสร็จ</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200">
@@ -474,8 +475,8 @@ const UtilityPage = () => {
                                   }
                                 >
                                   {item.status === "paid" && item.paidDate
-                                    ? `Paid on ${format(item.paidDate, "MMM d")}` 
-                                    : "Unpaid"}
+                                    ? `จ่ายเมื่อวันที่ ${format(item.paidDate, "MMM d")}` 
+                                    : "ยังไม่จ่าย"}
                                 </Badge>
                               </td>
                               <td className="px-4 py-3">
@@ -490,7 +491,7 @@ const UtilityPage = () => {
                                     }}
                                   >
                                     <Printer className="h-4 w-4 mr-1" />
-                                    Preview Receipt
+                                    คอนเฟิร์มใบเสร็จ
                                   </Button>
                                 )}
                                 {item.status === "paid" && (
@@ -504,7 +505,7 @@ const UtilityPage = () => {
                                     }}
                                   >
                                     <Printer className="h-4 w-4 mr-1" />
-                                    View Receipt
+                                    ดูใบเสร็จ
                                   </Button>
                                 )}
                               </td>
@@ -527,26 +528,26 @@ const UtilityPage = () => {
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Add New Utility Record</DialogTitle>
+            <DialogTitle>เพิ่มบิลใหม่</DialogTitle>
             <DialogDescription>
-              Enter the utility details for a room
+              ใส่ข้อมูลค่าใช้จ่ายและห้องพัก
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label htmlFor="roomNumber">Room Number *</Label>
+              <Label htmlFor="roomNumber">หมายเลขห้องพัก *</Label>
               <Select 
                 value={newUtility.roomNumber} 
                 onValueChange={(value) => setNewUtility({...newUtility, roomNumber: value})}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select room number" />
+                  <SelectValue placeholder="เลือกหมายเลขห้องพัก" />
                 </SelectTrigger>
                 <SelectContent>
                   {rooms.map(room => (
                     <SelectItem key={room.roomNumber} value={room.roomNumber}>
-                      Room {room.roomNumber}
+                      ห้อง {room.roomNumber}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -554,13 +555,13 @@ const UtilityPage = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="month">Month *</Label>
+              <Label htmlFor="month">เดือน *</Label>
               <Select 
                 value={newUtility.month} 
                 onValueChange={(value) => setNewUtility({...newUtility, month: value})}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select month" />
+                  <SelectValue placeholder="เลือกเดือน" />
                 </SelectTrigger>
                 <SelectContent>
                   {/* Current month and previous 2 months */}
@@ -580,7 +581,7 @@ const UtilityPage = () => {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="electric">Electricity Cost (฿) *</Label>
+                <Label htmlFor="electric">ค่าไฟ (฿) *</Label>
                 <div className="relative">
                   <Zap className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                   <Input 
@@ -595,7 +596,7 @@ const UtilityPage = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="water">Water Cost (฿) *</Label>
+                <Label htmlFor="water">ค่าน้ำ (฿) *</Label>
                 <div className="relative">
                   <Droplets className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                   <Input 
@@ -611,7 +612,7 @@ const UtilityPage = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="dueDate">Due Date</Label>
+              <Label htmlFor="dueDate">วันสิ้นสุดการชำระ</Label>
               <Input 
                 id="dueDate" 
                 type="date"
@@ -626,7 +627,7 @@ const UtilityPage = () => {
             {/* Additional fees section */}
             <div className="space-y-3 mt-4">
               <div className="flex items-center justify-between">
-                <Label>Additional Fees</Label>
+                <Label>ค่าใช้จ่ายเพิ่มเติม</Label>
                 <Button 
                   type="button" 
                   size="sm" 
@@ -635,7 +636,7 @@ const UtilityPage = () => {
                   className="text-blue-600 hover:text-blue-800"
                 >
                   <Plus className="h-4 w-4 mr-1" />
-                  Add Fee
+                  เพิ่มค่าใช้จ่าย
                 </Button>
               </div>
               
@@ -668,14 +669,14 @@ const UtilityPage = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-gray-500 italic">No additional fees added</p>
+                <p className="text-sm text-gray-500 italic">ไม่มีค่าใช้จ่ายเพิ่มเติม</p>
               )}
 
               {/* Add fee form */}
               {showAddFee && (
                 <div className="space-y-3 bg-gray-50 p-3 rounded-md">
                   <div className="space-y-2">
-                    <Label htmlFor="feeType">Fee Type</Label>
+                    <Label htmlFor="feeType">รายการค่าใช้จ่าย</Label>
                     <Select 
                       value={newFee.type} 
                       onValueChange={(value) => setNewFee({...newFee, 
@@ -685,18 +686,18 @@ const UtilityPage = () => {
                         <SelectValue placeholder="Select fee type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="housewife">Housewife Service</SelectItem>
-                        <SelectItem value="fixing">Fixing Service</SelectItem>
-                        <SelectItem value="laundry">Laundry Service</SelectItem>
-                        <SelectItem value="internet">Internet</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                        <SelectItem value="housewife">ใช้บริการแม่บ้าน</SelectItem>
+                        <SelectItem value="fixing">บริการซ่อม</SelectItem>
+                        <SelectItem value="laundry">บริการซักผ้า</SelectItem>
+                        <SelectItem value="internet">อินเตอร์เน็ต</SelectItem>
+                        <SelectItem value="other">อื่นๆ</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-2">
-                      <Label htmlFor="feeAmount">Amount (฿)</Label>
+                      <Label htmlFor="feeAmount">ค่าใช้จ่าย (฿)</Label>
                       <Input 
                         id="feeAmount" 
                         type="number"
@@ -706,12 +707,12 @@ const UtilityPage = () => {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="feeDescription">Description</Label>
+                      <Label htmlFor="feeDescription">ข้อมูลเพิ่มเติม</Label>
                       <Input 
                         id="feeDescription" 
                         value={newFee.description}
                         onChange={(e) => setNewFee({...newFee, description: e.target.value})}
-                        placeholder="e.g., Weekly cleaning"
+                        placeholder="เช่น พัดลมเสีย"
                       />
                     </div>
                   </div>
@@ -723,14 +724,14 @@ const UtilityPage = () => {
                       size="sm"
                       onClick={() => setShowAddFee(false)}
                     >
-                      Cancel
+                      ยกเลิก
                     </Button>
                     <Button 
                       type="button" 
                       size="sm"
                       onClick={handleAddFee}
                     >
-                      Add Fee
+                      เพิ่มค่าใช้จ่าย
                     </Button>
                   </div>
                 </div>
@@ -742,13 +743,13 @@ const UtilityPage = () => {
                 <PlusCircle className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="font-medium">
-                    Total Amount: ฿{(
+                    ค่าใช้จ่ายทั้งหมด: ฿{(
                       Number(newUtility.electric) + 
                       Number(newUtility.water) + 
                       newUtility.additionalFees.reduce((sum, fee) => sum + Number(fee.amount), 0)
                     ).toLocaleString()}
                   </p>
-                  <p className="mt-1">This utility record will be added with "Unpaid" status by default.</p>
+                  <p className="mt-1">ประวัติค่าใช้จ่ายทุกรายที่เพิ่ม จะถูกเพิ่มสถานะ "ยังไม่จ่าย" ด้วยระบบ โดยอัตโนมัติ</p>
                 </div>
               </div>
             </div>
@@ -759,13 +760,13 @@ const UtilityPage = () => {
               variant="outline" 
               onClick={() => setIsAddDialogOpen(false)}
             >
-              Cancel
+              ยกเลิก
             </Button>
             <Button
               onClick={handleAddUtility}
             >
               <Plus className="h-4 w-4 mr-2" />
-              Add Utility Record
+              เพิ่มบิล
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -776,13 +777,13 @@ const UtilityPage = () => {
           <DialogHeader>
             <DialogTitle>
               {previewItem && utilityData.find(item => item.id === previewItem)?.status === "paid" 
-                ? "Payment Receipt" 
-                : "Receipt Preview"}
+                ? "ดูใบเสร็จ" 
+                : "Rตรวจสอบใบเสร็จ"}
             </DialogTitle>
             <DialogDescription>
               {previewItem && utilityData.find(item => item.id === previewItem)?.status === "paid"
-                ? "Your confirmed payment receipt"
-                : "Confirm payment after reviewing"}
+                ? "ใบเสร็จที่ตรวจสอบแล้ว"
+                : "คอนเฟิร์มการจ่ายหลังตรวจสอบเสร็จ"}
             </DialogDescription>
           </DialogHeader>
 
@@ -804,7 +805,7 @@ const UtilityPage = () => {
               variant="outline"
               onClick={() => setIsReceiptDialogOpen(false)}
             >
-              Close
+              ปิด
             </Button>
             
             {previewItem && utilityData.find(item => item.id === previewItem)?.status === "unpaid" && (
@@ -818,7 +819,7 @@ const UtilityPage = () => {
                 className="bg-green-600 hover:bg-green-700"
               >
                 <CheckCircle className="h-4 w-4 mr-2" />
-                Confirm Payment
+                ยืนยันใบเสร็จ
               </Button>
             )}
           </DialogFooter>

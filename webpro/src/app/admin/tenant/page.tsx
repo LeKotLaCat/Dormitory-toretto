@@ -180,7 +180,7 @@ const TenantsPage = () => {
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                     <Input
                       type="text"
-                      placeholder="Search room or tenant..."
+                      placeholder="ค้นหาห้องหรือผู้เช่า..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-9 w-full"
@@ -223,7 +223,7 @@ const TenantsPage = () => {
                                   : "bg-gray-50 text-gray-700 border-gray-200"
                                 }`}
                               >
-                                {room.status === "occupied" ? "Occupied" : "Vacant"}
+                                {room.status === "occupied" ? "ไม่ว่าง" : "ว่าง"}
                               </Badge>
                             </div>
                           </CardHeader>
@@ -258,7 +258,7 @@ const TenantsPage = () => {
                               }}
                             >
                               <Edit className="h-4 w-4 mr-2" />
-                              Edit
+                              แก้ไข
                             </Button>
                           </CardFooter>
                         </Card>
@@ -279,10 +279,10 @@ const TenantsPage = () => {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>
-              {selectedRoom && `Room ${selectedRoom} - ${rooms.find(r => r.roomNumber === selectedRoom)?.type}`}
+              {selectedRoom && `ห้อง ${selectedRoom} - ${rooms.find(r => r.roomNumber === selectedRoom)?.type}`}
             </DialogTitle>
             <DialogDescription>
-              {editingTenant ? "Edit tenant information" : "Tenant details"}
+              {editingTenant ? "แก้ไขข้อมูลผู้เช่า" : "ข้อมูลผู้เช่า"}
             </DialogDescription>
           </DialogHeader>
 
@@ -292,9 +292,9 @@ const TenantsPage = () => {
               <div className="rounded-md bg-gray-50 p-4 flex items-center gap-3">
                 <Home className="h-5 w-5 text-gray-500" />
                 <div>
-                  <p className="font-medium text-gray-800">This room is currently vacant</p>
+                  <p className="font-medium text-gray-800">ห้องนี้ว่าง</p>
                   <p className="text-sm text-gray-600">
-                    You can assign a tenant by clicking "Edit Tenant" below
+                    สามารถเพิ่มผู้เช่าได้ด้วยการกดปุ่ม "แก้ไขผู้เช่า" ข้างล่างนี้
                   </p>
                 </div>
               </div>
@@ -304,16 +304,16 @@ const TenantsPage = () => {
             {editingTenant && (
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="userSelect">Select User</Label>
+                  <Label htmlFor="userSelect">เลือกผู้ใช้</Label>
                   <Select 
                     value={inputUserId} 
                     onValueChange={setInputUserId}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="-- Select a user --" />
+                      <SelectValue placeholder="-- เลือกผู้ใข้ --" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="unassigned">-- No tenant (vacant) --</SelectItem>
+                      <SelectItem value="unassigned">-- ไม่มีผู้เช่า (ว่าง) --</SelectItem>
                       {TenantData.map(user => (
                         <SelectItem key={user.id} value={user.id}>
                           {user.name} ({user.id})
@@ -325,22 +325,22 @@ const TenantsPage = () => {
                 
                 <div className="relative flex items-center my-4">
                   <div className="flex-grow border-t border-gray-300"></div>
-                  <span className="flex-shrink mx-4 text-gray-400 text-sm">OR</span>
+                  <span className="flex-shrink mx-4 text-gray-400 text-sm">หรือ</span>
                   <div className="flex-grow border-t border-gray-300"></div>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="userId">Enter User ID Directly</Label>
+                  <Label htmlFor="userId">ใส่ข้อมูลผู้เช้าโดยตรง</Label>
                   <Input 
                     id="userId" 
                     value={inputUserId} 
                     onChange={handleUserIdChange} 
-                    placeholder="Enter user ID (leave empty to set as vacant)"
+                    placeholder="ใส่ไอดีผู้ใช้ (ปล่อยว่างถ้าไม่มีผู้เช่า)"
                   />
                   <div className="flex items-start gap-2 mt-1.5">
                     <Info className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                    <p className="text-xs text-gray-500">
-                      Enter a user ID (e.g., U001) to assign a tenant, or leave empty to mark as vacant
+                    <p className="text-[12.5px] text-gray-500">
+                      กรอกไอดีของผู้เช่า (เช่น U001) เพื่อระบุผู้เช่า, หรือปล่อยว่างไว้ถ้าไม่มีผู้เช่า
                     </p>
                   </div>
                 </div>
@@ -358,50 +358,20 @@ const TenantsPage = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 transition-all duration-200">
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-3 mt-4 transition-all duration-200">
                   <div className="col-span-2 md:col-span-1">
-                    <p className="text-sm text-gray-500 mb-1">Email</p>
+                    <p className="text-sm text-gray-500 mb-1">อีเมล</p>
                     <div className="flex items-center gap-1.5">
                       <Mail className="h-3.5 w-3.5 text-gray-400" />
                       <p className="font-medium">{tenantDetails.email}</p>
                     </div>
                   </div>
                   <div className="col-span-2   md:col-span-1">
-                    <p className="text-sm text-gray-500 mb-1">Phone</p>
+                    <p className="text-sm text-gray-500 mb-1">เบอร์โทรศัพท์</p>
                     <div className="flex items-center gap-1.5">
                       <Phone className="h-3.5 w-3.5 text-gray-400" />
                       <p className="font-medium">{tenantDetails.phone}</p>
                     </div>
-                  </div>
-                  <div  className="col-span-2 md:col-span-1">
-                    <p className="text-sm text-gray-500 mb-1">Faculty</p>
-                    <p className="font-medium">{tenantDetails.faculty}</p>
-                  </div>
-                  <div  className="col-span-2 md:col-span-1">
-                    <p className="text-sm text-gray-500 mb-1">Year of Study</p>
-                    <p className="font-medium">{tenantDetails.yearOfStudy}</p>
-                  </div>
-                  <div  className="col-span-2 md:col-span-1">
-                    <p className="text-sm text-gray-500 mb-1">Move-in Date</p>
-                    <div className="flex items-center gap-1.5">
-                      <CalendarRange className="h-3.5 w-3.5 text-gray-400" />
-                      <p className="font-medium">
-                        {format(tenantDetails.moveInDate, "MMM d, yyyy")}
-                      </p>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500 mb-1">Lease End Date</p>
-                    <div className="flex items-center gap-1.5">
-                      <CalendarRange className="h-3.5 w-3.5 text-gray-400" />
-                      <p className="font-medium">
-                        {format(tenantDetails.leaseEndDate, "MMM d, yyyy")}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="col-span-2">
-                    <p className="text-sm text-gray-500 mb-1">Emergency Contact</p>
-                    <p className="font-medium">{tenantDetails.emergencyContact}</p>
                   </div>
                 </div>
               </div>
@@ -416,13 +386,13 @@ const TenantsPage = () => {
                   onClick={() => setEditingTenant(false)}
                   className="w-full sm:w-auto"
                 >
-                  Cancel
+                  ยกเลิก
                 </Button>
                 <Button
                   onClick={handleSaveTenantChanges}
                   className="w-full sm:w-auto"
                 >
-                  Save Changes
+                  บันทึกการเปลี่ยนแปลง
                 </Button>
               </>
             ) : (
@@ -434,7 +404,7 @@ const TenantsPage = () => {
                     className="w-full sm:w-auto text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
                   >
                     <Trash2 className="h-4 w-4 mr-2" />
-                    Remove Tenant
+                    ลบผู้เช่า
                   </Button>
                 )}
                 <Button
@@ -442,7 +412,7 @@ const TenantsPage = () => {
                   className="w-full sm:w-auto"
                 >
                   <Edit className="h-4 w-4 mr-2" />
-                  Edit Tenant
+                  แก้ไขผู้เช่า
                 </Button>
               </>
             )}
@@ -456,19 +426,19 @@ const TenantsPage = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Remove Tenant</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to remove the tenant from Room {selectedRoom}? 
-              This will mark the room as vacant.
+              คุณแน่ใจหรือไม่ว่าต้องการลบผู้เช่ารายนี้ออกจากห้อง {selectedRoom}? 
+              ห้องนี้จะถูกเปลี่ยนสถานะเป็น "ไม่มีผู้เช่า"
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={cancelDeleteTenant}>
-              Cancel
+              ยกเลิก
             </AlertDialogCancel>
             <AlertDialogAction 
               onClick={confirmDeleteTenant}
               className="bg-red-500 hover:bg-red-600 text-white"
             >
-              Remove Tenant
+              ลบผู้เช่า
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

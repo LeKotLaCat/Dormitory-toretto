@@ -28,7 +28,7 @@ const AdminMain = () => {
     { 
       id: 1, 
       title: 'แก้ไขผู้เช่า', 
-      description: 'Register, view and manage student profiles', 
+      description: 'ดูและแก้ไขจัดการ การเข้าพัก', 
       icon: <Users className="h-8 w-8 text-blue-500" />,
       path: '/admin/tenant',
       color: 'bg-blue-50 hover:bg-blue-100'
@@ -36,7 +36,7 @@ const AdminMain = () => {
     { 
       id: 2, 
       title: 'แก้ไขห้องพัก', 
-      description: 'Assign and manage room allocations', 
+      description: 'จัดการรายละเอียดหอพัก', 
       icon: <Home className="h-8 w-8 text-green-500" />,
       path: '/admin/room',
       color: 'bg-green-50 hover:bg-green-100'
@@ -44,7 +44,7 @@ const AdminMain = () => {
     { 
       id: 3, 
       title: 'บันทึกค่าสาธารณูปโภค', 
-      description: 'Track payments and manage billing', 
+      description: 'ดุแลค่าสาธารณูประโภคผู้เข้าพัก', 
       icon: <DollarSign className="h-8 w-8 text-purple-500" />,
       path: '/admin/utility ',
       color: 'bg-purple-50 hover:bg-purple-100'
@@ -52,7 +52,7 @@ const AdminMain = () => {
     { 
       id: 4, 
       title: 'จัดการผู้ใช้งาน', 
-      description: 'Handle repair and maintenance issues', 
+      description: 'จัดการรหัสผู้เช่าห้องพัก', 
       icon: <Settings className="h-8 w-8 text-orange-500" />,
       path: '/admin/user',
       color: 'bg-orange-50 hover:bg-orange-100'
@@ -60,7 +60,7 @@ const AdminMain = () => {
     { 
       id: 5, 
       title: 'คิวเข้าดูหอพัก', 
-      description: 'Post news and notifications', 
+      description: 'จรวจสอบและจัดการคิว', 
       icon: <Bell className="h-8 w-8 text-red-500" />,
       path: '/admin/queue',
       color: 'bg-red-50 hover:bg-red-100'
@@ -68,7 +68,7 @@ const AdminMain = () => {
     { 
       id: 6, 
       title: 'ดูคิวแม่บ้าน', 
-      description: 'Generate and view dormitory reports', 
+      description: 'ดูแลความเรียบร้อยของคิวแม่บ้าน', 
       icon: <FileText className="h-8 w-8 text-indigo-500" />,
       path: '/admin/cleaning',
       color: 'bg-indigo-50 hover:bg-indigo-100'
@@ -83,7 +83,7 @@ const AdminMain = () => {
         <main className="flex-1 p-6 pt-16 md:pt-6 overflow-auto">
           <div className="container mx-auto">
             <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 items-center justify-between mb-6">
-              <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
+              <h1 className="text-2xl font-bold text-gray-800">แดชบอร์ด</h1>
             </div>
 
             {/* Stats Cards */}
@@ -91,7 +91,7 @@ const AdminMain = () => {
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-500">Total Students</p>
+                    <p className="text-sm font-medium text-gray-500">ผู้เข้าพักทั้งหมด</p>
                     <p className="text-2xl font-bold text-gray-800">{stats.totalStudents}</p>
                   </div>
                   <div className="p-3 bg-blue-100 rounded-full">
@@ -100,14 +100,14 @@ const AdminMain = () => {
                 </div>
                 <div className="mt-4">
                   <span className="text-sm text-green-500 font-medium">+4% </span>
-                  <span className="text-sm text-gray-500">from last month</span>
+                  <span className="text-sm text-gray-500">จากเดือนที่แล้ว</span>
                 </div>
               </div>
 
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-500">Occupancy Rate</p>
+                    <p className="text-sm font-medium text-gray-500">เปอร์เซ็นต์การเข้าพัก</p>
                     <p className="text-2xl font-bold text-gray-800">{stats.occupancyRate}%</p>
                   </div>
                   <div className="p-3 bg-green-100 rounded-full">
@@ -116,14 +116,14 @@ const AdminMain = () => {
                 </div>
                 <div className="mt-4">
                   <span className="text-sm text-green-500 font-medium">+2% </span>
-                  <span className="text-sm text-gray-500">from last month</span>
+                  <span className="text-sm text-gray-500">จากเดือนที่แล้ว</span>
                 </div>
               </div>
 
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-500">Pending Requests</p>
+                    <p className="text-sm font-medium text-gray-500">รอการยืนยันเข้าพัก</p>
                     <p className="text-2xl font-bold text-gray-800">{stats.pendingRequests}</p>
                   </div>
                   <div className="p-3 bg-yellow-100 rounded-full">
@@ -132,14 +132,14 @@ const AdminMain = () => {
                 </div>
                 <div className="mt-4">
                   <span className="text-sm text-red-500 font-medium">+3 </span>
-                  <span className="text-sm text-gray-500">new requests today</span>
+                  <span className="text-sm text-gray-500">คำขอวันนี้</span>
                 </div>
               </div>
 
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
                 <div className="flex items-center justify-between ">
                   <div>
-                    <p className="text-sm font-medium text-gray-500">Maintenance Tickets</p>
+                    <p className="text-sm font-medium text-gray-500">คำขอแจ้งใช้บริการห้องพัก</p>
                     <p className="text-2xl font-bold text-gray-800">{stats.maintenanceTickets}</p>
                   </div>
                   <div className="p-3 bg-red-100 rounded-full">
@@ -147,8 +147,8 @@ const AdminMain = () => {
                   </div>
                 </div>
                 <div className="mt-4">
-                  <span className="text-sm text-green-500 font-medium">-2 </span>
-                  <span className="text-sm text-gray-500">resolved today</span>
+                  <span className="text-sm text-green-500 font-medium">-2</span>
+                  <span className="text-sm text-gray-500"> จัดการแล้ววันนี้</span>
                 </div>
               </div>
             </div>
