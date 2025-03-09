@@ -92,7 +92,7 @@ const UtilityPage = () => {
       ...room,
     }))
   );
-  const [feenotfromfetch, setFeenotfromfetch] = useState([] as AdditionalFee[])
+  const [feenotfromfetch, setFeenotfromfetch] = useState([] as AdditionalFee[]);
   const [utilityData, setUtilityData] =
     useState<UtilityRecord[]>(initialUtilityData);
   const [searchTerm, setSearchTerm] = useState("");
@@ -100,7 +100,7 @@ const UtilityPage = () => {
   const [filterStatus, setFilterStatus] = useState("all");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [newUtility, setNewUtility] = useState<NewUtility>({
-    id:0,
+    id: 0,
     roomNumber: "",
     roomFee: 0,
     month: format(new Date(), "MMM yyyy"),
@@ -121,7 +121,6 @@ const UtilityPage = () => {
   const [previewItem, setPreviewItem] = useState<number | null>(null);
   const [isReceiptDialogOpen, setIsReceiptDialogOpen] = useState(false);
 
-
   useEffect(() => {
     fetch("http://localhost:3000/rooms", {
       method: "GET",
@@ -131,8 +130,8 @@ const UtilityPage = () => {
         return jso.json();
       })
       .then((da: any) => {
-        setRoom([])
-        if (da.length == 0) return
+        setRoom([]);
+        if (da.length == 0) return;
         const nda = da["rooms"].map((item: any) => {
           let roomprice = 0;
           switch (item.roomTypeId) {
@@ -173,7 +172,7 @@ const UtilityPage = () => {
           console.log(s);
           return {
             id: s.BillID,
-            roomNumber: rooms.find(v => v.id === s.RoomID)?.roomNumber,
+            roomNumber: rooms.find((v) => v.id === s.RoomID)?.roomNumber,
             month: format(new Date(s.billMonth), "MMM yyyy"),
             electric: Number.parseFloat(s.electricprice),
             water: Number.parseFloat(s.waterprice),
@@ -182,77 +181,75 @@ const UtilityPage = () => {
             status: s.billStatus == 2 ? "paid" : "unpaid",
             dueDate: new Date(s.DueDate),
             paidDate: s.paidDate && new Date(s.paidDate),
-            imageFile:
-              s.transactionimg,
+            imageFile: s.transactionimg,
           } as UtilityRecord;
         });
         setUtilityData(newdata);
       });
   }, []);
 
+  useEffect(() => {
+    if (newUtility.roomNumber) {
+      // Find the selected room from the rooms state
+      const selectedRoom = rooms.find(
+        (room) => room.roomNumber === newUtility.roomNumber
+      );
 
-useEffect(() => {
-  if (newUtility.roomNumber) {
-    // Find the selected room from the rooms state
-    const selectedRoom = rooms.find(
-      (room) => room.roomNumber === newUtility.roomNumber
-    );
-    
-    // Update the roomFee in newUtility state with the selected room's monthly rent
-    if (selectedRoom) {
-      setNewUtility({
-        ...newUtility,
-        roomFee: selectedRoom.monthlyRent || 0
-      });
-    }
-
-    // The rest of the existing code for handling month changes and fees
-    if (newUtility.month && newUtility.month !== oldmonth) {
-      oldmonth = newUtility.month;
-
-      setNewUtility((prevUtility) => ({
-        ...prevUtility,
-        additionalFees: [],
-      }));
-  
-      fetch(
-        `http://localhost:3000/tasks?roomid=${
-          rooms.find((i) => i.roomNumber == newUtility.roomNumber)?.id
-        }&month=${newUtility.month}`,
-        { method: "GET", credentials: "include" }
-      )
-        .then((jso) => jso.json())
-        .then((value) => {
-          console.log(value);
-          if (value.length) {
-            const newFees = value.map((s: any) => {
-              return {
-                amount: Number.parseFloat(s.taskprice),
-                description: `จากการจ้าง ${s.taskname} ` + s.description,
-                type: s.tasktype == "housekeeping" ? "housewife" : "fixing",
-              } as AdditionalFee;
-            });
-  
-            setNewUtility((prevUtility) => ({
-              ...prevUtility,
-              additionalFees: [
-                ...newFees, // New fees first
-                ...feenotfromfetch, // Then add old fees after
-              ],
-            }));
-          } else {
-            // If no new data, just show the old fees (feenotfromfetch)
-            setNewUtility((prevUtility) => ({
-              ...prevUtility,
-              additionalFees: [...feenotfromfetch], // Only old fees
-            }));
-          }
+      // Update the roomFee in newUtility state with the selected room's monthly rent
+      if (selectedRoom) {
+        setNewUtility({
+          ...newUtility,
+          roomFee: selectedRoom.monthlyRent || 0,
         });
+      }
+
+      // The rest of the existing code for handling month changes and fees
+      if (newUtility.month && newUtility.month !== oldmonth) {
+        oldmonth = newUtility.month;
+
+        setNewUtility((prevUtility) => ({
+          ...prevUtility,
+          additionalFees: [],
+        }));
+
+        fetch(
+          `http://localhost:3000/tasks?roomid=${
+            rooms.find((i) => i.roomNumber == newUtility.roomNumber)?.id
+          }&month=${newUtility.month}`,
+          { method: "GET", credentials: "include" }
+        )
+          .then((jso) => jso.json())
+          .then((value) => {
+            console.log(value);
+            if (value.length) {
+              const newFees = value.map((s: any) => {
+                return {
+                  amount: Number.parseFloat(s.taskprice),
+                  description: `จากการจ้าง ${s.taskname} ` + s.description,
+                  type: s.tasktype == "housekeeping" ? "housewife" : "fixing",
+                } as AdditionalFee;
+              });
+
+              setNewUtility((prevUtility) => ({
+                ...prevUtility,
+                additionalFees: [
+                  ...newFees, // New fees first
+                  ...feenotfromfetch, // Then add old fees after
+                ],
+              }));
+            } else {
+              // If no new data, just show the old fees (feenotfromfetch)
+              setNewUtility((prevUtility) => ({
+                ...prevUtility,
+                additionalFees: [...feenotfromfetch], // Only old fees
+              }));
+            }
+          });
+      }
     }
-  }
-  
-  console.log(newUtility);
-}, [newUtility.roomNumber, newUtility.month, rooms]);
+
+    console.log(newUtility);
+  }, [newUtility.roomNumber, newUtility.month, rooms]);
 
   const handleConfirmPayment = (id: number) => {
     // Find the utility item
@@ -319,8 +316,11 @@ useEffect(() => {
       alert("Please enter a valid amount and description");
       return;
     }
-    setFeenotfromfetch([...feenotfromfetch,{ ...newFee, amount: Number(newFee.amount) }]);
-    console.log(feenotfromfetch)
+    setFeenotfromfetch([
+      ...feenotfromfetch,
+      { ...newFee, amount: Number(newFee.amount) },
+    ]);
+    console.log(feenotfromfetch);
     setNewUtility({
       ...newUtility,
       additionalFees: [
@@ -347,28 +347,50 @@ useEffect(() => {
       additionalFees: updatedFees,
     });
   };
-
+  // "housewife" | "fixing" | "laundry" | "internet" | "other";
+  function feetypetranslate(feeType:any) {
+    switch (feeType) {
+      case "housewife" :
+        return "จ้างแม่บ้าน"
+      case "fixing":
+        return "จ้างซ่อมแซม"
+      case "laundry":
+        return "จ้างซักรีด"
+      case "internet":
+        return "ค่าบริการอินเตอร์เน็ต"
+      default:
+        return "อื่นๆ"
+    }
+  }
   // Handle adding new utility record
   const handleAddUtility = () => {
     // Validate input data
-    if (!newUtility.roomNumber || newUtility.electric < 0 || newUtility.water < 0) {
+    if (
+      !newUtility.roomNumber ||
+      newUtility.electric < 0 ||
+      newUtility.water < 0
+    ) {
       toast.error("กรุณาใส่ข้อมูลให้ถูกต้อง");
       return;
     }
 
     // Check if room exists
-    if (!rooms.find(room => room.roomNumber === newUtility.roomNumber)) {
+    if (!rooms.find((room) => room.roomNumber === newUtility.roomNumber)) {
       toast.error("ไม่มีห้องหมายเลขนี้");
       return;
     }
 
     // Check for duplicates
     const duplicate = utilityData.find(
-      item => item.roomNumber === newUtility.roomNumber && item.month === newUtility.month
+      (item) =>
+        item.roomNumber === newUtility.roomNumber &&
+        item.month === newUtility.month
     );
 
     if (duplicate) {
-      toast.error(`ค่าสาธารณูประโภคของห้อง ${newUtility.roomNumber} ในเดือน ${newUtility.month} มีอยู่แล้ว`);
+      toast.error(
+        `ค่าสาธารณูประโภคของห้อง ${newUtility.roomNumber} ในเดือน ${newUtility.month} มีอยู่แล้ว`
+      );
       return;
     }
     const taskprice: number = newUtility.additionalFees.reduce(
@@ -377,10 +399,14 @@ useEffect(() => {
       },
       0
     );
-    const RoomID = rooms.find((v)=> v.roomNumber === newUtility.roomNumber)?.id
-    const roomprice = rooms.find((v) => v.roomNumber === newUtility.roomNumber)?.monthlyRent;
-    console.log(RoomID,roomprice)
-    console.log(rooms)
+    const RoomID = rooms.find(
+      (v) => v.roomNumber === newUtility.roomNumber
+    )?.id;
+    const roomprice = rooms.find(
+      (v) => v.roomNumber === newUtility.roomNumber
+    )?.monthlyRent;
+    console.log(RoomID, roomprice);
+    console.log(rooms);
     fetch("http://localhost:3000/bills", {
       method: "POST",
       credentials: "include",
@@ -395,7 +421,7 @@ useEffect(() => {
         electricprice: newUtility.electric,
         taskprice,
         roomprice,
-        additionalFees: newUtility.additionalFees
+        additionalFees: newUtility.additionalFees,
       }),
     }).catch((ex) => {
       console.error(ex);
@@ -407,13 +433,13 @@ useEffect(() => {
       id: Math.max(...utilityData.map((item) => item.id), 0) + 1,
       electric: Number(newUtility.electric),
       water: Number(newUtility.water),
-      roomFee: 8000
+      roomFee: 8000,
     };
 
     setUtilityData([newItem, ...utilityData]);
     setIsAddDialogOpen(false);
     setNewUtility({
-      id:0,
+      id: 0,
       roomNumber: "",
       roomFee: 0,
       month: format(new Date(), "MMM yyyy"),
@@ -450,8 +476,7 @@ useEffect(() => {
     0
   );
   let oldmonth = "";
-  
-  
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col overflow-auto">
       <div className="flex flex-1">
@@ -462,7 +487,7 @@ useEffect(() => {
               {/* Header and Actions */}
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
                 <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-0">
-                ติดตามค่าสาธาณูประโภค
+                  ติดตามค่าสาธาณูประโภค
                 </h1>
                 <div className="flex flex-col md:flex-row gap-3">
                   <div className="relative w-full md:w-64">
@@ -501,7 +526,9 @@ useEffect(() => {
                 <Card>
                   <CardContent className="p-4 flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-500">Unpaid Bills</p>
+                      <p className="text-sm text-gray-500">
+                        บิลที่ยังไม่ได้ตรวจสอบ
+                      </p>
                       <p className="text-2xl font-bold">{unpaidCount}</p>
                     </div>
                     <div className="bg-amber-100 p-3 rounded-full">
@@ -512,7 +539,7 @@ useEffect(() => {
                 <Card>
                   <CardContent className="p-4 flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-500">Total Electric</p>
+                      <p className="text-sm text-gray-500">ค่าไฟฟ้าทั้งหมด</p>
                       <p className="text-2xl font-bold">
                         ฿{totalElectric.toLocaleString()}
                       </p>
@@ -525,7 +552,7 @@ useEffect(() => {
                 <Card>
                   <CardContent className="p-4 flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-500">Total Water</p>
+                      <p className="text-sm text-gray-500">ค่าน้ำทั้งหมด</p>
                       <p className="text-2xl font-bold">
                         ฿{totalWater.toLocaleString()}
                       </p>
@@ -538,7 +565,9 @@ useEffect(() => {
                 <Card>
                   <CardContent className="p-4 flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-500">Additional Fees</p>
+                      <p className="text-sm text-gray-500">
+                        ค่าใช้จ่ายเพิ่มเติมทั้งหมด
+                      </p>
                       <p className="text-2xl font-bold">
                         ฿{totalAdditional.toLocaleString()}
                       </p>
@@ -557,12 +586,12 @@ useEffect(() => {
                     <div className="flex items-center">
                       <Calendar className="h-4 w-4 mr-2" />
                       <span>
-                        {filterMonth === "all" ? "All Months" : filterMonth}
+                        {filterMonth === "all" ? "ทุกเดือน" : filterMonth}
                       </span>
                     </div>
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Months</SelectItem>
+                    <SelectItem value="all">ทุกเดือน</SelectItem>
                     {months.map((month) => (
                       <SelectItem key={month} value={month}>
                         {month}
@@ -577,17 +606,17 @@ useEffect(() => {
                       <Check className="h-4 w-4 mr-2" />
                       <span>
                         {filterStatus === "all"
-                          ? "All Status"
+                          ? "ทุกสถานะ"
                           : filterStatus === "paid"
-                          ? "Paid"
-                          : "Unpaid"}
+                          ? "ชำระแล้ว"
+                          : "ยังไม่ได้ชำระ"}
                       </span>
                     </div>
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Status</SelectItem>
-                    <SelectItem value="paid">Paid</SelectItem>
-                    <SelectItem value="unpaid">Unpaid</SelectItem>
+                    <SelectItem value="all">ทุกสถานะ</SelectItem>
+                    <SelectItem value="paid">จ่ายแล้ว</SelectItem>
+                    <SelectItem value="unpaid">ยังไม่จ่าย</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -597,7 +626,7 @@ useEffect(() => {
                 <Card>
                   <CardContent className="p-8 text-center">
                     <p className="text-gray-500 mb-4">
-                      No utility records found
+                      ไม่พบรายการ
                     </p>
                     <Button
                       variant="outline"
@@ -607,7 +636,7 @@ useEffect(() => {
                         setFilterStatus("all");
                       }}
                     >
-                      Reset Filters
+                      ล้างฟิลเตอร์
                     </Button>
                   </CardContent>
                 </Card>
@@ -618,47 +647,50 @@ useEffect(() => {
                       <thead>
                         <tr className="bg-gray-50 text-left">
                           <th className="px-4 py-3 text-sm font-medium text-gray-700">
-                            Room
+                            ห้อง
                           </th>
                           <th className="px-4 py-3 text-sm font-medium text-gray-700">
-                            Month
+                            เดือน
                           </th>
                           <th className="px-4 py-3 text-sm font-medium text-gray-700">
-                            Electric (฿)
+                            ค่าไฟฟ้า (฿)
                           </th>
                           <th className="px-4 py-3 text-sm font-medium text-gray-700">
-                            Water (฿)
+                            ค่าน้ำ (฿)
                           </th>
                           <th className="px-4 py-3 text-sm font-medium text-gray-700">
-                            Room Fee (฿)
+                            ค่าห้อง (฿)
                           </th>
                           <th className="px-4 py-3 text-sm font-medium text-gray-700">
-                            Add. Fees
+                          ค่าใช้จ่ายเพิ่มเติม
                           </th>
                           <th className="px-4 py-3 text-sm font-medium text-gray-700">
-                            Total (฿)
+                            ทั้งหมด (฿)
                           </th>
                           <th className="px-4 py-3 text-sm font-medium text-gray-700">
-                            Due Date
+                            ชำระภายในวันที่
                           </th>
                           <th className="px-4 py-3 text-sm font-medium text-gray-700">
-                            Status
+                            สถานะ
                           </th>
                           <th className="px-4 py-3 text-sm font-medium text-gray-700">
-                            Action
+                            ใบเสร็จ
                           </th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200">
                         {filteredData.map((item) => {
                           // Calculate additional fees total
-                          console.log(item)
+                          console.log(item);
                           const additionalTotal = item.additionalFees.reduce(
                             (sum, fee) => sum + fee.amount,
                             0
                           );
                           const totalAmount =
-                            item.electric + item.water + additionalTotal + item.roomFee;
+                            item.electric +
+                            item.water +
+                            additionalTotal +
+                            item.roomFee;
 
                           return (
                             <tr key={item.id} className="hover:bg-gray-50">
@@ -732,11 +764,11 @@ useEffect(() => {
                                   }
                                 >
                                   {item.status === "paid" && item.paidDate
-                                    ? `Paid on ${format(
+                                    ? `ชำระเมื่อ ${format(
                                         item.paidDate,
                                         "MMM d"
                                       )}`
-                                    : "Unpaid"}
+                                    : "ยังไม่ได้ชำระ"}
                                 </Badge>
                               </td>
                               <td className="px-4 py-3">
@@ -751,7 +783,7 @@ useEffect(() => {
                                     }}
                                   >
                                     <Printer className="h-4 w-4 mr-1" />
-                                    Preview Receipt
+                                    ตรวจสอบใบเสร็จ
                                   </Button>
                                 )}
                                 {item.status === "paid" && (
@@ -765,7 +797,7 @@ useEffect(() => {
                                     }}
                                   >
                                     <Printer className="h-4 w-4 mr-1" />
-                                    View Receipt
+                                    ดูใบเสร็จ
                                   </Button>
                                 )}
                               </td>
@@ -788,15 +820,15 @@ useEffect(() => {
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Add New Utility Record</DialogTitle>
+            <DialogTitle>เพิ่มบิลชำระ</DialogTitle>
             <DialogDescription>
-              Enter the utility details for a room
+              เพิ่มบิลชำระสำหรับห้องพัก
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label htmlFor="roomNumber">Room Number *</Label>
+              <Label htmlFor="roomNumber">หมายเลขห้อง *</Label>
               <Select
                 value={newUtility.roomNumber}
                 onValueChange={(value) =>
@@ -809,7 +841,7 @@ useEffect(() => {
                 <SelectContent>
                   {rooms.map((room) => (
                     <SelectItem key={room.roomNumber} value={room.roomNumber}>
-                      Room {room.roomNumber}
+                      ห้อง {room.roomNumber}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -817,7 +849,7 @@ useEffect(() => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="roomFee">Room Fee (฿) *</Label>
+              <Label htmlFor="roomFee">ราคาห้อง (฿) *</Label>
               <div className="relative">
                 <Home className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                 <Input
@@ -828,11 +860,13 @@ useEffect(() => {
                   value={newUtility.roomFee}
                 />
               </div>
-              <p className="text-xs text-gray-500">Room fee is automatically set based on the selected room</p>
+              <p className="text-xs text-gray-500">
+                ราคาห้องจะถูกเพิ่มโดยอัตโนมัติ โดยอ้างอิงจากหมายเลขห้องที่เลือก
+              </p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="month">Month *</Label>
+              <Label htmlFor="month">เดือน *</Label>
               <Select
                 value={newUtility.month}
                 onValueChange={(value) =>
@@ -840,7 +874,7 @@ useEffect(() => {
                 }
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select month" />
+                  <SelectValue placeholder="เลือกเดือน" />
                 </SelectTrigger>
                 <SelectContent>
                   {/* Current month and previous 2 months */}
@@ -860,7 +894,7 @@ useEffect(() => {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="electric">Electricity Cost (฿) *</Label>
+                <Label htmlFor="electric">ค่าไฟฟ้า(฿) *</Label>
                 <div className="relative">
                   <Zap className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                   <Input
@@ -880,7 +914,7 @@ useEffect(() => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="water">Water Cost (฿) *</Label>
+                <Label htmlFor="water">ค่าน้ำ (฿) *</Label>
                 <div className="relative">
                   <Droplets className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
                   <Input
@@ -901,7 +935,7 @@ useEffect(() => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="dueDate">Due Date</Label>
+              <Label htmlFor="dueDate">ชำระภายในวันที่</Label>
               <Input
                 id="dueDate"
                 type="date"
@@ -920,7 +954,7 @@ useEffect(() => {
             {/* Additional fees section */}
             <div className="space-y-3 mt-4">
               <div className="flex items-center justify-between">
-                <Label>Additional Fees</Label>
+                <Label>ค่าใช้จ่ายเพิ่มเติม</Label>
                 <Button
                   type="button"
                   size="sm"
@@ -976,7 +1010,7 @@ useEffect(() => {
                 </div>
               ) : (
                 <p className="text-sm text-gray-500 italic">
-                  No additional fees added
+                  ไม่มีค่าบรืการเพิ่ม
                 </p>
               )}
 
@@ -984,7 +1018,7 @@ useEffect(() => {
               {showAddFee && (
                 <div className="space-y-3 bg-gray-50 p-3 rounded-md">
                   <div className="space-y-2">
-                    <Label htmlFor="feeType">Fee Type</Label>
+                    <Label htmlFor="feeType">ประเภทค่าบริการ</Label>
                     <Select
                       value={newFee.type}
                       onValueChange={(value) =>
@@ -1003,18 +1037,18 @@ useEffect(() => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="housewife">
-                          Housewife Service
+                          บริการแม่บ้าน
                         </SelectItem>
-                        <SelectItem value="fixing">Fixing Service</SelectItem>
-                        <SelectItem value="internet">Internet</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                        <SelectItem value="fixing">บริการซ่อมแซม</SelectItem>
+                        <SelectItem value="internet">บริการอินเตอร์เน็ต</SelectItem>
+                        <SelectItem value="other">อื่นๆ</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-2">
-                      <Label htmlFor="feeAmount">Amount (฿)</Label>
+                      <Label htmlFor="feeAmount">ราคา (฿)</Label>
                       <Input
                         id="feeAmount"
                         type="number"
@@ -1029,14 +1063,14 @@ useEffect(() => {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="feeDescription">Description</Label>
+                      <Label htmlFor="feeDescription">รายละเอียด</Label>
                       <Input
                         id="feeDescription"
                         value={newFee.description}
                         onChange={(e) =>
                           setNewFee({ ...newFee, description: e.target.value })
                         }
-                        placeholder="e.g., Weekly cleaning"
+                        placeholder="เช่น ทำความสะอาดรายสัปดาห์"
                       />
                     </div>
                   </div>
@@ -1048,10 +1082,10 @@ useEffect(() => {
                       size="sm"
                       onClick={() => setShowAddFee(false)}
                     >
-                      Cancel
+                      ยกเลิก
                     </Button>
                     <Button type="button" size="sm" onClick={handleAddFee}>
-                      Add Fee
+                      เพื่มค่าบริการ
                     </Button>
                   </div>
                 </div>
@@ -1063,7 +1097,7 @@ useEffect(() => {
                 <PlusCircle className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="font-medium">
-                    Total Amount: ฿
+                    ยอดทั้งหมด: ฿
                     {(
                       Number(newUtility.electric) +
                       Number(newUtility.water) +
@@ -1074,8 +1108,7 @@ useEffect(() => {
                     ).toLocaleString()}
                   </p>
                   <p className="mt-1">
-                    This utility record will be added with "Unpaid" status by
-                    default.
+                    บิลชำระนี้จะถูกเพิ่มให้มีสถานะ "ยังไม่ได้ชำระ" โดยอัตโนมัติ
                   </p>
                 </div>
               </div>
@@ -1084,11 +1117,11 @@ useEffect(() => {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
-              Cancel
+              ยกเลิก
             </Button>
             <Button onClick={handleAddUtility}>
               <Plus className="h-4 w-4 mr-2" />
-              Add Utility Record
+              เพิ่มบิลชำระ
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -1101,22 +1134,24 @@ useEffect(() => {
               {previewItem &&
               utilityData.find((item) => item.id === previewItem)?.status ===
                 "paid"
-                ? "Payment Receipt"
-                : "Receipt Preview"}
+                ? "ดูใบเสร็จ"
+                : "ตรวจสอบใบเสร็จ"}
             </DialogTitle>
             <DialogDescription>
               {previewItem &&
               utilityData.find((item) => item.id === previewItem)?.status ===
                 "paid"
-                ? "Your confirmed payment receipt"
-                : "Confirm payment after reviewing"}
+                ? "ใบเสร็จที่ตรวจสอบแล้ว"
+                : "คอนเฟิร์มการจ่ายหลังตรวจสอบเสร็จ"}
             </DialogDescription>
           </DialogHeader>
           <div className="flex justify-center p-4">
             <div className="relative w-full h-[500px] border rounded-md overflow-hidden shadow-md">
-              {previewItem && (
+              {previewItem &&
                 (() => {
-                  const imageFile = utilityData.find((item) => item.id === previewItem)?.imageFile;
+                  const imageFile = utilityData.find(
+                    (item) => item.id === previewItem
+                  )?.imageFile;
                   return imageFile ? (
                     <Image
                       src={imageFile}
@@ -1129,8 +1164,7 @@ useEffect(() => {
                       <span className="text-gray-400">ไม่มีรูปภาพ</span>
                     </div>
                   );
-                })()
-              )}
+                })()}
             </div>
           </div>
 
@@ -1139,7 +1173,7 @@ useEffect(() => {
               variant="outline"
               onClick={() => setIsReceiptDialogOpen(false)}
             >
-              Close
+              ปิด
             </Button>
 
             {previewItem &&
@@ -1155,7 +1189,7 @@ useEffect(() => {
                   className="bg-green-600 hover:bg-green-700"
                 >
                   <CheckCircle className="h-4 w-4 mr-2" />
-                  Confirm Payment
+                  ยืนยันการชำระเงิน
                 </Button>
               )}
           </DialogFooter>

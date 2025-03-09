@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Eye,
   Users,
@@ -18,13 +18,77 @@ import Footer from "@/components/Footer";
 
 const AdminMain = () => {
   const [stats, setStats] = useState({
-    totalStudents: 248,
-    occupancyRate: 87,
-    pendingRequests: 12,
-    maintenanceTickets: 8,
+    totalRooms: 0,
+    totalTenants: 0,
+    totalQueues: 0,
+    unpaidBills: 0,
   });
 
-  const features = [
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const roomsRes = await fetch('http://localhost:3000/main/room/', {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          });
+        if (!roomsRes.ok)
+          throw new Error(`Rooms fetch failed: ${roomsRes.status}`);
+        const roomsData = await roomsRes.json();
+        setStats((prevStats) => ({...prevStats,totalRooms: roomsData.totalRooms,}));
+
+        const tenantsRes = await fetch('http://localhost:3000/main/vacant/', {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          });
+        if (!tenantsRes.ok)
+          throw new Error(`Tenants fetch failed: ${tenantsRes.status}`);
+        const tenantsData = await tenantsRes.json();
+        setStats((prevStats) => ({...prevStats,totalTenants: tenantsData.totalTenants,
+        }));
+
+        const queuesRes = await fetch('http://localhost:3000/main/queue/', {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          });
+        if (!queuesRes.ok)
+          throw new Error(`Queues fetch failed: ${queuesRes.status}`);
+        const queuesData = await queuesRes.json();
+        setStats((prevStats) => ({...prevStats,totalQueues: queuesData.totalQueues,}));
+        const billsRes = await fetch('http://localhost:3000/main/bill/', {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          });
+        if (!billsRes.ok)
+          throw new Error(`Bills fetch failed: ${billsRes.status}`);
+        const billsData = await billsRes.json();
+        setStats((prevStats) => ({...prevStats, unpaidBills: billsData.unpaidBills,}));
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+    const features = [
     {
       id: 1,
       title: "แก้ไขผู้เช่า",
@@ -75,6 +139,21 @@ const AdminMain = () => {
     },
   ];
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p>กำลังโหลดข้อมูล...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p>เกิดข้อผิดพลาดในการโหลดข้อมูล: {error}</p>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col ">
       <div className="flex flex-1">
@@ -92,30 +171,14 @@ const AdminMain = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-500">
-                      ผู้เช่าทั้งหมด
-                    </p>
-                    <p className="text-2xl font-bold text-gray-800">
-                      {stats.totalStudents}
-                    </p>
-                  </div>
-                  <div className="p-3 bg-blue-100 rounded-full">
-                    <Users className="h-6 w-6 text-blue-600" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">
                       ห้องพักทั้งหมด
                     </p>
                     <p className="text-2xl font-bold text-gray-800">
-                      {stats.occupancyRate}
+                      {stats.totalRooms}
                     </p>
                   </div>
-                  <div className="p-3 bg-green-100 rounded-full">
-                    <Home className="h-6 w-6 text-green-600" />
+                  <div className="p-3 bg-blue-100 rounded-full">
+                    <Home className="h-6 w-6 text-blue-600" />
                   </div>
                 </div>
               </div>
@@ -124,14 +187,30 @@ const AdminMain = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-500">
-                      รอการยืนยันเข้าพัก
+                      ผู้เช่าทั้งหมด
                     </p>
                     <p className="text-2xl font-bold text-gray-800">
-                      {stats.pendingRequests}
+                      {stats.totalTenants}
+                    </p>
+                  </div>
+                  <div className="p-3 bg-green-100 rounded-full">
+                    <Users className="h-6 w-6 text-green-600" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">
+                      คิวเข้าชมห้องพัก
+                    </p>
+                    <p className="text-2xl font-bold text-gray-800">
+                      {stats.totalQueues}
                     </p>
                   </div>
                   <div className="p-3 bg-yellow-100 rounded-full">
-                    <FileText className="h-6 w-6 text-yellow-600" />
+                    <Bell className="h-6 w-6 text-yellow-600" />
                   </div>
                 </div>
               </div>
@@ -140,19 +219,18 @@ const AdminMain = () => {
                 <div className="flex items-center justify-between ">
                   <div>
                     <p className="text-sm font-medium text-gray-500">
-                      บิลค้างชำระ
+                      บิลที่ยังไม่ได้ตรวจสอบ
                     </p>
                     <p className="text-2xl font-bold text-gray-800">
-                      {stats.maintenanceTickets}
+                      {stats.unpaidBills}
                     </p>
                   </div>
                   <div className="p-3 bg-red-100 rounded-full">
-                    <Settings className="h-6 w-6 text-red-600" />
+                    <DollarSign className="h-6 w-6 text-red-600" />
                   </div>
                 </div>
               </div>
             </div>
-
             {/* Feature Buttons */}
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
               เครื่องมือด่วน
