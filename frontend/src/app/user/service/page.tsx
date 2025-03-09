@@ -15,6 +15,8 @@ import {
   ChevronRight,
   Check,
   Package,
+  X,
+  Shirt, Bath, Bug, Wifi, Fan, Plug, Bed, Table, DoorOpen, Refrigerator, ShowerHead, Toilet,Brush
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -71,81 +73,33 @@ const timeSlots = [
 
 const ServicePage = () => {
   const services: Service[] = [
-    {
-      id: 1,
-      title: "ทำความสะอาดห้อง",
-      description: "บริการทำความสะอาดทั่วไป ดูดฝุ่น ถูพื้น เช็ดกระจก จัดเตียง",
-      icon: <PhoneCall className="h-8 w-8" />,
-      category: "housekeeping",
-      estimatedTime: "1-2 ชั่วโมง",
-      priceRange: "฿300",
-    },
-    {
-      id: 2,
-      title: "ซักผ้า/รีดผ้า",
-      description: "บริการซักและรีดผ้า สำหรับเสื้อผ้าไม่เกิน 5 กิโลกรัม",
-      icon: <WashingMachine className="h-8 w-8" />,
-      category: "housekeeping",
-      estimatedTime: "3-4 ชั่วโมง",
-      priceRange: "50-150",
-    },
-    {
-      id: 3,
-      title: "ทำความสะอาดห้องน้ำ",
-      description: "บริการทำความสะอาดห้องน้ำอย่างละเอียด ขัดพื้น ล้างสุขภัณฑ์",
-      icon: <PhoneCall className="h-8 w-8" />,
-      category: "housekeeping",
-      estimatedTime: "1 ชั่วโมง",
-      priceRange: "฿200",
-    },
-    {
-      id: 4,
-      title: "ซ่อมอุปกรณ์ไฟฟ้า",
-      description: "แก้ไขปัญหาไฟฟ้า ปลั๊ก สวิตช์ หลอดไฟ และอุปกรณ์ไฟฟ้าทั่วไป",
-      icon: <Lightbulb className="h-8 w-8" />,
-      category: "maintenance",
-      estimatedTime: "30-60 นาที",
-      priceRange: "฿50",
-    },
-    {
-      id: 5,
-      title: "ซ่อมเครื่องปรับอากาศ",
-      description:
-        "ตรวจเช็คและซ่อมแซมเครื่องปรับอากาศที่มีปัญหาทั้งระบบทำความเย็นและระบายน้ำ",
-      icon: <Snowflake className="h-8 w-8" />,
-      category: "maintenance",
-      estimatedTime: "1-2 ชั่วโมง",
-      priceRange: "฿50-100",
-    },
-    {
-      id: 6,
-      title: "ซ่อมอุปกรณ์ประปา",
-      description:
-        "แก้ไขปัญหาน้ำรั่ว ท่อตัน ก๊อกน้ำ ชักโครก และอุปกรณ์ประปาทั่วไป",
-      icon: <Wrench className="h-8 w-8" />,
-      category: "maintenance",
-      estimatedTime: "30-60 นาที",
-      priceRange: "฿50-200",
-    },
-    {
-      id: 7,
-      title: "กำจัดแมลง",
-      description: "บริการฉีดสเปรย์กำจัดแมลงและสัตว์ที่เป็นพาหะนำโรค",
-      icon: <Shield className="h-8 w-8" />,
-      category: "maintenance",
-      estimatedTime: "30-45 นาที",
-      priceRange: "฿250",
-    },
-    {
-      id: 8,
-      title: "ขนของเข้า",
-      description: "บริการขนของเข้าห้องพักแบบครบวงจร",
-      icon: <Package className="h-8 w-8" />,
-      category: "housekeeping",
-      estimatedTime: "15-30 นาที",
-      priceRange: "฿100-300",
-    },
-  ];
+    { id: 1, title: "ทำความสะอาดห้อง", description: "บริการทำความสะอาดห้องพักสำหรับนักศึกษา", icon: <Brush size={20} />, category: "housekeeping", estimatedTime: "1-2 ชั่วโมง", priceRange: "150 - 300 บาท" },
+    { id: 2, title: "ซักผ้าน้ำหนัก 7 กิโลกรัม", description: "บริการซักผ้าสำหรับนักศึกษา", icon: <Shirt size={20} />, category: "housekeeping", estimatedTime: "30-60 นาที", priceRange: "30 - 50 บาท" },
+    { id: 3, title: "ซักผ้าน้ำหนัก 9 กิโลกรัม", description: "บริการซักผ้าน้ำหนักมากขึ้น", icon: <Shirt size={20} />, category: "housekeeping", estimatedTime: "45-75 นาที", priceRange: "40 - 60 บาท" },
+    { id: 4, title: "ซักผ้าน้ำหนัก 12 กิโลกรัม", description: "ซักผ้าแบบเหมาะสำหรับชุดหนัก", icon: <Shirt size={20} />, category: "housekeeping", estimatedTime: "60-90 นาที", priceRange: "50 - 70 บาท" },
+    { id: 5, title: "ซักผ้าน้ำหนัก 15 กิโลกรัม", description: "ซักผ้าสำหรับของใช้ขนาดใหญ่", icon: <Shirt size={20} />, category: "housekeeping", estimatedTime: "75-105 นาที", priceRange: "60 - 80 บาท" },
+    { id: 6, title: "อบผ้าน้ำหนัก 7 กิโลกรัม", description: "อบผ้าแห้งด้วยเครื่องอบคุณภาพสูง", icon: <Shirt size={20} />, category: "housekeeping", estimatedTime: "30-60 นาที", priceRange: "30 - 50 บาท" },
+    { id: 7, title: "อบผ้าน้ำหนัก 9 กิโลกรัม", description: "อบผ้าด้วยอุณหภูมิที่เหมาะสม", icon: <Shirt size={20} />, category: "housekeeping", estimatedTime: "45-75 นาที", priceRange: "40 - 60 บาท" },
+    { id: 8, title: "อบผ้าน้ำหนัก 12 กิโลกรัม", description: "อบผ้าขนาดใหญ่ให้แห้งสนิท", icon: <Shirt size={20} />, category: "housekeeping", estimatedTime: "60-90 นาที", priceRange: "50 - 70 บาท" },
+    { id: 9, title: "อบผ้าน้ำหนัก 15 กิโลกรัม", description: "อบผ้าให้เหมาะกับชุดขนาดใหญ่", icon: <Shirt size={20} />, category: "housekeeping", estimatedTime: "75-105 นาที", priceRange: "60 - 80 บาท" },
+    { id: 10, title: "ทำความสะอาดห้องน้ำ", description: "บริการขัดและล้างห้องน้ำ", icon: <Bath size={20} />, category: "housekeeping", estimatedTime: "1-2 ชั่วโมง", priceRange: "150 - 300 บาท" },
+    { id: 11, title: "ทำความสะอาดตู้เย็น", description: "ล้างทำความสะอาดภายในและภายนอกตู้เย็น", icon: <Refrigerator size={20} />, category: "housekeeping", estimatedTime: "1-2 ชั่วโมง", priceRange: "100 - 250 บาท" },
+    { id: 12, title: "กำจัดแมลง", description: "บริการกำจัดแมลงรบกวน", icon: <Bug size={20} />, category: "housekeeping", estimatedTime: "2-3 ชั่วโมง", priceRange: "300 - 600 บาท" },
+    { id: 13, title: "รีดผ้า", description: "บริการรีดผ้าให้เรียบตามต้องการ", icon: <Shirt size={20} />, category: "housekeeping", estimatedTime: "30-60 นาที", priceRange: "50 - 100 บาท" },
+    { id: 14, title: "ติดอินเตอร์เน็ต", description: "บริการติดตั้งอินเตอร์เน็ตใหม่", icon: <Wifi size={20} />, category: "maintenance", estimatedTime: "1-2 ชั่วโมง", priceRange: "500 - 1,000 บาท" },
+    { id: 15, title: "ซ่อมไฟในห้อง", description: "แก้ไขปัญหาไฟฟ้าในห้องพัก", icon: <Lightbulb size={20} />, category: "maintenance", estimatedTime: "1-2 ชั่วโมง", priceRange: "200 - 400 บาท" },
+    { id: 16, title: "ซ่อมเครื่องปรับอากาศ", description: "ตรวจเช็คและซ่อมแอร์", icon: <Fan size={20} />, category: "maintenance", estimatedTime: "2-3 ชั่วโมง", priceRange: "500 - 1,000 บาท" },
+    { id: 17, title: "ซ่อมปลั๊กไฟ", description: "ซ่อมแซมปลั๊กไฟชำรุด", icon: <Plug size={20} />, category: "maintenance", estimatedTime: "30-60 นาที", priceRange: "150 - 350 บาท" },
+    { id: 18, title: "ซ่อมเตียงนอน", description: "แก้ไขเตียงหักหรือเสียงดัง", icon: <Bed size={20} />, category: "maintenance", estimatedTime: "1-2 ชั่วโมง", priceRange: "300 - 600 บาท" },
+    { id: 19, title: "ซ่อมโต๊ะทำงาน", description: "ซ่อมแซมขาโต๊ะและพื้นโต๊ะ", icon: <Table size={20} />, category: "maintenance", estimatedTime: "1-2 ชั่วโมง", priceRange: "200 - 500 บาท" },
+    { id: 20, title: "ซ่อมประตู", description: "ปรับแต่งและแก้ไขประตูเสียหาย", icon: <DoorOpen size={20} />, category: "maintenance", estimatedTime: "1-2 ชั่วโมง", priceRange: "250 - 500 บาท" },
+    { id: 21, title: "ซ่อมตู้เสื้อผ้า", description: "แก้ไขบานพับและรางลิ้นชัก", icon: <Package size={20} />, category: "maintenance", estimatedTime: "1-2 ชั่วโมง", priceRange: "200 - 500 บาท" },
+    { id: 22, title: "ซ่อมอินเตอร์เน็ต", description: "แก้ไขปัญหาสัญญาณอินเตอร์เน็ต", icon: <Wifi size={20} />, category: "maintenance", estimatedTime: "30-90 นาที", priceRange: "100 - 300 บาท" },
+    { id: 23, title: "ซ่อมฝักบัว", description: "เปลี่ยนหรือซ่อมฝักบัวอาบน้ำ", icon: <ShowerHead size={20} />, category: "maintenance", estimatedTime: "1-2 ชั่วโมง", priceRange: "200 - 500 บาท" },
+    { id: 24, title: "ซ่อมชักโครก", description: "แก้ไขปัญหาการรั่วหรือกดไม่ลง", icon: <Toilet size={20} />, category: "maintenance", estimatedTime: "1-2 ชั่วโมง", priceRange: "300 - 700 บาท" },
+    { id: 25, title: "ซ่อมอ่างล้างหน้า", description: "ซ่อมรอยรั่วหรือเปลี่ยนอ่างใหม่", icon: <Bath size={20} />, category: "maintenance", estimatedTime: "1-2 ชั่วโมง", priceRange: "250 - 600 บาท" },
+    { id: 26, title: "ซ่อมตู้เย็น", description: "แก้ไขปัญหาตู้เย็นไม่เย็นหรือรั่ว", icon: <Refrigerator size={20} />, category: "maintenance", estimatedTime: "2-3 ชั่วโมง", priceRange: "400 - 800 บาท" }
+  ];;
 
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>("");
