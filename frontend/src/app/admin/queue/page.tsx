@@ -124,7 +124,6 @@ const AdminQueue = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data: QueueItem[] = await response.json();
-        console.log(JSON.stringify(data));
         const initializedData = data.map((item) => ({
           ...item,
           expanded: false,
@@ -287,7 +286,6 @@ const AdminQueue = () => {
     }
 
     try {
-      //console.log("userIDDDDDD"+selectedQueue.userId + " ---" +selectedRoom);
       const assignResponse = await fetch("http://localhost:3000/assignByq", {
         method: "PUT",
         headers: {

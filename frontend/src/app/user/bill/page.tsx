@@ -108,7 +108,6 @@ const BillPage = () => {
             water: parseFloat(billData.waterprice),
             electricity: parseFloat(billData.electricprice),
           };
-          console.log(billData.billStatus);
           // Construct final response
           return {
             id: billData.BillID, // Use BillID as the ID

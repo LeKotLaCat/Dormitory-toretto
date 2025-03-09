@@ -166,7 +166,6 @@ const UtilityPage = () => {
             monthlyRent: roomprice,
           };
         });
-        console.log(nda)
         setRoom(nda);
         setRoomLoading(false)
       }).then(()=> {
@@ -175,8 +174,6 @@ const UtilityPage = () => {
   }, []);
   useEffect(() => {
     if (RoomLoading) return
-    console.log(rooms)
-
     fetch("http://localhost:3000/bills", {
       method: "GET",
       credentials: "include",
@@ -187,8 +184,6 @@ const UtilityPage = () => {
       .then((data) => {
         if (data.length == 0) return setLoading(false);
         const newdata = data.map((s: any) => {
-          console.log(s);
-          console.log(rooms);
           return {
             id: s.BillID,
             roomNumber: rooms!.find((v) => v.id === s.RoomID)?.roomNumber,
@@ -241,7 +236,6 @@ const UtilityPage = () => {
         )
           .then((jso) => jso.json())
           .then((value) => {
-            console.log(value);
             if (value.length) {
               const newFees = value.map((s: any) => {
                 return {
@@ -269,7 +263,6 @@ const UtilityPage = () => {
       }
     }
 
-    console.log(newUtility);
   }, [RoomLoading,newUtility.roomNumber, newUtility.month, rooms]);
 
   const handleConfirmPayment = (id: number) => {
@@ -341,7 +334,6 @@ const UtilityPage = () => {
       ...feenotfromfetch,
       { ...newFee, amount: Number(newFee.amount) },
     ]);
-    console.log(feenotfromfetch);
     setNewUtility({
       ...newUtility,
       additionalFees: [
@@ -426,8 +418,6 @@ const UtilityPage = () => {
     const roomprice = rooms!.find(
       (v) => v.roomNumber === newUtility.roomNumber
     )?.monthlyRent;
-    console.log(RoomID, roomprice);
-    console.log(rooms);
     fetch("http://localhost:3000/bills", {
       method: "POST",
       credentials: "include",
@@ -448,6 +438,7 @@ const UtilityPage = () => {
       console.error(ex);
     }
   );
+  
  
 
     // Add new utility record
@@ -506,6 +497,37 @@ const UtilityPage = () => {
       </div>
     );
   }
+
+  
+  const formatThaiDate = (date: Date): string => {
+    const thaiMonths = [
+      'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.',
+      'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
+    ];
+    
+    // Get month and day
+    const monthIndex = date.getMonth();
+    const day = date.getDate();
+    
+    // Return formatted date in Thai style
+    return `${day} ${thaiMonths[monthIndex]}`;
+  };
+
+  const formatThaiFullDate = (date: Date): string => {
+    const thaiMonths = [
+      'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.',
+      'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
+    ];
+    
+    // Get month, day, and year
+    const monthIndex = date.getMonth();
+    const day = date.getDate();
+    const year = date.getFullYear() + 543; // Convert to Buddhist Era (BE)
+    
+    // Return formatted date in Thai style with Buddhist year
+    return `${day} ${thaiMonths[monthIndex]} ${year}`;
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col overflow-auto">
       <div className="flex flex-1">
@@ -707,8 +729,6 @@ const UtilityPage = () => {
                       </thead>
                       <tbody className="divide-y divide-gray-200">
                         {filteredData.map((item) => {
-                          // Calculate additional fees total
-                          console.log(item);
                           const additionalTotal = item.additionalFees.reduce(
                             (sum, fee) => sum + fee.amount,
                             0
@@ -791,11 +811,9 @@ const UtilityPage = () => {
                                   }
                                 >
                                   {item.status === "paid" && item.paidDate
-                                    ? `ชำระเมื่อ ${format(
-                                        item.paidDate,
-                                        "MMM d"
-                                      )}`
+                                    ? `ชำระเมื่อ ${formatThaiDate(item.paidDate)}`
                                     : "ยังไม่ได้ชำระ"}
+
                                 </Badge>
                               </td>
                               <td className="px-4 py-3">
