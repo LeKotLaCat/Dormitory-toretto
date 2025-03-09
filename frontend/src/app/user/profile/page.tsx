@@ -63,7 +63,7 @@ const EditProfilePage = () => {
         setImagePreview(data.userImg || "/profile/annonymous.jpg");
       } catch (error) {
         console.error("Error fetching profile:", error);
-        toast.error("Failed to load profile data.");
+        toast.error("ไม่สามารถดึงข้อมูลผู้ใช้ได้");
       } finally {
         setIsLoading(false);
       }
@@ -122,11 +122,11 @@ const EditProfilePage = () => {
         throw new Error(errorData.message || "Failed to update profile");
       }
   
-      toast.success("Profile updated successfully!");
+      toast.success("อัพเดทข้อมูลผู้ใช้เรียบร้อยแล้ว");
       router.push("/user/main");
     } catch (error) {
       console.error("Error updating profile:", error);
-      toast.error("An error occurred while updating your profile.");
+      toast.error("เกิดข้อผิดพลายระหว่างการอัพเดทข้อมูลผู้ใช้");
     } finally {
       setIsLoading(false);
     }
@@ -137,7 +137,7 @@ const EditProfilePage = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>กำลังโหลด...</div>;
   }
 
   return (
@@ -179,7 +179,7 @@ const EditProfilePage = () => {
                       />
                     ) : (
                       <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                        <span className="text-gray-400">No image</span>
+                        <span className="text-gray-400">ไม่มีรูปภาพ</span>
                       </div>
                     )}
                     </div>

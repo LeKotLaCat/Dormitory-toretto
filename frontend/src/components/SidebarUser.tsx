@@ -109,12 +109,12 @@ const SidebarUser = ({ className }: SidebarProps) => {
         // Handle errors, e.g., show a notification
         const errorData = await response.json();
         console.error('Logout failed:', errorData);
-        toast.error(`Logout failed: ${errorData.message || 'Unknown error'}`);
+        toast.error(`เข้าสู่ระบบไม่สำเร็จเนื่องจาก: ${errorData.message || 'ไม่ทราบสาเหตุ'}`);
 
       }
     } catch (error) {
       console.error('Logout failed:', error);
-      toast.error('Logout failed:  Network error');
+      toast.error('เข้าสู่ระบบไม่สำเร็จเนื่องจาก:  ข้อผิดพลาดของเครือข่าย');
     }
   };
 

@@ -272,20 +272,20 @@ const AdminQueue = () => {
         } catch (error) {
             console.error("Error fetching available rooms:", error);
             setAvailableRooms([]);
-            toast.error("Failed to fetch available rooms.");
+            toast.error("เกิดข้อผิดพลาดขณะดึงข้อมูลห้อง");
         }
     };
 
 
     const handleFinalConfirmation = async () => {
         if (!selectedRoom) {
-            toast.error("Please select a room.");
+            toast.error("กรุณาเลือกห้อง");
             return;
         }
 
         const selectedQueue = queueList.find(q => q.id === selectedQueueItem);
         if (!selectedQueue) {
-          toast.error("Could not find selected request.");
+          toast.error("ไม่พบคำขอที่เลือก");
           return;
         }
 
@@ -313,7 +313,7 @@ const AdminQueue = () => {
                 )
             );
 
-            toast.success("Room assigned successfully!");
+            toast.success("กำหนดห้องเรียบร้อยแล้ว");
             setIsRoomDialogOpen(false);
             setSelectedRoom("");
 

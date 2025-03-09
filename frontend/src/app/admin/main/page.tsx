@@ -92,7 +92,7 @@ const AdminMain = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-500">
-                      ผู้เข้าพักทั้งหมด
+                      ผู้เช่าทั้งหมด
                     </p>
                     <p className="text-2xl font-bold text-gray-800">
                       {stats.totalStudents}
@@ -102,33 +102,21 @@ const AdminMain = () => {
                     <Users className="h-6 w-6 text-blue-600" />
                   </div>
                 </div>
-                <div className="mt-4">
-                  <span className="text-sm text-green-500 font-medium">
-                    +4%{" "}
-                  </span>
-                  <span className="text-sm text-gray-500">จากเดือนที่แล้ว</span>
-                </div>
               </div>
 
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-500">
-                      เปอร์เซ็นต์การเข้าพัก
+                      ห้องพักทั้งหมด
                     </p>
                     <p className="text-2xl font-bold text-gray-800">
-                      {stats.occupancyRate}%
+                      {stats.occupancyRate}
                     </p>
                   </div>
                   <div className="p-3 bg-green-100 rounded-full">
                     <Home className="h-6 w-6 text-green-600" />
                   </div>
-                </div>
-                <div className="mt-4">
-                  <span className="text-sm text-green-500 font-medium">
-                    +2%{" "}
-                  </span>
-                  <span className="text-sm text-gray-500">จากเดือนที่แล้ว</span>
                 </div>
               </div>
 
@@ -146,17 +134,13 @@ const AdminMain = () => {
                     <FileText className="h-6 w-6 text-yellow-600" />
                   </div>
                 </div>
-                <div className="mt-4">
-                  <span className="text-sm text-red-500 font-medium">+3 </span>
-                  <span className="text-sm text-gray-500">คำขอวันนี้</span>
-                </div>
               </div>
 
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
                 <div className="flex items-center justify-between ">
                   <div>
                     <p className="text-sm font-medium text-gray-500">
-                      คำขอแจ้งใช้บริการห้องพัก
+                      บิลค้างชำระ
                     </p>
                     <p className="text-2xl font-bold text-gray-800">
                       {stats.maintenanceTickets}
@@ -165,14 +149,6 @@ const AdminMain = () => {
                   <div className="p-3 bg-red-100 rounded-full">
                     <Settings className="h-6 w-6 text-red-600" />
                   </div>
-                </div>
-                <div className="mt-4">
-                  <span className="text-sm text-green-500 font-medium">
-                    -2{" "}
-                  </span>
-                  <span className="text-sm text-gray-500">
-                    จัดการแล้ววันนี้
-                  </span>
                 </div>
               </div>
             </div>
@@ -199,68 +175,6 @@ const AdminMain = () => {
                   </div>
                 </Link>
               ))}
-            </div>
-
-            {/* Recent Activity */}
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              ประวัติล่าสุด
-            </h2>
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-              <div className="p-6">
-                <ul className="space-y-4">
-                  <li className="flex items-center pb-4 border-b border-gray-100">
-                    <div className="p-2 bg-blue-100 rounded-full mr-4">
-                      <Users className="h-5 w-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-800">
-                        ผู้ใช้งานลงทะเบียน
-                      </p>
-                      <p className="text-xs text-gray-500">10 นาทีที่แล้ว</p>
-                    </div>
-                  </li>
-                  <li className="flex items-center pb-4 border-b border-gray-100">
-                    <div className="p-2 bg-green-100 rounded-full mr-4">
-                      <Home className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-800">
-                        ห้อง 304 ถูกจองโดย Supakorn W.
-                      </p>
-                      <p className="text-xs text-gray-500">1 ชั่วโมงที่แล้ว</p>
-                    </div>
-                  </li>
-                  <li className="flex items-center pb-4 border-b border-gray-100">
-                    <div className="p-2 bg-purple-100 rounded-full mr-4">
-                      <DollarSign className="h-5 w-5 text-purple-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-800">
-                        รับค่าใช้จ่ายจาก ห้อง 201
-                      </p>
-                      <p className="text-xs text-gray-500">2 ชั่วโมงที่แล้ว</p>
-                    </div>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="p-2 bg-orange-100 rounded-full mr-4">
-                      <Settings className="h-5 w-5 text-orange-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-800">
-                        คำขอซ่อมแซมของ ห้อง 115 เสร็จสิ้น
-                      </p>
-                      <p className="text-xs text-gray-500">3 ชั่วโมงที่แล้ว</p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-              <div className="bg-gray-50 px-6 py-3 border-t border-gray-100">
-                <Link href="/activity">
-                  <span className="text-sm font-medium text-blue-600 hover:text-blue-800">
-                    ดูประวัติการทำงานทั้งหมด
-                  </span>
-                </Link>
-              </div>
             </div>
           </div>
         </main>

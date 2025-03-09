@@ -148,11 +148,11 @@ const QueueAppointment = () => {
         // Handle errors, e.g., show a notification
         const errorData = await response.json();
         console.error("Logout failed:", errorData);
-        toast.error(`Logout failed: ${errorData.message || "Unknown error"}`);
+        toast.error(`ออกจากระบบไม่สำเร็จเนื่องจาก: ${errorData.message || "ไม่ทราบสาเหตุ"}`);
       }
     } catch (error) {
       console.error("Logout failed:", error);
-      toast.error("Logout failed:  Network error");
+      toast.error("ออกจากระบบไม่สำเร็จเนื่องจาก:  ข้อผิดพลาดทางเครือข่าย");
     }
   };
   const checkQueueStatus = async (roomType: string, id: number) => {
@@ -244,7 +244,7 @@ const QueueAppointment = () => {
             duration: 5000,
           });
         } else if (response.status === 401) {
-          toast.error("กรุณา login", {
+          toast.error("กรุณาเข้าสู่ระบบ", {
             description: errorData.message,
             duration: 5000,
           });

@@ -655,7 +655,8 @@ const CleaningQueuePage = () => {
                       type="number"
                       placeholder="Enter Price"
                       value={price}
-                      onChange={(e) => setPrice(e.target.value === "" ? 0 : Number.parseFloat(e.target.value))}
+                      min={0}
+                      onChange={(e) => setPrice(e.target.value === "" ? 0 : Math.abs(Number.parseFloat(e.target.value)))}
                       className="pl-9 w-full md:w-64"
                       step={0.01}
                     />
