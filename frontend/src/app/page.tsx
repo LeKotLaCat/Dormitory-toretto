@@ -80,7 +80,7 @@ export default function HomePage() {
           className="text-gray-600 mt-4"
           variants={itemVariants}
         >
-          เป็นระบบออนไลน์ที่ใช้เพื่อดูแลและจัดการ &quot;ธุรกิจหอพัก&quot; ช่วยประหยัดเวลา
+          เป็นระบบออนไลน์ที่ใช้เพื่อดูแลและจัดการ &quot;การบริหารหอพัก&quot; ให้มีประสิทธิภาพมากที่สุด
         </motion.p>
 
         <motion.ul 
@@ -88,9 +88,9 @@ export default function HomePage() {
           variants={containerVariants}
         >
           {[
-            'ระบบช่วยจัดการข้อมูลลูกค้า ห้องพัก',
+            'ระบบช่วยจัดการข้อมูลผู้เช่า ห้องพัก',
             'ระบบช่วยในการบันทึกค่าน้ำ ค่าไฟและค่าเช่าห้อง',
-            'ระบบจัดการห้องผู้เช่าภายใน'
+            'ระบบจัดการห้องพักภายใน'
           ].map((text, index) => (
             <motion.li 
               key={index}
@@ -154,7 +154,7 @@ export default function HomePage() {
         id="products"
         className="flex justify-center pt-24 lg:pt-32 px-6 2xl:px-0"
       >
-        <div className="w-[1280px]">
+        <div className="max-w-[1280px]">
           <div className="text-center mb-12 mb:mb-16">
             <h1 data-aos="fade-up" className="text-3xl md:text-4xl font-semibold">Our Services</h1>
             <p data-aos="fade-up" className="text-lg md:text-xl text-primary">บริการของเรา</p>
@@ -263,9 +263,9 @@ export default function HomePage() {
                 จองห้องออนไลน์
               </h1>
               <p className="text-sm md:text-base mb-4">
-                ระบบจองห้องออนไลน์ช่วยให้นักศึกษาและบุคลากรสามารถจองห้องเรียน ห้องประชุม และพื้นที่ทำงานได้อย่างสะดวก 
-                สามารถตรวจสอบตารางการใช้งานห้อง จองล่วงหน้า และยกเลิกการจองได้ตลอด 24 ชั่วโมง 
-                เพื่อการบริหารจัดการทรัพยากรของคณะให้เกิดประโยชน์สูงสุด
+                ระบบจองห้องออนไลน์ช่วยให้ผู้เช่าห้องพัก สามารถจองดูห้องพักได้ล่วงหน้า และดูแลการใช้งานได้อย่างทั่วถึง
+                สามารถตรวจสอบตารางการใช้งานห้อง การจองห้อง และยกเลิกการจองได้ตลอด 24 ชั่วโมง 
+                เพื่อการบริหารจัดการทรัพยากรของหอพักให้เกิดประโยชน์สูงสุด
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div className="flex items-center gap-2 bg-red-100 p-3 rounded-lg">
@@ -294,17 +294,15 @@ export default function HomePage() {
                 ระบบชำระค่าใช้จ่ายแบบครบครัน
               </h1>
               <p className="text-sm md:text-base mb-4">
-                ระบบแจ้งซ่อมและขอความช่วยเหลือจากช่างเทคนิคและแม่บ้านประจำหอพัก
-                สามารถแจ้งปัญหาอุปกรณ์ในห้องพัก ระบบไฟฟ้า เครื่องปรับอากาศ
-                หรือขอความช่วยเหลือด้านความสะอาดได้อย่างรวดเร็ว
-                พร้อมติดตามสถานะงานและประเมินการให้บริการได้ผ่านระบบออนไลน์
+                ระบบแจ้งการใช้งานรายเดือน ทั้งฝั่งผู้ใช้และผู้ดูแล สามารถตรวจสอยได้ง่ายๆ ผ่านเว้ปไซต์ของเรา
+                พร้อมกับการจ่ายต่าเช่าออนไลน์ผ่าน Promptpay QRCode เพื่อบริการ และคุณภาพการใช้งานที่สะดวกที่สุดสำหรับทั้งสองฝั่ง
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div className="flex items-center gap-2 bg-primary/10 p-3 rounded-lg">
                   <div className="bg-primary p-2 rounded-lg">
                     <QrCode className="h-6 w-6 text-white" />
                   </div>
-                  <span className="text-sm md:text-base">ชำระง่ายๆผ่าน Promptpay QR Code</span>
+                  <span className="text-sm md:text-base">ชำระง่ายๆ ผ่าน Promptpay QR Code</span>
                 </div>
                 <div className="flex items-center gap-2 bg-primary/10 p-3 rounded-lg">
                   <div className="bg-primary p-2 rounded-lg">
@@ -389,7 +387,7 @@ export default function HomePage() {
 
   
       <section className="pt-24 lg:pt-40 flex justify-center">
-        <div className="container mx-auto px-4 w-[1280px]">
+        <div className="container mx-auto px-4 max-w-[1280px]">
           <div className="text-center mb-24">
             <h1 data-aos="fade-up" className="text-3xl md:text-4xl font-semibold">เสียงจากผู้ใช้งานของเรา</h1>
             <p data-aos="fade-up" className="text-lg md:text-xl text-primary">สะท้อนคุณภาพบริการของเรา</p>

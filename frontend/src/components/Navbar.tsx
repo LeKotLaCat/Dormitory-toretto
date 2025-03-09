@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+
+  const router = useRouter();
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -23,6 +26,7 @@ export default function Navbar() {
     { id: 'faq', label: 'คำถามที่พบบ่อย' }
   ];
 
+
   return (
     <nav className="fixed w-full top-0 z-50 bg-white shadow-md transition-all duration-500">
       <div className="mx-auto px-4">
@@ -41,6 +45,19 @@ export default function Navbar() {
                 {item.label}
               </button>
             ))}
+
+          <button
+            className="bg-primary text-white px-6 py-2 rounded-md hover:bg-purple-500 hover:scale-105 transition-all duration-300"
+            onClick={() => router.push('/login')}
+          >
+            เข้าสู่ระบบ
+          </button>
+          <button
+            className="border border-purple-500 text-purple-500 px-6 py-2 rounded-md hover:bg-purple-50 hover:scale-105 transition-all duration-300" 
+            onClick={() => router.push('/register')}
+          >
+            สมัครสมาชิก
+          </button>
           </div>
 
           <div className="md:hidden">
