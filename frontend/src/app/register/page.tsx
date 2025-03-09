@@ -204,7 +204,7 @@ const Register = () => {
                 className="w-full p-3 border border-gray-300 rounded-xl bg-white"
                 required={true}
               />
-              <button
+              <button type = "button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
               >
@@ -221,7 +221,7 @@ const Register = () => {
                 className="w-full p-3 border border-gray-300 rounded-xl bg-white"
                 required={true}
               />
-              <button
+              <button type = "button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
               >
