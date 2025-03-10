@@ -110,14 +110,14 @@ const AdminMain = () => {
       path: "/admin/utility ",
       color: "bg-purple-50 hover:bg-purple-100",
     },
-    {
-      id: 4,
-      title: "จัดการผู้ใช้งาน",
-      description: "จัดการรหัสผู้เช่าห้องพัก",
-      icon: <Settings className="h-8 w-8 text-orange-500" />,
-      path: "/admin/user",
-      color: "bg-orange-50 hover:bg-orange-100",
-    },
+    // {
+    //   id: 4,
+    //   title: "จัดการผู้ใช้งาน",
+    //   description: "จัดการรหัสผู้เช่าห้องพัก",
+    //   icon: <Settings className="h-8 w-8 text-orange-500" />,
+    //   path: "/admin/user",
+    //   color: "bg-orange-50 hover:bg-orange-100",
+    // },
     {
       id: 5,
       title: "คิวเข้าดูหอพัก",

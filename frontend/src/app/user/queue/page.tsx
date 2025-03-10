@@ -63,21 +63,21 @@ const sampleRoomTypes: RoomType[] = [
     roomType: "A",
     details: "ห้องพัดลมสำหรับ 2 คน พร้อมห้องน้ำในตัว สำหรับนักศึกษา",
     imageSrc: "/room/typea.png",
-    price: 4500,
+    price: 8400,
   },
   {
     id: 2,
     roomType: "B",
     details: "ห้องปรับอากาศสำหรับ 2 คน พร้อมห้องน้ำในตัว",
     imageSrc: "/room/typeb.png",
-    price: 6500,
+    price: 12000,
   },
   {
     id: 3,
     roomType: "C",
-    details: "ห้องปรับอากาศสำหรับ 1 คน พร้อมห้องน้ำในตัว เฉพาะบุคลากร",
+    details: "ห้องปรับอากาศสำหรับ 1 คน พร้อมห้องน้ำในตัว",
     imageSrc: "/room/typec.png",
-    price: 7500,
+    price: 13400,
   },
 ];
 

@@ -140,7 +140,7 @@ export const dorms: DormType[] = [
     title: 'Type A',
     description: 'ห้องพักมาตรฐาน พร้อมเฟอร์นิเจอร์ครบครัน',
     image: "/room/typea.png",
-    price: 24000,
+    price: 8400,
     building: 'new',
     features: [
       'เตียงนอน 2 เตียง',
@@ -162,7 +162,7 @@ export const dorms: DormType[] = [
     title: 'Type B',
     description: 'ห้องพักมาตรฐาน พร้อมเฟอร์นิเจอร์ครบครัน',
     image: "/room/typeb.png",
-    price: 24000,
+    price: 12000,
     building: 'new',
     features: [
       'เตียงนอน 2 เตียง',
@@ -184,7 +184,7 @@ export const dorms: DormType[] = [
     title: 'Type C',
     description: 'ห้องพักขนาดใหญ่พิเศษ พร้อมเฟอร์นิเจอร์ครบครัน',
     image: "/room/typec.png",
-    price: 28000,
+    price: 13400,
     building: 'new',
     features: [
       'เตียงนอน 2 เตียง',

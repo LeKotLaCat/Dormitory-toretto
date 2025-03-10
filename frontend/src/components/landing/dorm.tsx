@@ -32,7 +32,7 @@ export const DormCard: React.FC<DormCardProps> = ({ dorm }) => {
         <h3 className="text-xl font-semibold mb-2">{title}</h3>
         <p className="text-gray-600 mb-4">{description}</p>
         <div className="flex justify-between items-center">
-          <span className="text-xl font-semibold text-primary">฿{price.toLocaleString()}/ภาคการศึกษา</span>
+          <span className="text-xl font-semibold text-primary">฿{price.toLocaleString()}/เดือน</span>
           <Dialog>
             <DialogTrigger asChild>
               <button className="bg-primary text-white px-4 py-2 rounded-md transition duration-300 hover:bg-blue-600 hover:scale-110">
@@ -50,7 +50,7 @@ export const DormCard: React.FC<DormCardProps> = ({ dorm }) => {
                 </div>
                 <div className="grid gap-2">
                   <h4 className="font-semibold">ราคา</h4>
-                  <p className="text-primary font-medium">฿{price.toLocaleString()}/ภาคการศึกษา</p>
+                  <p className="text-primary font-medium">฿{price.toLocaleString()}/เดือน</p>
                 </div>
                 {features && (
                   <div className="grid gap-2">

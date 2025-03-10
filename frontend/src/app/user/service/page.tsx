@@ -98,7 +98,8 @@ const ServicePage = () => {
     { id: 23, title: "ซ่อมฝักบัว", description: "เปลี่ยนหรือซ่อมฝักบัวอาบน้ำ", icon: <ShowerHead size={20} />, category: "maintenance", estimatedTime: "1-2 ชั่วโมง", priceRange: "200 - 500 บาท" },
     { id: 24, title: "ซ่อมชักโครก", description: "แก้ไขปัญหาการรั่วหรือกดไม่ลง", icon: <Toilet size={20} />, category: "maintenance", estimatedTime: "1-2 ชั่วโมง", priceRange: "300 - 700 บาท" },
     { id: 25, title: "ซ่อมอ่างล้างหน้า", description: "ซ่อมรอยรั่วหรือเปลี่ยนอ่างใหม่", icon: <Bath size={20} />, category: "maintenance", estimatedTime: "1-2 ชั่วโมง", priceRange: "250 - 600 บาท" },
-    { id: 26, title: "ซ่อมตู้เย็น", description: "แก้ไขปัญหาตู้เย็นไม่เย็นหรือรั่ว", icon: <Refrigerator size={20} />, category: "maintenance", estimatedTime: "2-3 ชั่วโมง", priceRange: "400 - 800 บาท" }
+    { id: 26, title: "ซ่อมตู้เย็น", description: "แก้ไขปัญหาตู้เย็นไม่เย็นหรือรั่ว", icon: <Refrigerator size={20} />, category: "maintenance", estimatedTime: "2-3 ชั่วโมง", priceRange: "400 - 800 บาท" },
+    { id: 27, title: "ซ่อมก๊อกน้ำ", description: "แก้ไขปัญหาก๊อกน้ำไม่ไหลหรือรั่ว", icon: <Refrigerator size={20} />, category: "maintenance", estimatedTime: "2-3 ชั่วโมง", priceRange: "400 - 800 บาท" }
   ];;
 
   const [selectedService, setSelectedService] = useState<Service | null>(null);
