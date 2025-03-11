@@ -120,12 +120,33 @@ const Register = () => {
 
           <form onSubmit={submitRegister} className="space-y-4">
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="First Name / ชื่อ"
+                    name="firstName"
+                    className="w-full p-3 border border-gray-300 rounded-xl bg-white"
+                    required={true}
+                  />
+                </div>
+
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Last Name / นามสกุล"
+                    name="lastName"
+                    className="w-full p-3 border border-gray-300 rounded-xl bg-white"
+                    required={true}
+                  />
+                </div>
+              </div>
+
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="ชื่อ"
-                  name="firstName"
+                  placeholder="Username / ชื่อผู้ใช้"
+                  name="username"
                   className="w-full p-3 border border-gray-300 rounded-xl bg-white"
                   required={true}
                 />
@@ -133,124 +154,105 @@ const Register = () => {
 
               <div className="relative">
                 <input
-                  type="text"
-                  placeholder="นามสกุล"
-                  name="lastName"
+                  type="email"
+                  placeholder="Email / อีเมล"
+                  name="email"
                   className="w-full p-3 border border-gray-300 rounded-xl bg-white"
                   required={true}
                 />
               </div>
-            </div>
-
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="ชื่อผู้ใช้"
-                name="username"
-                className="w-full p-3 border border-gray-300 rounded-xl bg-white"
-                required={true}
-              />
-            </div>
-
-            <div className="relative">
-              <input
-                type="email"
-                placeholder="อีเมล"
-                name="email"
-                className="w-full p-3 border border-gray-300 rounded-xl bg-white"
-                required={true}
-              />
-            </div>
 
 
-            <div className="relative">
-              <input
-                type="tel"
-                placeholder="เบอร์โทรศัพท์"
-                name="telephone"
-                className="w-full p-3 border border-gray-300 rounded-xl bg-white"
-                required={true}
-                pattern="0[0-9]{9}"
-                title="กรุณากรอกหมายเลขโทรศัพท์ให้ถูกต้อง (เช่น 0812345678)"
-              />
-            </div>
-
-            <div className="relative">
-              <input
-                type="date"
-                placeholder="วันเกิด"
-                name="dateOfBirth"
-                className="w-full p-3 border border-gray-300 rounded-xl bg-white"
-                required={true}
-              />
-            </div>
-
-            <div className="relative">
-              <textarea
-                placeholder="ที่อยู่"
-                name="address"
-                className="w-full p-3 border border-gray-300 rounded-xl bg-white"
-                required={true}
-                rows={3}
-              />
-            </div>
-
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="รหัสผ่าน"
-                name="password"
-                minLength={8}
-                className="w-full p-3 border border-gray-300 rounded-xl bg-white"
-                required={true}
-              />
-              <button type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
-
-            <div className="relative">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                placeholder="ยืนยันรหัสผ่าน"
-                name="confirmedPassword"
-                minLength={8}
-                className="w-full p-3 border border-gray-300 rounded-xl bg-white"
-                required={true}
-              />
-              <button type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-              >
-                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
-
-            <div className="flex items-center gap-2 pt-4">
-              <input type="checkbox" id="terms" className="rounded border-gray-300" />
-              <label htmlFor="terms" className="text-sm text-gray-600">
-                ฉันได้อ่านและยอมรับเงื่อนไขการใช้งานตาม{" "}
-                <a href="#" className="text-blue-600 hover:underline">ข้อกำหนดการใช้บริการ</a>{" "}
-                และ{" "}
-                <a href="#" className="text-blue-600 hover:underline">ความเป็นส่วนตัว</a>
-              </label>
-            </div>
-
-            <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 font-medium"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center gap-2">
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>กำลังดำเนินการ...</span>
+              <div className="relative">
+                <input
+                  type="tel"
+                  placeholder="Telephone / เบอร์โทรศัพท์"
+                  name="telephone"
+                  className="w-full p-3 border border-gray-300 rounded-xl bg-white"
+                  required={true}
+                  pattern="0[0-9]{9}"
+                  title="กรุณากรอกหมายเลขโทรศัพท์ให้ถูกต้อง (เช่น 0812345678)"
+                />
               </div>
-              ) : (
-                "สร้างบัญชี"
-              )}
-            </button>
+
+              <div className="relative">
+                <input
+                  type="date"
+                  placeholder="Date of Birth / วันเกิด"
+                  name="dateOfBirth"
+                  className="w-full p-3 border border-gray-300 rounded-xl bg-white"
+                  required={true}
+                />
+              </div>
+
+              <div className="relative">
+                <textarea
+                  placeholder="Address / ที่อยู่"
+                  name="address"
+                  className="w-full p-3 border border-gray-300 rounded-xl bg-white"
+                  required={true}
+                  rows={3}
+                />
+              </div>
+
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password / รหัสผ่าน"
+                  name="password"
+                  minLength={8}
+                  className="w-full p-3 border border-gray-300 rounded-xl bg-white"
+                  required={true}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Confirm password / ยืนยันรหัสผ่าน"
+                  name="confirmedPassword"
+                  minLength={8}
+                  className="w-full p-3 border border-gray-300 rounded-xl bg-white"
+                  required={true}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                >
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+
+              <div className="flex items-center gap-2 pt-4">
+                <input type="checkbox" id="terms" className="rounded border-gray-300" />
+                <label htmlFor="terms" className="text-sm text-gray-600">
+                  ฉันได้อ่านและยอมรับเงื่อนไขการใช้งานตาม{" "}
+                  <a href="#" className="text-blue-600 hover:underline">ข้อกำหนดการใช้บริการ</a>{" "}
+                  และ{" "}
+                  <a href="#" className="text-blue-600 hover:underline">ความเป็นส่วนตัว</a>
+                </label>
+              </div>
+
+              <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 font-medium"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>กำลังดำเนินการ...</span>
+                </div>
+                ) : (
+                  "สร้างบัญชี"
+                )}
+              </button>
           </form>
         </div>
       </div>

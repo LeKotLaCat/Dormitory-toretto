@@ -326,7 +326,7 @@ const CleaningQueuePage = () => {
             <div className="container mx-auto">
               <div className="flex flex-col md:space-y-4 lg:space-y-0 lg:flex-row md:items-center justify-between mb-6">
                 <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-0">
-                คิวการขอใช้บริการห้องพัก
+                  คิวการขอใช้บริการห้องพัก
                 </h1>
                 <div className="flex flex-col md:flex-row gap-3">
                   <div className="relative">
@@ -356,7 +356,7 @@ const CleaningQueuePage = () => {
 
               <div className="mb-4 flex items-center justify-between">
                 <p className="text-gray-600">
-                แสดงทั้งหมด {" "}
+                  แสดงทั้งหมด {" "}
                   {
                     sortedRequests.filter((item) => item.status === "pending")
                       .length
@@ -365,7 +365,7 @@ const CleaningQueuePage = () => {
                 </p>
                 <div className="flex items-center space-x-2">
                   <p className="text-sm text-gray-500">
-                  หน้า {currentPage} จาก {totalPages}
+                    หน้า {currentPage} จาก {totalPages}
                   </p>
                 </div>
               </div>
@@ -429,7 +429,7 @@ const CleaningQueuePage = () => {
                           <CardFooter className="pt-0 pb-3 justify-end">
                             <Button
                               variant="ghost"
-                              size="sm"
+                              size="default"
                               className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -561,7 +561,7 @@ const CleaningQueuePage = () => {
           <DialogHeader>
             <DialogTitle>ข้อมูลการขอใช้บริการ</DialogTitle>
             <DialogDescription>
-            ข้อมูลการบริการและการยืนยัน
+              ข้อมูลการบริการและการยืนยัน
             </DialogDescription>
           </DialogHeader>
 
@@ -574,10 +574,10 @@ const CleaningQueuePage = () => {
                     <CheckCircle className="h-5 w-5 text-green-500" />
                     <div>
                       <p className="font-medium text-green-800">
-                      การให้บริการสำเร็จ
+                        การให้บริการสำเร็จ
                       </p>
                       <p className="text-sm text-green-700">
-                      สำเร็จเมื่อวันที่ {" "}
+                        สำเร็ตเมื่อวันที่ {" "}
                         {format(
                           cleaningRequests.find((r) => r.id === selectedRequest)
                             ?.completedAt || new Date(),
@@ -600,7 +600,7 @@ const CleaningQueuePage = () => {
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">ผู้ขอบริการ</p>
+                      <p className="text-sm text-gray-500 mb-1">ขอบริการโดย</p>
                       <p className="font-medium">
                         {
                           cleaningRequests.find((r) => r.id === selectedRequest)
@@ -609,7 +609,7 @@ const CleaningQueuePage = () => {
                       </p>
                     </div>
                     <div className="col-span-2">
-                      <p className="text-sm text-gray-500 mb-1">ประเภทการบริการ</p>
+                      <p className="text-sm text-gray-500 mb-1">ประเภทบริการ</p>
                       <p className="font-medium">
                         {
                           cleaningRequests.find((r) => r.id === selectedRequest)

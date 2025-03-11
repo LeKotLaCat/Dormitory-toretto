@@ -362,7 +362,7 @@ const AdminQueue = () => {
 
               <div className="mb-4 flex items-center justify-between">
                 <p className="text-gray-600">
-                  กำลังแสดง{" "}
+                  กำลังแสดง {" "}
                   {
                     sortedRequests.filter((item) => item.status === "pending")
                       .length
@@ -371,7 +371,7 @@ const AdminQueue = () => {
                 </p>
                 <div className="flex items-center space-x-2">
                   <p className="text-sm text-gray-500">
-                  หน้า {currentPage} จาก {totalPages}
+                    หน้า {currentPage} จาก {totalPages}
                   </p>
                 </div>
               </div>
@@ -387,7 +387,7 @@ const AdminQueue = () => {
                     <CardHeader className="pb-2">
                     <div className="flex justify-between items-start">
                         <div>
-                          <CardTitle>{item.firstname} {item.lastname}</CardTitle>
+                          <CardTitle>{item.name}</CardTitle>
                         </div>
                         <div>
                           <AnimatePresence mode="wait">
@@ -438,6 +438,13 @@ const AdminQueue = () => {
                               </motion.div>
                             )}
                           </AnimatePresence>
+                          {sortedRequests.length === 0 && (
+                            <div className="bg-white rounded-md p-8 text-center">
+                              <p className="text-gray-500">
+                                ไม่พบการค้นหา
+                              </p>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </CardHeader>
@@ -452,16 +459,13 @@ const AdminQueue = () => {
                         <div className="flex items-center gap-2">
                           <CalendarIcon size={16} className="text-gray-500" />
                           <span className="text-sm">
-                            {/* Format bookingDate and bookingTime */}
-                            {new Date(item.bookingDate).toLocaleDateString(
-                              "en-US",
-                              {
-                                weekday: "short",
-                                day: "numeric",
-                                month: "short",
-                              }
-                            )}{" "}
-                            {item.bookingTime}
+                            {item.preferredDate.toLocaleDateString("th-TH", {
+                              weekday: "short",
+                              day: "numeric",
+                              month: "short",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
@@ -482,7 +486,7 @@ const AdminQueue = () => {
                               </div>
                               <div className="transition duration-300 ease-in-out transform hover:bg-gray-50 p-2 rounded">
                                 <h4 className="text-sm font-medium text-gray-500 mb-1">
-                                  เวลาที่กดจอง
+                                  เข้าดูห้องพักวันที่
                                 </h4>
                                 <p className="text-sm">
                                   {/* Format bookingDate */}
@@ -494,7 +498,7 @@ const AdminQueue = () => {
                                       year: "numeric",
                                     }
                                   )}
-                                </p>
+                                </p>  
                               </div>
                               <div className="md:col-span-2 transition duration-300 ease-in-out transform hover:bg-gray-50 p-2 rounded">
                                 <h4 className="text-sm font-medium text-gray-500 mb-1">
@@ -537,7 +541,7 @@ const AdminQueue = () => {
                           className="transition-all duration-200 ease-in-out hover:bg-red-50"
                         >
                           <X className="mr-2 h-4 w-4" />
-                          ปฏิเสธ
+                          ปฎิเสธ
                         </Button>
                         <motion.div
                           whileHover={{ scale: 1.05 }}
@@ -669,9 +673,9 @@ const AdminQueue = () => {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>ปฏิเสธคำขอ</AlertDialogTitle>
+            <AlertDialogTitle>แน่ใจใช่ไหม?</AlertDialogTitle>
             <AlertDialogDescription>
-              ระบบจะทำการปฏิเสธคำขอนี้ และไม่สามารถยกเลิกได้หลังจากยืนยัน
+              การกระทำนี้จะทำการยกเลิกการเข้าดูห้องพัก เมื่อกดแล้วจะไม่สามารถยกเลิกได้
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -689,16 +693,16 @@ const AdminQueue = () => {
       <Dialog open={isRoomDialogOpen} onOpenChange={setIsRoomDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Assign Room</DialogTitle>
+            <DialogTitle>เพิ่มห้องให้ผู้เช่า</DialogTitle>
             <DialogDescription>
-              เลือกห้องที่ตรงกับประเภทที่ถูกขอ
+              เลือกห้องที่ว่างอยู่เพื่อให้ผู้เช่าเข้าพัก
             </DialogDescription>
           </DialogHeader>
 
           <div className="py-4">
             <Select value={selectedRoom} onValueChange={setSelectedRoom}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a room" />
+                <SelectValue placeholder="เลือกห้อง" />
               </SelectTrigger>
               <SelectContent>
                 {availableRooms.length > 0 ? (
@@ -709,7 +713,7 @@ const AdminQueue = () => {
                   ))
                 ) : (
                   <SelectItem value="none" disabled>
-                    ไม่มีห้องที่ตรงกับประเภทนี้
+                    ไม่มีห้องว่างสำหรับห้องประเภทนี้
                   </SelectItem>
                 )}
               </SelectContent>
@@ -717,10 +721,7 @@ const AdminQueue = () => {
           </div>
 
           <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setIsRoomDialogOpen(false)}
-            >
+            <Button variant="outline" onClick={() => setIsRoomDialogOpen(false)}>
               ยกเลิก
             </Button>
             <Button
