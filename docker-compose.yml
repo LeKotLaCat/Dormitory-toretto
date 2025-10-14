@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: myapp-backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - db-data:/usr/src/app/db 
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend 
+    container_name: myapp-frontend
+    ports:
+      - "8000:8000"      
+    environment:
+      - PORT=8000         
+    depends_on:
+      - backend           
+    restart: unless-stopped
+volumes:
+  db-data:
