@@ -17,7 +17,6 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -25,9 +24,7 @@ import {
 import {
   Collapsible,
   CollapsibleContent,
-  CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-
 import {
   Dialog,
   DialogContent,
@@ -43,7 +40,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -60,6 +56,7 @@ import { ITEMS_PER_PAGE } from "@/components/data";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
+// Interface for each item in the queue
 interface QueueItem {
   id: number;
   userId: number;
@@ -77,16 +74,7 @@ interface QueueItem {
   assignedRoom?: string;
 }
 
-type RoomType = string;
-interface RoomTypeMapping {
-  [key: RoomType]: string[];
-}
-const roomsByType: RoomTypeMapping = {
-  "Type A": ["102", "706", "1012"],
-  "Type B": ["103", "805", "901"],
-  "Type C": ["104", "213", "510"],
-};
-
+// Interface for a vacant room
 interface VacantRoom {
   id: string;
   roomName: string;
@@ -99,18 +87,16 @@ const AdminQueue = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [showCompleted, setShowCompleted] = useState(false);
-
   const [isRoomDialogOpen, setIsRoomDialogOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState("");
   const [availableRooms, setAvailableRooms] = useState<VacantRoom[]>([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch("http://localhost:3000/queue", {
           method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           credentials: "include",
         });
         if (!response.ok) {
@@ -128,7 +114,6 @@ const AdminQueue = () => {
         console.error("Error fetching queue data:", error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -143,16 +128,12 @@ const AdminQueue = () => {
           .getTime()
           .toString()
           .includes(searchTerm.toLowerCase());
-
       const matchesStatus = showCompleted ? true : request.status === "pending";
-
       return matchesSearch && matchesStatus;
     });
-
-    const sorted = [...filtered].sort((a, b) => {
-      return new Date(a.queueDate).getTime() - new Date(b.queueDate).getTime();
-    });
-
+    const sorted = [...filtered].sort(
+      (a, b) => new Date(a.queueDate).getTime() - new Date(b.queueDate).getTime()
+    );
     return sorted;
   }, [queueList, searchTerm, showCompleted]);
 
@@ -162,6 +143,7 @@ const AdminQueue = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, showCompleted]);
+  
   useEffect(() => {
     if (currentPage > totalPages && totalPages > 0) {
       setCurrentPage(totalPages);
@@ -199,20 +181,10 @@ const AdminQueue = () => {
     if (endPage - startPage + 1 < maxPagesToShow) {
       startPage = Math.max(1, endPage - maxPagesToShow + 1);
     }
-
     for (let i = startPage; i <= endPage; i++) {
       pageNumbers.push(i);
     }
-
     return pageNumbers;
-  };
-
-  const handleToggleExpand = (id: number) => {
-    setQueueList(
-      queueList.map((item) =>
-        item.id === id ? { ...item, expanded: !item.expanded } : item
-      )
-    );
   };
 
   const handleAccept = (id: number) => {
@@ -246,17 +218,13 @@ const AdminQueue = () => {
         `http://localhost:3000/queue/vacant/${roomType}`,
         {
           method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           credentials: "include",
         }
       );
-
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
       const data: VacantRoom[] = await response.json();
       setAvailableRooms(data);
     } catch (error) {
@@ -271,26 +239,21 @@ const AdminQueue = () => {
       toast.error("กรุณาเลือกห้อง");
       return;
     }
-
     const selectedQueue = queueList.find((q) => q.id === selectedQueueItem);
     if (!selectedQueue) {
       toast.error("ไม่พบคำขอที่เลือก");
       return;
     }
-
     try {
       const assignResponse = await fetch("http://localhost:3000/assignByq", {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           roomId: selectedRoom.toString(),
           userId: selectedQueue.userId.toString(),
         }),
         credentials: "include",
       });
-
       if (!assignResponse.ok) {
         const errorData = await assignResponse.json();
         throw new Error(
@@ -309,7 +272,6 @@ const AdminQueue = () => {
             : item
         )
       );
-
       toast.success("กำหนดห้องเรียบร้อยแล้ว");
       setIsRoomDialogOpen(false);
       setSelectedRoom("");
@@ -359,14 +321,10 @@ const AdminQueue = () => {
                   </div>
                 </div>
               </div>
-
               <div className="mb-4 flex items-center justify-between">
                 <p className="text-gray-600">
-                  กำลังแสดง {" "}
-                  {
-                    sortedRequests.filter((item) => item.status === "pending")
-                      .length
-                  }{" "}
+                  กำลังแสดง{" "}
+                  {sortedRequests.filter((item) => item.status === "pending").length}{" "}
                   ผลการค้นหา
                 </p>
                 <div className="flex items-center space-x-2">
@@ -375,7 +333,6 @@ const AdminQueue = () => {
                   </p>
                 </div>
               </div>
-
               <div className="space-y-4">
                 {currentItems.map((item) => (
                   <Card
@@ -385,9 +342,10 @@ const AdminQueue = () => {
                     }`}
                   >
                     <CardHeader className="pb-2">
-                    <div className="flex justify-between items-start">
+                      <div className="flex justify-between items-start">
                         <div>
-                          <CardTitle>{item.name}</CardTitle>
+                          {/* FIX 1: Combine firstname and lastname */}
+                          <CardTitle>{`${item.firstname} ${item.lastname}`}</CardTitle>
                         </div>
                         <div>
                           <AnimatePresence mode="wait">
@@ -459,7 +417,8 @@ const AdminQueue = () => {
                         <div className="flex items-center gap-2">
                           <CalendarIcon size={16} className="text-gray-500" />
                           <span className="text-sm">
-                            {item.preferredDate.toLocaleDateString("th-TH", {
+                            {/* FIX 2: Use queueDate instead of preferredDate */}
+                            {new Date(item.queueDate).toLocaleDateString("th-TH", {
                               weekday: "short",
                               day: "numeric",
                               month: "short",
@@ -473,11 +432,10 @@ const AdminQueue = () => {
                           <span className="text-sm">{item.telephone}</span>
                         </div>
                       </div>
-
                       <Collapsible open={item.expanded}>
                         <CollapsibleContent className="mt-4 pt-4 border-t transition-all duration-300 ease-in-out">
                           <div className="space-y-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4   animate-fadeIn">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 animate-fadeIn">
                               <div className="transition duration-300 ease-in-out transform hover:bg-gray-50 p-2 rounded">
                                 <h4 className="text-sm font-medium text-gray-500 mb-1">
                                   อีเมล
@@ -489,7 +447,6 @@ const AdminQueue = () => {
                                   เข้าดูห้องพักวันที่
                                 </h4>
                                 <p className="text-sm">
-                                  {/* Format bookingDate */}
                                   {new Date(item.queueDate).toLocaleDateString(
                                     "en-US",
                                     {
@@ -498,7 +455,7 @@ const AdminQueue = () => {
                                       year: "numeric",
                                     }
                                   )}
-                                </p>  
+                                </p>
                               </div>
                               <div className="md:col-span-2 transition duration-300 ease-in-out transform hover:bg-gray-50 p-2 rounded">
                                 <h4 className="text-sm font-medium text-gray-500 mb-1">
@@ -507,7 +464,6 @@ const AdminQueue = () => {
                                 <p className="text-sm">{item.description}</p>
                               </div>
                             </div>
-
                             {item.status === "pending" && (
                               <div className="flex justify-end mt-4 space-x-4 animate-fadeIn">
                                 <Button
@@ -518,7 +474,6 @@ const AdminQueue = () => {
                                   <X className="mr-2 h-4 w-4" />
                                   ยกเลิก
                                 </Button>
-
                                 <Button
                                   onClick={() => handleConfirmAccept(item.id)}
                                   className="w-full md:w-auto transition-all duration-300 ease-in-out transform hover:scale-105"
@@ -532,7 +487,6 @@ const AdminQueue = () => {
                         </CollapsibleContent>
                       </Collapsible>
                     </CardContent>
-
                     {item.status === "pending" && !item.expanded && (
                       <CardFooter className="border-t pt-4 flex justify-end gap-3">
                         <Button
@@ -560,7 +514,7 @@ const AdminQueue = () => {
                   </Card>
                 ))}
               </div>
-              {/* Pagination controls - no changes needed here */}
+              {/* Pagination controls */}
               {totalPages > 1 && (
                 <div className="flex justify-center mt-6">
                   <nav className="flex items-center space-x-2">
@@ -574,7 +528,6 @@ const AdminQueue = () => {
                       <ChevronLeft className="h-4 w-4" />
                       <span className="ml-1">ก่อนหน้า</span>
                     </Button>
-
                     <Button
                       variant="outline"
                       onClick={goToPreviousPage}
@@ -584,7 +537,6 @@ const AdminQueue = () => {
                     >
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
-
                     {getPageNumbers()[0] > 1 && (
                       <>
                         <Button
@@ -600,8 +552,6 @@ const AdminQueue = () => {
                         )}
                       </>
                     )}
-
-                    {/* Page number buttons */}
                     {getPageNumbers().map((pageNumber) => (
                       <Button
                         key={pageNumber}
@@ -615,10 +565,7 @@ const AdminQueue = () => {
                         {pageNumber}
                       </Button>
                     ))}
-
-                    {/* Last page button (if we're not already showing it) */}
-                    {getPageNumbers()[getPageNumbers().length - 1] <
-                      totalPages && (
+                    {getPageNumbers()[getPageNumbers().length - 1] < totalPages && (
                       <>
                         {getPageNumbers()[getPageNumbers().length - 1] <
                           totalPages - 1 && (
@@ -636,7 +583,6 @@ const AdminQueue = () => {
                         </Button>
                       </>
                     )}
-
                     <Button
                       variant="outline"
                       onClick={goToNextPage}
@@ -647,7 +593,6 @@ const AdminQueue = () => {
                       <span className="mr-1">หน้าถัดไป</span>
                       <ChevronRight className="h-4 w-4" />
                     </Button>
-
                     <Button
                       variant="outline"
                       onClick={goToNextPage}
@@ -664,9 +609,7 @@ const AdminQueue = () => {
           </div>
         </main>
       </div>
-
       <Footer />
-
       <AlertDialog
         open={isRejectDialogOpen}
         onOpenChange={setIsRejectDialogOpen}
@@ -675,7 +618,8 @@ const AdminQueue = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>แน่ใจใช่ไหม?</AlertDialogTitle>
             <AlertDialogDescription>
-              การกระทำนี้จะทำการยกเลิกการเข้าดูห้องพัก เมื่อกดแล้วจะไม่สามารถยกเลิกได้
+              การกระทำนี้จะทำการยกเลิกการเข้าดูห้องพัก
+              เมื่อกดแล้วจะไม่สามารถยกเลิกได้
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -689,7 +633,6 @@ const AdminQueue = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
       <Dialog open={isRoomDialogOpen} onOpenChange={setIsRoomDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
@@ -698,7 +641,6 @@ const AdminQueue = () => {
               เลือกห้องที่ว่างอยู่เพื่อให้ผู้เช่าเข้าพัก
             </DialogDescription>
           </DialogHeader>
-
           <div className="py-4">
             <Select value={selectedRoom} onValueChange={setSelectedRoom}>
               <SelectTrigger className="w-full">
@@ -719,9 +661,11 @@ const AdminQueue = () => {
               </SelectContent>
             </Select>
           </div>
-
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsRoomDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsRoomDialogOpen(false)}
+            >
               ยกเลิก
             </Button>
             <Button
