@@ -39,7 +39,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/add-to-project@v1.0.1
         with:
-          project-url: "https://github.com/users/YOUR_USERNAME/projects/PROJECT_NUMBER"
+          project-url: "https://github.com/users/LeKotLaCat/projects/PROJECT_NUMBER_HERE"
           github-token: ${{ secrets.GITHUB_TOKEN }}
           labeled: "Status"
           label-value: "CI Checks"
