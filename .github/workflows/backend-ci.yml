@@ -1,0 +1,48 @@
+name: Backend CI Checks
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'blackend/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'blackend/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./blackend
+
+    steps:
+      - name: ⬇️ Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: blackend/package-lock.json
+
+      - name: 📦 Install Dependencies
+        run: npm install
+
+      - name: ✅ Run Tests (Optional)
+        run: echo "No tests to run"
+
+      - name: 🏗️ Check Build (Optional)
+        run: echo "No build step"
+
+      - name: 🔄 Update GitHub Project Status
+        if: github.event_name == 'pull_request'
+        uses: actions/add-to-project@v1.0.1
+        with:
+          project-url: "https://github.com/users/YOUR_USERNAME/projects/PROJECT_NUMBER"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          labeled: "Status"
+          label-value: "CI Checks"
