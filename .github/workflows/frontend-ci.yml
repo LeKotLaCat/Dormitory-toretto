@@ -1,3 +1,5 @@
+# .github/workflows/frontend-ci.yml
+
 name: Frontend CI Checks
 
 on:
@@ -34,12 +36,3 @@ jobs:
 
       - name: 🏗️ Build Project
         run: npm run build
-
-      - name: 🔄 Update GitHub Project Status
-        if: github.event_name == 'pull_request'
-        uses: actions/add-to-project@v1.0.1
-        with:
-          project-url: "https://github.com/users/LeKotLaCat/projects/PROJECT_NUMBER_HERE"
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          labeled: "Status"
-          label-value: "CI Checks"
