@@ -3,12 +3,8 @@ name: Backend CI Checks
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'blackend/**'
   pull_request:
     branches: [ main ]
-    paths:
-      - 'blackend/**'
 
 jobs:
   build-and-test:

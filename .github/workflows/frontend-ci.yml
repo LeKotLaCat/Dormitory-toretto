@@ -1,17 +1,10 @@
-# .github/workflows/frontend-ci.yml
-
 name: Frontend CI Checks
 
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'frontend/**'
   pull_request:
     branches: [ main ]
-    paths:
-      - 'frontend/**'
-
 jobs:
   build-and-lint:
     runs-on: ubuntu-latest
@@ -35,4 +28,3 @@ jobs:
         run: npm install
 
       - name: 🏗️ Build Project
-        run: npm run build
