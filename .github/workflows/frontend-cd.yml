@@ -39,7 +39,7 @@ jobs:
           docker run -d \
             --name frontend-container \
             --restart unless-stopped \
-            -p 80:80 \
+            -p 8000:8000 \
             frontend-app:latest
 
       - name: 🧹 Clean Up Old Images
