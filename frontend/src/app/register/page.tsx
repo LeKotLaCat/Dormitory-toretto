@@ -53,7 +53,7 @@ const Register = () => {
         throw new Error('กรุณากรอกหมายเลขโทรศัพท์ให้ถูกต้อง (เช่น 0812345678)');
       }
 
-      const response = await fetch('http://backend:3000/auth/register', {
+      const response = await fetch('http://10.0.15.34:3000/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
