@@ -1,0 +1,51 @@
+# .github/workflows/cd-deploy.yml
+
+name: CD - Deploy to Self-Hosted Server
+
+
+on:
+  workflow_run:
+    workflows: ["Backend CI Checks", "Frontend CI Checks"]
+    types: [completed]
+    branches: [main]
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - 'docker-compose.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy-backend:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: [self-hosted, Linux, X64]
+
+    steps:
+      - name: ⬇️ Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🛑 Stop Running Containers
+        run: |
+          docker-compose down || true
+
+      - name: 🐳 Build and Start Containers
+        run: |
+          docker-compose up -d --build
+
+      - name: 🧹 Clean Up Old Images
+        run: |
+          docker image prune -af --filter "until=24h"
+
+      - name: ✅ Verify Deployment
+        run: |
+          sleep 10
+          docker-compose ps
+          docker ps | grep myapp-backend
+          docker ps | grep myapp-frontend
+
+      - name: 📊 Show Container Logs (Last 20 lines)
+        if: always()
+        run: |
+          echo "=== Backend Logs ==="
+          docker-compose logs --tail=20 backend
+          echo "=== Frontend Logs ==="
+          docker-compose logs --tail=20 frontend

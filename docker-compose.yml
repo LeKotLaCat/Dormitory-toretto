@@ -9,6 +9,8 @@ services:
       - "3000:3000"
     volumes:
       - db-data:/usr/src/app/db 
+    networks:
+      - app-network
     restart: unless-stopped
 
   frontend:
@@ -21,6 +23,13 @@ services:
       - PORT=8000         
     depends_on:
       - backend           
+    networks:
+      - app-network
     restart: unless-stopped
+
 volumes:
   db-data:
+
+networks:
+  app-network:
+      driver: bridge
