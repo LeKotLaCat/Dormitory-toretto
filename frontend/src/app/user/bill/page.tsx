@@ -41,7 +41,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-
+import { API_URL } from "@/lib/config";
 
 type Transaction = {
   id: number;
@@ -71,7 +71,7 @@ const BillPage = () => {
   const router = useRouter();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   useEffect(() => {
-    fetch("http://localhost:3000/bills", {
+    fetch(`${API_URL}/bills`, {
       method: "GET",
       credentials: "include",
     })
@@ -129,7 +129,7 @@ const BillPage = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (paymentStep !== "payment") return;
-    fetch(`http://localhost:3000/bills/${selectedTransaction?.id}/qr`, {
+    fetch(`${API_URL}/bills/${selectedTransaction?.id}/qr`, {
       method: "GET",
       credentials: "include",
     })
@@ -202,7 +202,7 @@ const BillPage = () => {
           "TransactionImg",
           new Blob([paymentFile], { type: paymentFile.type })
         );
-        fetch(`http://localhost:3000/bills/${selectedTransaction.id}/paying`, {
+        fetch(`${API_URL}/bills/${selectedTransaction.id}/paying`, {
           method: "PUT",
           body: formdata,
           credentials: "include",

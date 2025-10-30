@@ -35,6 +35,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from "sonner";
+import { API_URL } from "@/lib/config";
 
 // Room type definition
 type RoomType = {
@@ -120,7 +121,7 @@ const QueueAppointment = () => {
   );
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:3000/auth/logout", {
+      const response = await fetch(`${API_URL}/auth/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -145,7 +146,7 @@ const QueueAppointment = () => {
   const checkQueueStatus = async (roomType: string, id: number) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/queue/check/${roomType}`,
+        `${API_URL}/queue/check/${roomType}`,
         {
           method: "GET",
           headers: {
@@ -201,7 +202,7 @@ const QueueAppointment = () => {
     if (!selectedRoomType) return;
     try {
       const response = await fetch(
-        `http://localhost:3000/queue/${selectedRoomType.roomType}`,
+        `${API_URL}/queue/${selectedRoomType.roomType}`,
         {
           method: "POST",
           headers: {

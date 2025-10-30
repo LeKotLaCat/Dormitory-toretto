@@ -55,6 +55,7 @@ import {
 import { ITEMS_PER_PAGE } from "@/components/data";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { API_URL } from "@/lib/config";
 
 // Interface for each item in the queue
 interface QueueItem {
@@ -94,7 +95,7 @@ const AdminQueue = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/queue", {
+        const response = await fetch(`${API_URL}/queue`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
@@ -215,7 +216,7 @@ const AdminQueue = () => {
   const fetchAvailableRooms = async (roomType: string) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/queue/vacant/${roomType}`,
+        `${API_URL}/queue/vacant/${roomType}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -245,7 +246,7 @@ const AdminQueue = () => {
       return;
     }
     try {
-      const assignResponse = await fetch("http://localhost:3000/assignByq", {
+      const assignResponse = await fetch(`${API_URL}/assignByq`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -48,7 +48,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
+import { API_URL } from "@/lib/config";
 
 type Service = {
   id: number;
@@ -129,7 +129,7 @@ const ServicePage = () => {
   // Handle booking confirmation
   const handleConfirmBooking = () => {
     const reservedatetime = `${selectedDate} ${selectedTime}`
-    fetch("http://localhost:3000/tasks?byuserid=1", {
+    fetch(`${API_URL}/tasks?byuserid=1`, {
       method:"POST",
       credentials:"include",
       headers: {

@@ -34,6 +34,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useRouter } from 'next/navigation';
+import { API_URL } from "@/lib/config";
 
 type Transaction = {
   id: number;
@@ -130,7 +131,7 @@ const TransactionPage = () => {
     },
   ]);
   useEffect(()=> {
-    fetch("http://localhost:3000/bills/paid",{method:"GET",credentials: "include"}).then((val) => {
+    fetch(`${API_URL}/bills/paid`,{method:"GET",credentials: "include"}).then((val) => {
       if (val.status == 403) return router.push("/login");
       return val.json();
     })

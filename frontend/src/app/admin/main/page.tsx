@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
 import Footer from "@/components/Footer";
+import { API_URL } from "@/lib/config";
 
 const AdminMain = () => {
   const [stats, setStats] = useState({
@@ -29,7 +30,7 @@ const AdminMain = () => {
       setLoading(true);
       setError(null);
       try {
-        const roomsRes = await fetch('http://localhost:3000/main/room/', {
+        const roomsRes = await fetch(`${API_URL}/main/room/`, {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
@@ -41,7 +42,7 @@ const AdminMain = () => {
         const roomsData = await roomsRes.json();
         setStats((prevStats) => ({...prevStats,totalRooms: roomsData.totalRooms,}));
 
-        const tenantsRes = await fetch('http://localhost:3000/main/vacant/', {
+        const tenantsRes = await fetch(`${API_URL}/main/vacant/`, {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
@@ -54,7 +55,7 @@ const AdminMain = () => {
         setStats((prevStats) => ({...prevStats,totalTenants: tenantsData.totalTenants,
         }));
 
-        const queuesRes = await fetch('http://localhost:3000/main/queue/', {
+        const queuesRes = await fetch(`${API_URL}/main/queue/`, {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
@@ -65,7 +66,7 @@ const AdminMain = () => {
           throw new Error(`Queues fetch failed: ${queuesRes.status}`);
         const queuesData = await queuesRes.json();
         setStats((prevStats) => ({...prevStats,totalQueues: queuesData.totalQueues,}));
-        const billsRes = await fetch('http://localhost:3000/main/bill/', {
+        const billsRes = await fetch(`${API_URL}/main/bill/`, {
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',

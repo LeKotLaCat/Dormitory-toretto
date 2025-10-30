@@ -40,6 +40,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DollarSign } from "lucide-react";
+import { API_URL } from "@/lib/config";
 // Sample cleaning request data
 
 interface Task {
@@ -164,7 +165,7 @@ const CleaningQueuePage = () => {
   );
   useEffect(() => {
     setCleaningRequests([]);
-    fetch("http://localhost:3000/tasks", {
+    fetch(`${API_URL}/tasks`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -264,7 +265,7 @@ const CleaningQueuePage = () => {
   };
 
   const handleConfirmCleaning = async (id: number) => {
-    fetch(`http://localhost:3000/tasks/${id}/setDone`, {
+    fetch(`${API_URL}/tasks/${id}/setDone`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

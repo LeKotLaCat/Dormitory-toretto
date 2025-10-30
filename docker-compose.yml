@@ -21,6 +21,7 @@ services:
       - "8000:8000"      
     environment:
       - PORT=8000         
+      - API_URL=http://10.0.15.34:3000
     depends_on:
       - backend           
     networks:

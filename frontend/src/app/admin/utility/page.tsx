@@ -49,6 +49,7 @@ import {
 import { format } from "date-fns";
 import Image from "next/image";
 import { toast } from "sonner";
+import { API_URL } from "@/lib/config";
 
 interface AdditionalFee {
   type: "housewife" | "fixing" | "laundry" | "internet" | "other";
@@ -124,7 +125,7 @@ const UtilityPage = () => {
   const [RoomLoading,setRoomLoading] = useState(true)
   useEffect(() => {
     setRoom([]);
-    fetch("http://localhost:3000/rooms", {
+    fetch(`${API_URL}/rooms`, {
       method: "GET",
       credentials: "include",
     })
@@ -165,7 +166,7 @@ const UtilityPage = () => {
   }, []);
   useEffect(() => {
     if (RoomLoading) return
-    fetch("http://localhost:3000/bills", {
+    fetch(`${API_URL}/bills`, {
       method: "GET",
       credentials: "include",
     })
@@ -218,7 +219,7 @@ const UtilityPage = () => {
         }));
 
         fetch(
-          `http://localhost:3000/tasks?roomid=${
+          `${API_URL}/tasks?roomid=${
             rooms!.find((i) => i.roomNumber == newUtility.roomNumber)?.id
           }&month=${newUtility.month}`,
           { method: "GET", credentials: "include" }
@@ -255,7 +256,7 @@ const UtilityPage = () => {
 
   const handleConfirmPayment = (id: number) => {
     const item = utilityData.find((item) => item.id === id);
-    fetch(`http://localhost:3000/bills/${id}/confirmPayment`, {
+    fetch(`${API_URL}/bills/${id}/confirmPayment`, {
       method: "PUT",
       credentials: "include",
     }).catch((ex) => {
@@ -388,7 +389,7 @@ const UtilityPage = () => {
     const roomprice = rooms!.find(
       (v) => v.roomNumber === newUtility.roomNumber
     )?.monthlyRent;
-    fetch("http://localhost:3000/bills", {
+    fetch(`${API_URL}/bills`, {
       method: "POST",
       credentials: "include",
       headers: {
