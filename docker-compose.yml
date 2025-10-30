@@ -5,6 +5,9 @@ services:
     build:
       context: ./backend
     container_name: myapp-backend
+    environment:
+      - FRONTEND_URL=http://10.0.15.34:8000
+      - NODE_ENV=production
     ports:
       - "3000:3000"
     volumes:
