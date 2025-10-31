@@ -53,7 +53,7 @@ const Signin = () => {
           router.push('/admin/main');
         }
         else {
-          if (data.room == undefined){
+          if (data.room == undefined || data.room == null) {
             router.push('/user/queue');
           }
           else {
