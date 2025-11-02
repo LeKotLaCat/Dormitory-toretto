@@ -23,6 +23,7 @@ import {
   SheetDescription
 } from "@/components/ui/sheet";
 import { toast } from 'sonner';
+import { API_URL } from '@/lib/config';
 
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -90,7 +91,7 @@ const Sidebar = ({ className }: SidebarProps) => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:3000/auth/logout', {
+      const response = await fetch(`${API_URL}/auth/logout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
