@@ -50,6 +50,10 @@ app.use((req, res, next) => {
   next();
 });
 
+const apiRouter = express.Router();
+
+app.use('/api', apiRouter);
+
 const generateAccessToken = (user) => {
   return jwt.sign(
     {
@@ -64,7 +68,7 @@ const generateAccessToken = (user) => {
   );
 };
 
-app.post("/auth/register", (req, res, next) => {
+apiRouter.post("/auth/register", (req, res, next) => {
   const {
     username,
     password,
@@ -129,7 +133,7 @@ app.post("/auth/register", (req, res, next) => {
   );
 });
 
-app.post("/auth/login", (req, res, next) => {
+apiRouter.post("/auth/login", (req, res, next) => {
   const { userIdentifier, password } = req.body;
   if (!userIdentifier || !password) {
     return res.status(400).json({ message: "กรอกข้อมูลไม่ครบ" });
@@ -160,8 +164,8 @@ app.post("/auth/login", (req, res, next) => {
         res.cookie("token", accessToken, {
           httpOnly: false,
           maxAge: 3600000,
-          secure: true,
-          sameSite: "none"
+          secure: false,
+          sameSite: "lax"
         });
         //secure: process.env.NODE_ENV === "production"
         res.status(200).json({ role: user.role, room: user.RoomID });
@@ -170,12 +174,12 @@ app.post("/auth/login", (req, res, next) => {
   );
 });
 
-app.post("/auth/logout", (req, res) => {
+apiRouter.post("/auth/logout", (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "Logged out successfully" });
 });
 
-app.get("/auth/users", verifyToken, (req, res, next) => {
+apiRouter.get("/auth/users", verifyToken, (req, res, next) => {
   if (req.user.role !== "admin") {
     return res
       .status(403)
@@ -190,7 +194,7 @@ app.get("/auth/users", verifyToken, (req, res, next) => {
   });
 });
 
-app.get("/auth/profile", verifyToken, (req, res, next) => {
+apiRouter.get("/auth/profile", verifyToken, (req, res, next) => {
   const userId = req.user.id;
 
   if (!req.user) {
@@ -212,7 +216,7 @@ app.get("/auth/profile", verifyToken, (req, res, next) => {
   });
 });
 
-app.get("/auth/id/:uid", verifyToken, (req, res, next) => {
+apiRouter.get("/auth/id/:uid", verifyToken, (req, res, next) => {
   const userId = req.params.uid;
   if (!req.user) {
     return res.status(403).json({ message: "โปรดเข้าสู่ระบบ" });
@@ -234,7 +238,7 @@ app.get("/auth/id/:uid", verifyToken, (req, res, next) => {
   );
 });
 
-app.put("/auth/edit", verifyToken, (req, res, next) => {
+apiRouter.put("/auth/edit", verifyToken, (req, res, next) => {
   const userId = req.user.id;
   const { firstname, lastname, address, telephone, email, userImg } = req.body;
   let sql =
@@ -260,7 +264,7 @@ app.put("/auth/edit", verifyToken, (req, res, next) => {
 
 // -------------------- Room --------------------
 
-app.get("/rooms", verifyToken, (req, res, next) => {
+apiRouter.get("/rooms", verifyToken, (req, res, next) => {
   if (req.user.role !== "admin") {
     return res
       .status(403)
@@ -276,7 +280,8 @@ app.get("/rooms", verifyToken, (req, res, next) => {
     }
   );
 });
-app.get("/rooms/:roomId", verifyToken, (req, res, next) => {
+
+apiRouter.get("/rooms/:roomId", verifyToken, (req, res, next) => {
   const { roomId } = req.params;
 
   if (!roomId) {
@@ -304,7 +309,8 @@ app.get("/rooms/:roomId", verifyToken, (req, res, next) => {
     }
   );
 });
-app.post("/rooms", verifyToken, (req, res, next) => {
+
+apiRouter.post("/rooms", verifyToken, (req, res, next) => {
   if (req.user.role !== "admin") {
     return res
       .status(403)
@@ -361,7 +367,8 @@ app.post("/rooms", verifyToken, (req, res, next) => {
     }
   );
 });
-app.delete("/rooms/:roomId", verifyToken, (req, res, next) => {
+
+apiRouter.delete("/rooms/:roomId", verifyToken, (req, res, next) => {
   if (req.user.role !== "admin") {
     return res.status(403).json({ message: "เฉพาะผู้ดูแลระบบที่ใช้คำสั่งนี้ได้" });
   }
@@ -396,7 +403,8 @@ app.delete("/rooms/:roomId", verifyToken, (req, res, next) => {
     });
   });
 });
-app.put("/rooms/:roomId", verifyToken, (req, res, next) => {
+
+apiRouter.put("/rooms/:roomId", verifyToken, (req, res, next) => {
   if (req.user.role !== "admin") {
     return res
       .status(403)
@@ -454,7 +462,8 @@ app.put("/rooms/:roomId", verifyToken, (req, res, next) => {
     }
   );
 });
-app.put("/rooms/:roomId/clear", verifyToken, (req, res, next) => {
+
+apiRouter.put("/rooms/:roomId/clear", verifyToken, (req, res, next) => {
   const { roomId } = req.params;
   if (req.user.role !== "admin") {
     return res
@@ -496,7 +505,7 @@ app.put("/rooms/:roomId/clear", verifyToken, (req, res, next) => {
   );
 });
 
-app.put("/rooms/:roomId/assign", verifyToken, (req, res, next) => {
+apiRouter.put("/rooms/:roomId/assign", verifyToken, (req, res, next) => {
   const { roomId } = req.params;
   const { userId } = req.body;
 
@@ -550,7 +559,8 @@ app.put("/rooms/:roomId/assign", verifyToken, (req, res, next) => {
     }
   );
 });
-app.put("/assignByq", verifyToken, (req, res, next) => {
+
+apiRouter.put("/assignByq", verifyToken, (req, res, next) => {
   const { roomId, userId } = req.body;
   console.log(roomId, userId);
   if (!roomId || !userId) {
@@ -619,7 +629,7 @@ app.put("/assignByq", verifyToken, (req, res, next) => {
 
 // -------------------- Chat --------------------
 
-app.get("/chat", verifyToken, (req, res, next) => {
+apiRouter.get("/chat", verifyToken, (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({ message: "กรุณา login" });
   }
@@ -636,7 +646,7 @@ app.get("/chat", verifyToken, (req, res, next) => {
   );
 });
 
-app.post("/chat", verifyToken, (req, res, next) => {
+apiRouter.post("/chat", verifyToken, (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({ message: "กรุณา login" });
   }
@@ -675,7 +685,7 @@ app.post("/chat", verifyToken, (req, res, next) => {
 // -------------------- Chat --------------------
 
 // -------------------- Queue --------------------
-app.post("/queue/:roomTypeId", verifyToken, (req, res, next) => {
+apiRouter.post("/queue/:roomTypeId", verifyToken, (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({ message: "กรุณา login" });
   }
@@ -751,7 +761,7 @@ app.post("/queue/:roomTypeId", verifyToken, (req, res, next) => {
   );
 });
 
-app.delete("/queue/del/:queueId", verifyToken, (req, res, next) => {
+apiRouter.delete("/queue/del/:queueId", verifyToken, (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({ message: "กรุณา login" });
   }
@@ -770,7 +780,7 @@ app.delete("/queue/del/:queueId", verifyToken, (req, res, next) => {
   });
 });
 
-app.get("/queue", verifyToken, (req, res, next) => {
+apiRouter.get("/queue", verifyToken, (req, res, next) => {
   if (req.user.role !== "admin") {
     return res
       .status(403)
@@ -802,7 +812,7 @@ app.get("/queue", verifyToken, (req, res, next) => {
   });
 });
 
-app.get("/queue/vacant/:type", verifyToken, (req, res, next) => {
+apiRouter.get("/queue/vacant/:type", verifyToken, (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({ message: "กรุณา login" });
   }
@@ -819,7 +829,7 @@ app.get("/queue/vacant/:type", verifyToken, (req, res, next) => {
   });
 });
 
-app.get("/queue/check/:type", verifyToken, (req, res, next) => {
+apiRouter.get("/queue/check/:type", verifyToken, (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({ message: "กรุณา login" });
   }
@@ -875,7 +885,7 @@ app.get("/queue/check/:type", verifyToken, (req, res, next) => {
 
 // -------------------- Tasks --------------------
 
-app.post("/tasks", verifyToken, (req, res) => {
+apiRouter.post("/tasks", verifyToken, (req, res) => {
   const data = req.body;
   try {
     let roomid = req.user.room;
@@ -927,7 +937,7 @@ app.post("/tasks", verifyToken, (req, res) => {
   }
 });
 
-app.get("/tasks", verifyToken, (req, res) => {
+apiRouter.get("/tasks", verifyToken, (req, res) => {
   let roomidQuery = "";
   if (req.query.roomid && !req.query.month) {
     roomidQuery = req.query.roomid ? `WHERE roomid = ?` : "";
@@ -966,7 +976,7 @@ app.get("/tasks", verifyToken, (req, res) => {
   });
 });
 
-app.get("/tasks/:taskid", verifyToken, (req, res) => {
+apiRouter.get("/tasks/:taskid", verifyToken, (req, res) => {
   db.all(
     `SELECT * FROM task WHERE taskid=${req.params["taskid"]}`,
     (ex, result) => {
@@ -986,7 +996,7 @@ app.get("/tasks/:taskid", verifyToken, (req, res) => {
   );
 });
 
-app.put("/tasks/:taskid/setDone", verifyToken, (req, res) => {
+apiRouter.put("/tasks/:taskid/setDone", verifyToken, (req, res) => {
   db.run(
     `UPDATE task SET taskstatus=1,doneDate=current_timestamp,taskprice=?,priceset=1 WHERE taskid=?`,
     [req.body.price, req.params["taskid"]],
@@ -1011,7 +1021,7 @@ app.put("/tasks/:taskid/setDone", verifyToken, (req, res) => {
   );
 });
 
-app.put("/tasks/:taskid/setTaskPrice", verifyToken, (req, res) => {
+apiRouter.put("/tasks/:taskid/setTaskPrice", verifyToken, (req, res) => {
   db.all(
     `SELECT taskprice,priceset FROM task WHERE taskid=${req.params["taskid"]}`,
     (ex, val) => {
@@ -1050,7 +1060,7 @@ app.put("/tasks/:taskid/setTaskPrice", verifyToken, (req, res) => {
 // -------------------- Tasks --------------------
 
 // -------------------- Bills --------------------
-app.post("/bills", verifyToken, (req, res) => {
+apiRouter.post("/bills", verifyToken, (req, res) => {
   if (req.user.role != "admin")
     return res
       .status(403)
@@ -1084,7 +1094,7 @@ app.post("/bills", verifyToken, (req, res) => {
   );
 });
 
-app.get("/bills", verifyToken, (req, res) => {
+apiRouter.get("/bills", verifyToken, (req, res) => {
   let query =
     "SELECT b.*,r.roomName as roomNumber from bill b join room r ON (b.RoomID == r.id)";
   let params = [];
@@ -1114,7 +1124,7 @@ app.get("/bills", verifyToken, (req, res) => {
   });
 });
 
-app.get("/bills/paid", verifyToken, (req, res) => {
+apiRouter.get("/bills/paid", verifyToken, (req, res) => {
   db.all(
     "SELECT u.id,b.* FROM bill b JOIN users u ON (u.roomid = b.roomid) WHERE billstatus!=0" +
       (req.query.roomid && req.user.role == "admin"
@@ -1136,7 +1146,7 @@ app.get("/bills/paid", verifyToken, (req, res) => {
   );
 });
 
-app.put(
+apiRouter.put(
   "/bills/:billid/paying",
   verifyToken,
   upload.single("TransactionImg"),
@@ -1162,7 +1172,7 @@ app.put(
   }
 );
 
-app.put("/bills/:billid/confirmPayment", verifyToken, (req, res) => {
+apiRouter.put("/bills/:billid/confirmPayment", verifyToken, (req, res) => {
   if (req.user.role != "admin")
     return res
       .status(403)
@@ -1187,7 +1197,7 @@ app.put("/bills/:billid/confirmPayment", verifyToken, (req, res) => {
   );
 });
 
-app.get("/bills/:billid/qr", verifyToken, (req, res) => {
+apiRouter.get("/bills/:billid/qr", verifyToken, (req, res) => {
   db.all(
     "SELECT totalPrice FROM bill WHERE billid=?",
     [req.params["billid"]],
@@ -1229,7 +1239,7 @@ app.get("/bills/:billid/qr", verifyToken, (req, res) => {
 // -------------------- Bills --------------------
 
 // -------------------- Main -------------------- 
-app.get("/main/room", verifyToken, (req, res, next) => {
+apiRouter.get("/main/room", verifyToken, (req, res, next) => {
   console.log("Hi!");
   if (req.user.role !== "admin") {
     return res.status(403).json({ message: "เฉพาะผู้ดูแลระบบ" });
@@ -1248,7 +1258,7 @@ app.get("/main/room", verifyToken, (req, res, next) => {
   });
 });
 
-app.get("/main/queue", verifyToken, (req, res, next) => {
+apiRouter.get("/main/queue", verifyToken, (req, res, next) => {
   if (req.user.role !== "admin") {
     return res.status(403).json({ message: "เฉพาะผู้ดูแลระบบ" });
   }
@@ -1266,7 +1276,7 @@ app.get("/main/queue", verifyToken, (req, res, next) => {
   });
 });
 
-app.get("/main/vacant", verifyToken, (req, res, next) => {
+apiRouter.get("/main/vacant", verifyToken, (req, res, next) => {
   if (req.user.role !== "admin") {
     return res.status(403).json({ message: "เฉพาะผู้ดูแลระบบ" });
   }
@@ -1284,7 +1294,7 @@ app.get("/main/vacant", verifyToken, (req, res, next) => {
   });
 });
 
-app.get("/main/bill", verifyToken, (req, res, next) => {
+apiRouter.get("/main/bill", verifyToken, (req, res, next) => {
   if (req.user.role !== "admin") {
     return res.status(403).json({ message: "เฉพาะผู้ดูแลระบบ" });
   }
