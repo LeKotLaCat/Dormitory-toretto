@@ -160,7 +160,7 @@ app.post("/auth/login", (req, res, next) => {
         res.cookie("token", accessToken, {
           httpOnly: false,
           maxAge: 3600000,
-          secure: process.env.NODE_ENV === "production",
+          secure: false,
           sameSite: "lax"
         });
         res.status(200).json({ role: user.role, room: user.RoomID });
