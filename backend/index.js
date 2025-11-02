@@ -161,8 +161,9 @@ app.post("/auth/login", (req, res, next) => {
           httpOnly: false,
           maxAge: 3600000,
           secure: false,
-          sameSite: "lax"
+          sameSite: "none"
         });
+        //secure: process.env.NODE_ENV === "production"
         res.status(200).json({ role: user.role, room: user.RoomID });
       });
     }
