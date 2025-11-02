@@ -56,4 +56,4 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: lekotlacat/dormitory-toretto-frontend:latest, lekotlacat/dormitory-toretto-frontend:${{ github.sha }}
+          tags: lekotlacat/dormitory-toretto-backend:latest, lekotlacat/dormitory-toretto-backend:${{ github.sha }}
