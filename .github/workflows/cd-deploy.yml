@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Set up Kubeconfig
+      - name: Set up Kubeconfig
         # ใช้ Action สำเร็จรูป (ไม่ต้องกังวลเรื่องชื่อ Azure)
         uses: azure/k8s-set-context@v4
         with:
@@ -24,7 +24,7 @@ jobs:
           # ดึงกุญแจ K8s จาก Secret
           kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }} 
 
-      - name: 🚀 Trigger Rolling Update
+      - name: Trigger Rolling Update
         run: |
           echo "Restarting deployments to pull the 'latest' image..."
           # สั่ง K8s ให้ดึง Image 'latest' ตัวใหม่
@@ -35,4 +35,4 @@ jobs:
           kubectl rollout status deployment backend-deployment -n dormitory-app --timeout=60s
           kubectl rollout status deployment frontend-deployment -n dormitory-app --timeout=60s
           
-          echo "✅ Deployment successful!"
+          echo "Deployment successful!"
