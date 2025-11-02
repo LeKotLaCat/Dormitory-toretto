@@ -1,51 +1,38 @@
-# .github/workflows/cd-deploy.yml
-
-name: CD - Deploy to Self-Hosted Server
-
+name: CD - Deploy to Kubernetes
 
 on:
   workflow_run:
-    workflows: ["Backend CI Checks", "Frontend CI Checks"]
+    # ชื่อต้องตรงกับ 'name:' ในไฟล์ CI
+    workflows: ["Backend CI/CD", "Frontend CI/CD"] 
     types: [completed]
     branches: [main]
-    paths:
-      - 'backend/**'
-      - 'frontend/**'
-      - 'docker-compose.yml'
   workflow_dispatch:
 
 jobs:
-  deploy-backend:
+  deploy-to-k8s:
+    # ทำงานเมื่อ CI (Backend หรือ Frontend) ทำงานสำเร็จ
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: [self-hosted, Linux, X64]
+    # ใช้ Runner ของ GitHub
+    runs-on: ubuntu-latest
 
     steps:
-      - name: ⬇️ Checkout Repository
-        uses: actions/checkout@v4
+      - name: 📥 Set up Kubeconfig
+        # ใช้ Action สำเร็จรูป (ไม่ต้องกังวลเรื่องชื่อ Azure)
+        uses: azure/k8s-set-context@v4
+        with:
+          method: kubeconfig
+          # ดึงกุญแจ K8s จาก Secret
+          kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }} 
 
-      - name: 🛑 Stop Running Containers
+      - name: 🚀 Trigger Rolling Update
         run: |
-          docker-compose down || true
-
-      - name: 🐳 Build and Start Containers
-        run: |
-          docker-compose up -d --build
-
-      - name: 🧹 Clean Up Old Images
-        run: |
-          docker image prune -af --filter "until=24h"
-
-      - name: ✅ Verify Deployment
-        run: |
-          sleep 10
-          docker-compose ps
-          docker ps | grep myapp-backend
-          docker ps | grep myapp-frontend
-
-      - name: 📊 Show Container Logs (Last 20 lines)
-        if: always()
-        run: |
-          echo "=== Backend Logs ==="
-          docker-compose logs --tail=20 backend
-          echo "=== Frontend Logs ==="
-          docker-compose logs --tail=20 frontend
+          echo "Restarting deployments to pull the 'latest' image..."
+          # สั่ง K8s ให้ดึง Image 'latest' ตัวใหม่
+          kubectl rollout restart deployment backend-deployment -n dormitory-app
+          kubectl rollout restart deployment frontend-deployment -n dormitory-app
+          
+          echo "Waiting for deployments to complete..."
+          kubectl rollout status deployment backend-deployment -n dormitory-app --timeout=60s
+          kubectl rollout status deployment frontend-deployment -n dormitory-app --timeout=60s
+          
+          echo "✅ Deployment successful!"
