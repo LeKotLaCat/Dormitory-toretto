@@ -158,10 +158,10 @@ app.post("/auth/login", (req, res, next) => {
 
         const accessToken = generateAccessToken(user);
         res.cookie("token", accessToken, {
-          httpOnly: true,
+          httpOnly: false,
           maxAge: 3600000,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "none"
+          sameSite: "lax"
         });
         res.status(200).json({ role: user.role, room: user.RoomID });
       });
