@@ -1,8 +1,7 @@
-name: CD - Deploy to Kubernetes
+name: CD - Deploy to Kubernetes (Self-Hosted)
 
 on:
   workflow_run:
-    # ชื่อต้องตรงกับ 'name:' ในไฟล์ CI
     workflows: ["Backend CI/CD", "Frontend CI/CD"] 
     types: [completed]
     branches: [main]
@@ -10,24 +9,19 @@ on:
 
 jobs:
   deploy-to-k8s:
-    # ทำงานเมื่อ CI (Backend หรือ Frontend) ทำงานสำเร็จ
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    # ใช้ Runner ของ GitHub
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64] 
 
     steps:
-      - name: 📥 Set up Kubeconfig
-        # ใช้ Action สำเร็จรูป (ไม่ต้องกังวลเรื่องชื่อ Azure)
-        uses: azure/k8s-set-context@v4
-        with:
-          method: kubeconfig
-          # ดึงกุญแจ K8s จาก Secret
-          kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }} 
+      # เราไม่จำเป็นต้องใช้ 'azure/k8s-set-context'
+      # เพราะ Runner จะใช้ 'kubeconfig' ที่ติดตั้งถาวรบนเครื่อง
+      # ($HOME/.kube/config) โดยอัตโนมัติ
 
-      - name: 🚀 Trigger Rolling Update
+      - name:  Trigger Rolling Update
         run: |
           echo "Restarting deployments to pull the 'latest' image..."
-          # สั่ง K8s ให้ดึง Image 'latest' ตัวใหม่
+          
+          # คำสั่งนี้จะทำงานได้ทันที
           kubectl rollout restart deployment backend-deployment -n dormitory-app
           kubectl rollout restart deployment frontend-deployment -n dormitory-app
           
@@ -35,4 +29,4 @@ jobs:
           kubectl rollout status deployment backend-deployment -n dormitory-app --timeout=60s
           kubectl rollout status deployment frontend-deployment -n dormitory-app --timeout=60s
           
-          echo "✅ Deployment successful!"
+          echo " Deployment successful!"
