@@ -6,7 +6,7 @@ services:
       context: ./backend
     container_name: myapp-backend
     environment:
-      - FRONTEND_URL=http://frontend-service:8000
+      - FRONTEND_URL=http://10.43.182.106:8000
       - NODE_ENV=production
     ports:
       - "3000:3000"
@@ -24,7 +24,7 @@ services:
       - "8000:8000"      
     environment:
       - PORT=8000         
-      - API_URL=http://backend-service:3000/api
+      - API_URL=http://10.43.101.170:3000/api
     depends_on:
       - backend           
     networks:
