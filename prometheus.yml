@@ -1,0 +1,11 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ['prometheus:9090']
+
+  - job_name: myapp-backend
+    static_configs:
+      - targets: ['myapp-backend:9100']

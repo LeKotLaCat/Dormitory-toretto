@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: myapp-backend
+    environment:
+      - FRONTEND_URL=http://localhost:8000
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+      - "9100:9100"   # เปลี่ยน/ลบได้ถ้าไม่มี metrics
+    volumes:
+      - db-data:/usr/src/app/db
+    networks:
+      - app-network
+      - monitoring-net
+    restart: unless-stopped
+
+volumes:
+  db-data:
+
+networks:
+  app-network:
+    driver: bridge
+  monitoring-net:
+    external: true
+    name: monitoring-net
