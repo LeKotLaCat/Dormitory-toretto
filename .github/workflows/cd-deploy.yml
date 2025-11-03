@@ -22,7 +22,7 @@ jobs:
           kubectl rollout restart deployment frontend-deployment -n dormitory-app
 
           echo "Waiting for deployments to complete..."
-          kubectl rollout status deployment backend-deployment -n dormitory-app --timeout=60s
-          kubectl rollout status deployment frontend-deployment -n dormitory-app --timeout=60s
+          kubectl rollout status deployment backend-deployment -n dormitory-app --timeout=600s
+          kubectl rollout status deployment frontend-deployment -n dormitory-app --timeout=600s
 
           echo "✅ Deployment successful!"
